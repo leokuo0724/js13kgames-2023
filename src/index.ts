@@ -7,19 +7,20 @@ initPointer();
 function resize() {
   let ctx = canvas.getContext("2d");
   let { width: w, height: h } = canvas;
-  let scale = Math.min(innerWidth / w, innerHeight / h, 4);
+  let scale = Math.min(innerWidth / w, innerHeight / h, 1);
   canvas.style.width = canvas.width * scale + "px";
   canvas.style.height = canvas.height * scale + "px";
   if (ctx) ctx.imageSmoothingEnabled = false;
 }
 (onresize = resize)();
 
+let image = document.querySelector("#chars");
 let sprite = Sprite({
   x: 0,
   y: 0,
-  color: "red",
-  width: 30,
-  height: 30,
+  image: image as HTMLImageElement,
+  scaleX: 10,
+  scaleY: 10,
 });
 track(sprite);
 
