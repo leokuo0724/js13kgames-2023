@@ -1,4 +1,5 @@
 import { GameLoop, Sprite, init, initPointer, track } from "kontra";
+import { ASSET_IDS } from "./constants/assets";
 
 let { canvas } = init();
 
@@ -14,21 +15,30 @@ function resize() {
 }
 (onresize = resize)();
 
-let image = document.querySelector("#chars");
+let imgContainer = document.getElementById("imgs");
+Object.values(ASSET_IDS).forEach((id) => {
+  imgContainer?.insertAdjacentHTML(
+    "beforeend",
+    `
+    <img id="${id}" src="/src/assets/sprite.svg#${id}" />
+  `
+  );
+});
+
+let image = document.querySelector(`#${ASSET_IDS.MONGOL}`);
 let sprite = Sprite({
   x: 0,
   y: 0,
   image: image as HTMLImageElement,
-  scaleX: 10,
-  scaleY: 10,
 });
+sprite.setScale(10);
 track(sprite);
 
 let loop = GameLoop({
   // create the main game loop
   update: function () {
     // update the game state
-    // sprite.update();
+    sprite.update();
 
     // wrap the sprites position when it reaches
     // the edge of the screen
