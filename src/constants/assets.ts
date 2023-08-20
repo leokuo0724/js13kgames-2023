@@ -4,4 +4,5 @@ export const ASSET_IDS = {
   SWORD: "sword",
   HAND: "hand",
   BOW: "bow",
-};
+} as const;
+export type AssetId = (typeof ASSET_IDS)[keyof typeof ASSET_IDS];

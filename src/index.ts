@@ -1,5 +1,6 @@
-import { GameLoop, Sprite, init, initPointer, track } from "kontra";
+import { GameLoop, Sprite, init, initPointer, track, GameObject } from "kontra";
 import { ASSET_IDS } from "./constants/assets";
+import { BaseSolider } from "./sprites/soldier";
 
 let { canvas } = init();
 
@@ -25,31 +26,13 @@ Object.values(ASSET_IDS).forEach((id) => {
   );
 });
 
-let image = document.querySelector(`#${ASSET_IDS.MONGOL}`);
-let sprite = Sprite({
-  x: 0,
-  y: 0,
-  image: image as HTMLImageElement,
-});
-sprite.setScale(10);
-track(sprite);
-
+let sprite = new BaseSolider();
 let loop = GameLoop({
-  // create the main game loop
-  update: function () {
-    // update the game state
+  update: () => {
     sprite.update();
-
-    // wrap the sprites position when it reaches
-    // the edge of the screen
-    if (sprite.x > canvas.width) {
-      sprite.x = -sprite.width;
-    }
   },
-  render: function () {
-    // render the game state
+  render: () => {
     sprite.render();
   },
 });
-
-loop.start(); // start the game
+loop.start();
