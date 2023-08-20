@@ -1,13 +1,16 @@
 import { GameObjectClass, Sprite } from "kontra";
 import { ASSET_IDS } from "../constants/assets";
 import { CustomSprite } from "./custom-sprite";
+import { HealthBar } from "./health-bar";
 
+const SCALE = 4;
 export class BaseSolider extends GameObjectClass {
   protected timer: number = 0;
 
   protected main: Sprite;
   protected shield: Sprite;
   protected sword: Sprite;
+  protected healthBar: HealthBar;
 
   constructor() {
     super();
@@ -31,9 +34,11 @@ export class BaseSolider extends GameObjectClass {
         setTimeout(() => (this.rotation! = 0), 100);
       },
     });
-    this.setScale(4);
+    this.healthBar = new HealthBar(0, 17, 10);
+    this.healthBar.setScale(1 / SCALE);
+    this.setScale(SCALE);
 
-    this.addChild([this.shield, this.main, this.sword]);
+    this.addChild([this.shield, this.main, this.sword, this.healthBar]);
     this.y = 152;
   }
 

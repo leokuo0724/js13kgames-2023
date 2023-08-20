@@ -1,9 +1,10 @@
 import { GameObjectClass, Sprite } from "kontra";
 import { CustomSprite } from "./custom-sprite";
 import { ASSET_IDS } from "../constants/assets";
+import { HealthBar } from "./health-bar";
 
 export class EnemyCastle extends GameObjectClass {
-  protected blood: number = 100;
+  protected healthBar: HealthBar;
 
   protected castle: Sprite;
 
@@ -17,6 +18,8 @@ export class EnemyCastle extends GameObjectClass {
       scaleY: 4,
     });
 
-    this.addChild(this.castle);
+    this.healthBar = new HealthBar(this.castle.x - 2, this.castle.y + 142, 100);
+
+    this.addChild([this.castle, this.healthBar]);
   }
 }

@@ -1,9 +1,13 @@
 import { GameObject } from "kontra";
+import { BaseSolider } from "./soldier";
 
 export class AllyController {
   public allies: GameObject[] = [];
 
-  constructor() {}
+  constructor() {
+    let test = new BaseSolider();
+    this.allies.push(test);
+  }
 
   public update() {
     this.allies.forEach((ally) => ally.update());
