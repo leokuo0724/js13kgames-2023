@@ -4,6 +4,7 @@ import { CustomSprite } from "./custom-sprite";
 
 export class BaseSolider extends GameObjectClass {
   protected timer: number = 0;
+
   protected main: Sprite;
   protected shield: Sprite;
   protected sword: Sprite;
@@ -23,10 +24,17 @@ export class BaseSolider extends GameObjectClass {
       x: 1,
       y: 10,
       anchor: { x: 0, y: 0.07 },
+      attack: function () {
+        this.rotation! = 0.4;
+        setTimeout(() => (this.rotation! = 0.8), 25);
+        setTimeout(() => (this.rotation! = 1), 50);
+        setTimeout(() => (this.rotation! = 0), 100);
+      },
     });
     this.setScale(4);
 
     this.addChild([this.shield, this.main, this.sword]);
+    this.y = 152;
   }
 
   public update() {

@@ -12,7 +12,7 @@
 
       <svg id="sword" width="8.7" height="31.6" viewBox="0 0 8.7 31.6"><path fill="#D1B187" d="M.7 27.9 0 30.8l4.8.8 2.3-2-1-2.4-2.6-.1z"/><path fill="#D2C9A5" d="M4.1 26V0S13 6.5 5.9 26H4.1z"/><path fill="#AE5D40" d="M3 26h4.1v1.1H3z"/></svg>
 
-      <svg id="hand" width="9.8" height="4" viewBox="0 0 9.8 4"><path fill="#C77B58" d="M6.8 3.9H0V.1h8.4z"/><path fill="#D1B187" d="M7.1.1h2.7l-.3 2.7-2.1 1.1L5 3.8z"/><path fill="#C77B58" d="M-103.5-21.3h2.2v1h-2.2z"/><path fill="#D1B187" d="M-101.6-21.3h.7l-.1.7-.5.3h-.6z"/></svg>
+      <svg id="hand" width="10.4" height="4" viewBox="0 0 10.4 4"><path fill="#C77B58" d="M0 0h8.9v4H0z"/><path fill="#D1B187" d="M7.5 0h2.9l-.3 2.9L7.8 4H5.4z"/></svg>
 
-      <svg id="bow" width="8" height="7" viewBox="0 0 8 7"><path fill="#574852" d="M5.5 6.9.9 3.5 5.5.1v.1L1.1 3.5l4.4 3.3z"/><path fill="#AE5D40" d="M5.4 0s.7 1.1.7 3.5S5.4 7 5.4 7s1.2-.7 1.2-3.5S5.4 0 5.4 0z"/><path fill="#4D4539" d="M1.5 3.4h6v.2h-6z"/><path fill="#D2C9A5" d="m7.8 3.5-.7-.4.1.4-.1.4z"/><path fill="#D1B187" d="m.3 3.2-.1.7 1.2.2.5-.5-.2-.6h-.6z"/></svg>
+      <svg id="bow" width="30.6" height="28.2" viewBox="0 0 30.6 28.2"><path fill="#574852" d="M21.2 27.7 2.9 14.1 21.2.5l.2.3L3.6 14.1l17.8 13.3z"/><path fill="#AE5D40" d="M20.8 0s2.7 4.4 2.7 14.1-2.7 14.1-2.7 14.1 4.7-3 4.7-14.1S20.8 0 20.8 0z"/><path fill="#4D4539" d="M6.8 13.7h22.6v.8H6.8z"/><path fill="#D2C9A5" d="m30.6 14.1-3-1.7.4 1.7-.4 1.7z"/><path fill="#D1B187" d="M.7 12.8 0 15.7l4.8.8 2.3-1.9-1-2.5-2.6-.1z"/></svg>
   </svg>
