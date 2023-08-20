@@ -1,6 +1,7 @@
 import { GameObject } from "kontra";
 import { BaseSolider } from "./soldier";
 
+/** @deprecated */
 export class AllyController {
   public allies: GameObject[] = [];
 

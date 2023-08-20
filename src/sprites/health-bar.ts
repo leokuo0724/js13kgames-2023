@@ -33,8 +33,12 @@ export class HealthBar extends SpriteClass {
     this.addChild([innerBg, this.inner]);
   }
 
-  public updateHealth(health: number) {
-    this.health = health;
+  public takeDamage(damage: number) {
+    this.health -= damage;
+    this.updateHealth();
+  }
+
+  private updateHealth() {
     this.inner.width = (this.health / this.maxHealth) * 54;
   }
 }

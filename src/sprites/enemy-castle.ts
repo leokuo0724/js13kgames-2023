@@ -1,25 +1,35 @@
-import { GameObjectClass, Sprite } from "kontra";
 import { CustomSprite } from "./custom-sprite";
-import { ASSET_IDS } from "../constants/assets";
+import { ASSET_IDS, GENERAL_SCALE } from "../constants/assets";
 import { HealthBar } from "./health-bar";
+import { GameObject } from "kontra";
 
-export class EnemyCastle extends GameObjectClass {
+export class EnemyCastle extends CustomSprite {
+  protected attackRange: number = -150;
+  protected attackTarget: GameObject | null = null;
+
   protected healthBar: HealthBar;
 
-  protected castle: Sprite;
-
   constructor() {
-    super();
-    this.castle = new CustomSprite({
+    super({
+      width: 58,
+      height: 138,
       assetId: ASSET_IDS.CASTLE,
-      x: this.context.canvas.width - 58,
-      y: this.context.canvas.height / 2 - 146,
-      scaleX: 4,
-      scaleY: 4,
     });
+    this.setScale(GENERAL_SCALE);
+    this.x = this.context.canvas.width - this.width;
+    this.y = this.context.canvas.height / 2 - this.height - 8;
 
-    this.healthBar = new HealthBar(this.castle.x - 2, this.castle.y + 142, 100);
+    this.healthBar = new HealthBar(
+      -2 / GENERAL_SCALE,
+      142 / GENERAL_SCALE,
+      100
+    );
+    this.healthBar.setScale(1 / GENERAL_SCALE);
 
-    this.addChild([this.castle, this.healthBar]);
+    this.addChild([this.healthBar]);
+  }
+
+  public takeDamage(damage: number) {
+    this.healthBar.takeDamage(damage);
   }
 }

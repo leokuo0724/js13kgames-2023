@@ -1,8 +1,8 @@
 import { GameLoop, init, initPointer } from "kontra";
 import { ASSET_IDS } from "./constants/assets";
 import { Background } from "./backgound/background";
-import { EnemyController } from "./sprites/enemy-controller";
-import { AllyController } from "./sprites/ally-controller";
+
+import { GameController } from "./sprites/game-controller";
 
 let { canvas } = init();
 
@@ -30,19 +30,16 @@ Object.values(ASSET_IDS).forEach((id) => {
 
 // FIXME: Image onload
 let bg = new Background();
-let enemyController = new EnemyController();
-let allyController = new AllyController();
+let gameController = new GameController();
 
 let loop = GameLoop({
   update: () => {
     bg.update();
-    enemyController.update();
-    allyController.update();
+    gameController.update();
   },
   render: () => {
     bg.render();
-    enemyController.render();
-    allyController.render();
+    gameController.render();
   },
 });
 loop.start();

@@ -1,11 +1,15 @@
-import { GameObjectClass, Sprite } from "kontra";
-import { ASSET_IDS } from "../constants/assets";
+import { GameObject, GameObjectClass, Sprite } from "kontra";
+import { ASSET_IDS, GENERAL_SCALE } from "../constants/assets";
 import { CustomSprite } from "./custom-sprite";
 import { HealthBar } from "./health-bar";
 
-const SCALE = 4;
 export class BaseSolider extends GameObjectClass {
   protected timer: number = 0;
+  protected moveSpeed: number = 10;
+  protected moveRate: number = 60;
+  protected attackRange: number = 50; // width + range\
+  protected attackTarget: GameObject | null = null;
+  protected attackRate: number = 60;
 
   protected main: Sprite;
   protected shield: Sprite;
@@ -35,18 +39,34 @@ export class BaseSolider extends GameObjectClass {
       },
     });
     this.healthBar = new HealthBar(0, 17, 10);
-    this.healthBar.setScale(1 / SCALE);
-    this.setScale(SCALE);
+    this.healthBar.setScale(1 / GENERAL_SCALE);
+    this.setScale(GENERAL_SCALE);
 
     this.addChild([this.shield, this.main, this.sword, this.healthBar]);
     this.y = 152;
   }
 
+  protected jump() {
+    this.y -= 2;
+    setTimeout(() => (this.y += 2), 100);
+  }
+
+  protected attack() {
+    this.sword.attack();
+  }
+
   public update() {
-    // this.sword.rotation += 0.1;
-    // this.timer++;
-    // if (this.timer % 60 === 0) {
-    //   this.x += 10;
-    // }
+    this.timer++;
+    if (this.timer % 10 === 0 && !this.attackTarget) {
+      this.x += this.moveSpeed;
+      this.jump();
+    }
+    if (this.attackTarget) {
+      if (this.timer % this.attackRate === 0) {
+        this.attack();
+        this.jump();
+        this.attackTarget.takeDamage(1);
+      }
+    }
   }
 }

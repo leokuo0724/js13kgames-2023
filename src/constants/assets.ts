@@ -9,3 +9,5 @@ export const ASSET_IDS = {
   CASTLE: "castle",
 } as const;
 export type AssetId = (typeof ASSET_IDS)[keyof typeof ASSET_IDS];
+
+export const GENERAL_SCALE = 4;

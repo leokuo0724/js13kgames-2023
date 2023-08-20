@@ -1,6 +1,7 @@
 import { GameObject } from "kontra";
 import { EnemyCastle } from "./enemy-castle";
 
+/** @deprecated */
 export class EnemyController {
   public castle: GameObject;
   public enemies: GameObject[] = [];
