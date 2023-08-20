@@ -1,8 +1,8 @@
-import { GameLoop, Sprite, init, initPointer, track, GameObject } from "kontra";
+import { GameLoop, init, initPointer } from "kontra";
 import { ASSET_IDS } from "./constants/assets";
-import { BaseSolider } from "./sprites/soldier";
 import { Background } from "./backgound/background";
-import { EnemyCastle } from "./sprites/enemy-castle";
+import { EnemyController } from "./sprites/enemy-controller";
+import { AllyController } from "./sprites/ally-controller";
 
 let { canvas } = init();
 
@@ -30,19 +30,19 @@ Object.values(ASSET_IDS).forEach((id) => {
 
 // FIXME: Image onload
 let bg = new Background();
-let castle = new EnemyCastle();
-let sprite = new BaseSolider();
+let enemyController = new EnemyController();
+let allyController = new AllyController();
 
 let loop = GameLoop({
   update: () => {
     bg.update();
-    castle.update();
-    sprite.update();
+    enemyController.update();
+    allyController.update();
   },
   render: () => {
     bg.render();
-    castle.render();
-    sprite.render();
+    enemyController.render();
+    allyController.render();
   },
 });
 loop.start();
