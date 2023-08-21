@@ -1,16 +1,17 @@
 import { CustomSprite } from "./custom-sprite";
 import { ASSET_IDS, GENERAL_SCALE } from "../constants/assets";
 import { HealthBar } from "./health-bar";
-import { GameObject } from "kontra";
+import { GameObject, Sprite, getWorldRect } from "kontra";
 
 export class EnemyCastle extends CustomSprite implements IAttackUnit {
   public timer = 0;
   public attackTarget: GameObject | null = null;
-  public attackRange = -150;
+  public attackRange = -200;
   public attackRate = 30;
-  public attackUnit = 5;
+  public attackUnit = 1;
 
   protected healthBar: HealthBar;
+  protected particle: Sprite;
 
   constructor() {
     super({
@@ -28,6 +29,19 @@ export class EnemyCastle extends CustomSprite implements IAttackUnit {
       100
     );
     this.healthBar.setScale(1 / GENERAL_SCALE);
+    this.particle = Sprite({
+      x: this.context.canvas.width - 36,
+      y: this.context.canvas.height / 2 - 96,
+      width: 8,
+      height: 8,
+      color: "#fff",
+      opacity: 0,
+      reset: () => {
+        this.particle.x = this.context.canvas.width - 36;
+        this.particle.y = this.context.canvas.height / 2 - 96;
+        this.opacity = 1;
+      },
+    });
 
     this.addChild([this.healthBar]);
   }
@@ -37,11 +51,37 @@ export class EnemyCastle extends CustomSprite implements IAttackUnit {
     this.healthBar.takeDamage(damage);
   }
 
+  public attack() {
+    if (!this.attackTarget) return;
+    let particleRect = getWorldRect(this.particle);
+    let deltaX = particleRect.x - this.attackTarget.x - 24;
+    let deltaY = particleRect.y - this.attackTarget.y - 24;
+
+    let fly = () => {
+      this.particle.x -= deltaX / 3;
+      this.particle.y -= deltaY / 3;
+    };
+
+    this.particle.opacity = 1;
+    setTimeout(fly, 20);
+    setTimeout(fly, 40);
+    setTimeout(fly, 60);
+    setTimeout(() => {
+      this.attackTarget?.takeDamage(this.attackUnit);
+      this.particle.reset();
+    }, 61);
+  }
+
   public update() {
+    super.update();
     if (!this.attackTarget) return;
     this.timer++;
     if (this.timer % this.attackRate === 0) {
-      this.attackTarget.takeDamage(5);
+      this.attack();
     }
+  }
+  public render() {
+    super.render();
+    this.particle.render();
   }
 }
