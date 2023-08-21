@@ -3,9 +3,12 @@ import { ASSET_IDS, GENERAL_SCALE } from "../constants/assets";
 import { HealthBar } from "./health-bar";
 import { GameObject } from "kontra";
 
-export class EnemyCastle extends CustomSprite {
-  protected attackRange: number = -150;
-  protected attackTarget: GameObject | null = null;
+export class EnemyCastle extends CustomSprite implements IAttackUnit {
+  public timer = 0;
+  public attackTarget: GameObject | null = null;
+  public attackRange = -150;
+  public attackRate = 30;
+  public attackUnit = 5;
 
   protected healthBar: HealthBar;
 
@@ -32,5 +35,13 @@ export class EnemyCastle extends CustomSprite {
   public takeDamage(damage: number) {
     if (this.healthBar.health <= 0) return; // TODO: check win
     this.healthBar.takeDamage(damage);
+  }
+
+  public update() {
+    if (!this.attackTarget) return;
+    this.timer++;
+    if (this.timer % this.attackRate === 0) {
+      this.attackTarget.takeDamage(5);
+    }
   }
 }

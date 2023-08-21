@@ -3,13 +3,17 @@ import { ASSET_IDS, GENERAL_SCALE } from "../constants/assets";
 import { CustomSprite } from "./custom-sprite";
 import { HealthBar } from "./health-bar";
 
-export class BaseSolider extends GameObjectClass {
-  protected timer: number = 0;
-  protected moveSpeed: number = 10;
-  protected moveRate: number = 40;
-  protected attackRange: number = 50; // width + range
-  protected attackTarget: GameObject | null = null;
-  protected attackRate: number = 60;
+export class BaseSolider
+  extends GameObjectClass
+  implements IAnimated, IAttackUnit, IAttackUnit
+{
+  public timer = 0;
+  public moveSpeed = 10;
+  public moveRate = 10;
+  public attackRange = 50; // width + range
+  public attackRate = 60;
+  public attackUnit = 1;
+  public attackTarget: GameObject | null = null;
 
   protected main: Sprite;
   protected shield: Sprite;
@@ -53,6 +57,11 @@ export class BaseSolider extends GameObjectClass {
 
   protected attack() {
     this.sword.attack();
+  }
+
+  public takeDamage(damage: number) {
+    if (this.healthBar.health <= 0) return; // TODO: check die
+    this.healthBar.takeDamage(damage);
   }
 
   public update() {

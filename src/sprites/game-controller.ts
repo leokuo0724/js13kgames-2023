@@ -17,10 +17,21 @@ export class GameController {
   }
 
   public update() {
-    // this.castle.update();
-    this.enemies.forEach((enemy) => enemy.update());
+    this.enemies.forEach((enemy) => {
+      if (!enemy.attackTarget) {
+        // assign attack target
+        this.allies.forEach((ally) => {
+          if (enemy.x + enemy.attackRange < ally.x) {
+            enemy.attackTarget = ally;
+          }
+        });
+      }
+      enemy.update();
+    });
+
     this.allies.forEach((ally) => {
       if (!ally.attackTarget) {
+        // assign attack target
         this.enemies.forEach((enemy) => {
           if (ally.x + ally.attackRange > enemy.x) {
             ally.attackTarget = enemy;
@@ -31,7 +42,6 @@ export class GameController {
     });
   }
   public render() {
-    // this.castle.render();
     this.enemies.forEach((enemy) => enemy.render());
     this.allies.forEach((ally) => ally.render());
   }
