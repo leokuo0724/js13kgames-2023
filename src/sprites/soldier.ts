@@ -6,8 +6,8 @@ import { HealthBar } from "./health-bar";
 export class BaseSolider extends GameObjectClass {
   protected timer: number = 0;
   protected moveSpeed: number = 10;
-  protected moveRate: number = 60;
-  protected attackRange: number = 50; // width + range\
+  protected moveRate: number = 40;
+  protected attackRange: number = 50; // width + range
   protected attackTarget: GameObject | null = null;
   protected attackRate: number = 60;
 
@@ -57,7 +57,7 @@ export class BaseSolider extends GameObjectClass {
 
   public update() {
     this.timer++;
-    if (this.timer % 10 === 0 && !this.attackTarget) {
+    if (this.timer % this.moveRate === 0 && !this.attackTarget) {
       this.x += this.moveSpeed;
       this.jump();
     }

@@ -30,6 +30,7 @@ export class EnemyCastle extends CustomSprite {
   }
 
   public takeDamage(damage: number) {
+    if (this.healthBar.health <= 0) return; // TODO: check win
     this.healthBar.takeDamage(damage);
   }
 }
