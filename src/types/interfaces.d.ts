@@ -7,7 +7,7 @@ interface IAttackUnit {
   attackRange: number;
   attackRate: number;
   attackUnit: number;
-  takeDamage(damage: number): void;
+  takeDamage(damage: number): void; // return true if dead
 }
 
 interface IMovableUnit {

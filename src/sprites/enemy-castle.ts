@@ -42,7 +42,7 @@ export class EnemyCastle extends CustomSprite implements IAttackUnit {
       reset: () => {
         this.particle.x = particleX;
         this.particle.y = particleY;
-        this.opacity = 1;
+        this.particle.opacity = 0;
       },
     });
 
@@ -50,8 +50,10 @@ export class EnemyCastle extends CustomSprite implements IAttackUnit {
   }
 
   public takeDamage(damage: number) {
-    if (this.healthBar.health <= 0) return; // TODO: check win
-    this.healthBar.takeDamage(damage);
+    if (this.healthBar.health <= 0) return;
+    const isDestroyed = this.healthBar.takeDamage(damage);
+    if (isDestroyed) this.ttl = 0;
+    // TODO: check win the match
   }
 
   public attack() {
@@ -70,8 +72,9 @@ export class EnemyCastle extends CustomSprite implements IAttackUnit {
     setTimeout(fly, 40);
     setTimeout(fly, 60);
     setTimeout(() => {
-      this.attackTarget?.takeDamage(this.attackUnit);
       this.particle.reset();
+      this.attackTarget?.takeDamage(this.attackUnit);
+      if (!this.attackTarget?.isAlive()) this.attackTarget = null;
     }, 61);
   }
 

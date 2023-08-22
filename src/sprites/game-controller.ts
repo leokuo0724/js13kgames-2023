@@ -1,4 +1,4 @@
-import { GameObject } from "kontra";
+import { GameObject, on } from "kontra";
 import { EnemyCastle } from "./enemy-castle";
 import { BaseSolider } from "./soldier";
 
@@ -17,32 +17,40 @@ export class GameController {
   }
 
   public update() {
-    this.enemies.forEach((enemy) => {
-      if (!enemy.attackTarget) {
-        // assign attack target
-        this.allies.forEach((ally) => {
-          if (enemy.x + enemy.attackRange < ally.x) {
-            enemy.attackTarget = ally;
-          }
-        });
-      }
-      enemy.update();
-    });
+    this.enemies
+      .filter((e) => e.isAlive())
+      .forEach((enemy) => {
+        if (!enemy.attackTarget) {
+          // assign attack target
+          this.allies
+            .filter((e) => e.isAlive())
+            .forEach((ally) => {
+              if (enemy.x + enemy.attackRange < ally.x) {
+                enemy.attackTarget = ally;
+              }
+            });
+        }
+        enemy.update();
+      });
 
-    this.allies.forEach((ally) => {
-      if (!ally.attackTarget) {
-        // assign attack target
-        this.enemies.forEach((enemy) => {
-          if (ally.x + ally.attackRange > enemy.x) {
-            ally.attackTarget = enemy;
-          }
-        });
-      }
-      ally.update();
-    });
+    this.allies
+      .filter((e) => e.isAlive())
+      .forEach((ally) => {
+        if (!ally.attackTarget) {
+          // assign attack target
+          this.enemies
+            .filter((e) => e.isAlive())
+            .forEach((enemy) => {
+              if (ally.x + ally.attackRange > enemy.x) {
+                ally.attackTarget = enemy;
+              }
+            });
+        }
+        ally.update();
+      });
   }
   public render() {
-    this.enemies.forEach((enemy) => enemy.render());
-    this.allies.forEach((ally) => ally.render());
+    this.enemies.filter((e) => e.isAlive()).forEach((enemy) => enemy.render());
+    this.allies.filter((e) => e.isAlive()).forEach((ally) => ally.render());
   }
 }

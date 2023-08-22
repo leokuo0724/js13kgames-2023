@@ -5,11 +5,16 @@ import { HealthBar } from "./health-bar";
 
 export class BaseSolider
   extends GameObjectClass
-  implements IAnimated, IAttackUnit, IAttackUnit
+  implements IAnimated, IMovableUnit, IAttackUnit
 {
+  public camp: UnitCamp = "ally";
+  public type: UnitType = "soldier";
+
   public timer = 0;
+
   public moveSpeed = 10;
   public moveRate = 10;
+
   public attackRange = 50; // width + range
   public attackRate = 60;
   public attackUnit = 1;
@@ -57,12 +62,16 @@ export class BaseSolider
   }
 
   protected attack() {
+    if (!this.attackTarget) return;
     this.sword.attack();
+    this.attackTarget.takeDamage(1);
+    if (!this.attackTarget?.isAlive()) this.attackTarget = null;
   }
 
   public takeDamage(damage: number) {
-    if (this.healthBar.health <= 0) return; // TODO: check die
-    this.healthBar.takeDamage(damage);
+    if (this.healthBar.health <= 0) return;
+    const isDead = this.healthBar.takeDamage(damage);
+    if (isDead) this.ttl = 0;
   }
 
   public update() {
@@ -73,9 +82,8 @@ export class BaseSolider
     }
     if (this.attackTarget) {
       if (this.timer % this.attackRate === 0) {
-        this.attack();
         this.jump();
-        this.attackTarget.takeDamage(1);
+        this.attack();
       }
     }
   }
