@@ -29,16 +29,19 @@ export class EnemyCastle extends CustomSprite implements IAttackUnit {
       100
     );
     this.healthBar.setScale(1 / GENERAL_SCALE);
+
+    let particleX = this.context.canvas.width - 33;
+    let particleY = this.context.canvas.height / 2 - 90;
     this.particle = Sprite({
-      x: this.context.canvas.width - 36,
-      y: this.context.canvas.height / 2 - 96,
+      x: particleY,
+      y: particleX,
       width: 8,
       height: 8,
-      color: "#fff",
+      color: "#4b3d44",
       opacity: 0,
       reset: () => {
-        this.particle.x = this.context.canvas.width - 36;
-        this.particle.y = this.context.canvas.height / 2 - 96;
+        this.particle.x = particleX;
+        this.particle.y = particleY;
         this.opacity = 1;
       },
     });
