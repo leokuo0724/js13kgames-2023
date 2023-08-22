@@ -3,6 +3,7 @@ interface IAnimated {
 }
 
 interface IAttackUnit {
+  health: number;
   attackTarget: GameObject | null;
   attackRange: number;
   attackRate: number;

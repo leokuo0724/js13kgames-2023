@@ -1,4 +1,4 @@
-import { GameObject, on } from "kontra";
+import { GameObject } from "kontra";
 import { EnemyCastle } from "./enemy-castle";
 import { BaseSolider } from "./soldier";
 

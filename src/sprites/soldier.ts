@@ -15,6 +15,7 @@ export class BaseSolider
   public moveSpeed = 10;
   public moveRate = 10;
 
+  public health = 10;
   public attackRange = 50; // width + range
   public attackRate = 60;
   public attackUnit = 1;
@@ -29,8 +30,8 @@ export class BaseSolider
     super();
     this.shield = new CustomSprite({
       assetId: ASSET_IDS.SHIELD,
-      x: 4,
-      y: 5,
+      x: 3,
+      y: 4,
     });
     this.main = new CustomSprite({
       assetId: ASSET_IDS.MONGOL,
@@ -47,13 +48,13 @@ export class BaseSolider
         setTimeout(() => (this.rotation! = 0), 100);
       },
     });
-    this.healthBar = new HealthBar(0, 17, 10);
+    this.healthBar = new HealthBar(0, 12.8, this.health);
     this.healthBar.setScale(1 / GENERAL_SCALE);
     this.setScale(GENERAL_SCALE);
-    this.x = 600;
+    this.x = 1000;
 
     this.addChild([this.shield, this.main, this.sword, this.healthBar]);
-    this.y = 152;
+    this.y = this.context.canvas.height / 3 - 2;
   }
 
   protected jump() {

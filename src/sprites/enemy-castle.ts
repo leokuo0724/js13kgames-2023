@@ -5,6 +5,7 @@ import { GameObject, Sprite, getWorldRect } from "kontra";
 
 export class EnemyCastle extends CustomSprite implements IAttackUnit {
   public timer = 0;
+  public health = 100;
   public attackTarget: GameObject | null = null;
   public attackRange = -200;
   public attackRate = 30;
@@ -15,8 +16,8 @@ export class EnemyCastle extends CustomSprite implements IAttackUnit {
 
   constructor() {
     super({
-      width: 58,
-      height: 138,
+      width: 88,
+      height: 207,
       assetId: ASSET_IDS.CASTLE,
     });
     this.setScale(GENERAL_SCALE);
@@ -24,14 +25,14 @@ export class EnemyCastle extends CustomSprite implements IAttackUnit {
     this.y = this.context.canvas.height / 2 - this.height - 8;
 
     this.healthBar = new HealthBar(
-      -2 / GENERAL_SCALE,
-      142 / GENERAL_SCALE,
-      100
+      (this.width - 60) / 2 / GENERAL_SCALE,
+      this.height / GENERAL_SCALE + 1,
+      this.health
     );
     this.healthBar.setScale(1 / GENERAL_SCALE);
 
-    let particleX = this.context.canvas.width - 33;
-    let particleY = this.context.canvas.height / 2 - 90;
+    let particleX = this.x - 4 + this.width / 2;
+    let particleY = this.y - 16 + this.height / 2;
     this.particle = Sprite({
       x: particleY,
       y: particleX,
