@@ -23,7 +23,7 @@ Object.values(ASSET_IDS).forEach((id) => {
   imgContainer?.insertAdjacentHTML(
     "beforeend",
     `
-    <img id="${id}" src="/src/assets/sprite.svg#${id}" />
+    <img id="${id}" src="./sprite.svg#${id}" />
   `
   );
 });
