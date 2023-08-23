@@ -14,9 +14,6 @@ import GoogleClosureCompiler from "google-closure-compiler";
 
 const ClosureCompiler = GoogleClosureCompiler.compiler;
 
-console.log(ClosureCompiler.COMPILER_PATH); // absolute path to the compiler jar
-console.log(ClosureCompiler.CONTRIB_PATH); // absolute path to the contrib folder which contain externs
-
 export default defineConfig(({ command, mode }) => {
   const config = {
     server: {
@@ -72,31 +69,32 @@ function closurePlugin(): Plugin {
 }
 
 async function applyClosure(js: string, chunk: any) {
-  const tmpobj = tmp.fileSync();
+  // const tmpobj = tmp.fileSync();
   // replace all consts with lets to save about 50-70 bytes
   // @ts-ignore
   js = js.replaceAll("const ", "let ");
 
-  await fs.writeFile(tmpobj.name, js);
-  const closureCompiler = new ClosureCompiler({
-    js: tmpobj.name,
-    externs: "externs.js",
-    compilation_level: "ADVANCED",
-    language_in: "ECMASCRIPT_2020",
-    language_out: "ECMASCRIPT_2020",
-  });
+  // await fs.writeFile(tmpobj.name, js);
+  // const closureCompiler = new ClosureCompiler({
+  //   js: tmpobj.name,
+  //   externs: "externs.js",
+  //   compilation_level: "ADVANCED",
+  //   language_in: "ECMASCRIPT_2021",
+  //   language_out: "ECMASCRIPT_2021",
+  // });
   return new Promise((resolve, reject) => {
-    closureCompiler.run((_exitCode: string, stdOut: string, stdErr: string) => {
-      if (stdOut !== "") {
-        resolve({ code: stdOut });
-      } else if (stdErr !== "") {
-        // only reject if stdout isn't generated
-        reject(stdErr);
-        return;
-      }
+    resolve({ code: js });
+    // closureCompiler.run((_exitCode: string, stdOut: string, stdErr: string) => {
+    //   if (stdOut !== "") {
+    //     resolve({ code: stdOut });
+    //   } else if (stdErr !== "") {
+    //     // only reject if stdout isn't generated
+    //     reject(stdErr);
+    //     return;
+    //   }
 
-      console.warn(stdErr); // If we make it here, there were warnings but no errors
-    });
+    //   console.warn(stdErr); // If we make it here, there were warnings but no errors
+    // });
   });
 }
 
