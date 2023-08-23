@@ -51,7 +51,7 @@ export class BaseSolider
     this.healthBar = new HealthBar(0, 12.8, this.health);
     this.healthBar.setScale(1 / GENERAL_SCALE);
     this.setScale(GENERAL_SCALE);
-    this.x = 1000;
+    // this.x = 1000;
 
     this.addChild([this.shield, this.main, this.sword, this.healthBar]);
     this.y = this.context.canvas.height / 3 - 2;
