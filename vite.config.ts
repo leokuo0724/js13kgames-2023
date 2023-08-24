@@ -11,6 +11,7 @@ import ect from "ect-bin";
 import htmlMinify from "html-minifier";
 import tmp from "tmp";
 import GoogleClosureCompiler from "google-closure-compiler";
+import kontra from "rollup-plugin-kontra";
 
 const ClosureCompiler = GoogleClosureCompiler.compiler;
 
@@ -51,6 +52,19 @@ export default defineConfig(({ command, mode }) => {
     config.plugins = [
       typescriptPlugin(),
       closurePlugin(),
+      kontra({
+        gameObject: {
+          anchor: true,
+          group: true,
+          opacity: true,
+          rotation: true,
+          scale: true,
+          ttl: true,
+        },
+        sprite: {
+          image: true,
+        },
+      }),
       roadrollerPlugin(),
       ectPlugin(),
     ];
