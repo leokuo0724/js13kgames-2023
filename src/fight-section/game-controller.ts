@@ -3,10 +3,9 @@ import { EnemyCastle } from "./enemy-castle";
 import { BaseSolider } from "./soldier";
 
 export class GameController {
-  public allies: GameObject[] = [];
+  protected allies: GameObject[] = [];
 
-  // public castle: GameObject;
-  public enemies: GameObject[] = [];
+  protected enemies: GameObject[] = [];
 
   constructor() {
     let castle = new EnemyCastle();

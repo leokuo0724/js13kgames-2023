@@ -1,9 +1,8 @@
 import { GameLoop, init, initPointer } from "kontra";
 import { ASSET_IDS } from "./constants/assets";
 import { Background } from "./backgound/background";
-
 import { GameController } from "./fight-section/game-controller";
-import { TimelineBoard } from "./strategy-section/timeline-board";
+import { StrategyController } from "./strategy-section/strategy-controller";
 
 const { canvas } = init();
 
@@ -32,18 +31,18 @@ Object.values(ASSET_IDS).forEach((id) => {
 // FIXME: Image onload
 const bg = new Background();
 const gameController = new GameController();
-const timelineBoard = new TimelineBoard();
+const strategyController = new StrategyController();
 
 const loop = GameLoop({
   update: () => {
     bg.update();
     gameController.update();
-    timelineBoard.update();
+    strategyController.update();
   },
   render: () => {
     bg.render();
     gameController.render();
-    timelineBoard.render();
+    strategyController.render();
   },
 });
 loop.start();
