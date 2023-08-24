@@ -12,12 +12,12 @@ export class DisplayBoard extends Board {
   }
 
   public setBlock() {
-    const { map, anchor } = blockMetadata[0] as BlockMetadata;
+    const { map, anchor, color } = Object.values(
+      blockMetadata
+    )[0] as BlockMetadata;
     for (let i = 0; i < map.length; i++) {
       for (let j = 0; j < map[i].length; j++) {
-        if (map[i][j] === 1) {
-          this.grids[i][j].color = "red";
-        }
+        if (map[i][j] === 1) this.grids[i][j].covered.color = color;
       }
     }
   }
