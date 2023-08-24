@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "measure": "sh scripts/measure.sh dist/index.zip"
   },
   "devDependencies": {
     "terser": "^5.19.2",
