@@ -17,6 +17,8 @@ export class StrategyController {
       this.currentBlockBoard,
       this.nextBlockBoard,
     ];
+
+    this.currentBlockBoard.setBlock();
   }
 
   public update() {

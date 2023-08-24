@@ -10,7 +10,7 @@ export abstract class Board extends GameObjectClass {
     for (let i = 0; i < col; i++) {
       this.grids.push([]);
       for (let j = 0; j < row; j++) {
-        const grid = new Grid(i * gridSize, j * gridSize, gridSize, [j, i]);
+        const grid = new Grid(j * gridSize, i * gridSize, gridSize, [i, j]);
         this.grids[i].push(grid);
         this.addChild(grid);
       }
@@ -24,5 +24,10 @@ export abstract class Board extends GameObjectClass {
       font: "16px sans-serif",
     });
     this.addChild(text);
+  }
+
+  init() {
+    super.init({});
+    this.y = this.context.canvas.height / 2 + 64;
   }
 }
