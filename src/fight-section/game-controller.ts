@@ -1,6 +1,6 @@
 import { GameObject } from "kontra";
 import { EnemyCastle } from "./enemy-castle";
-import { BaseSolider } from "./soldier";
+import { MongolInfantry } from "./soldier";
 
 export class GameController {
   protected allies: GameObject[] = [];
@@ -11,7 +11,7 @@ export class GameController {
     let castle = new EnemyCastle();
     this.enemies.push(castle);
 
-    let test = new BaseSolider();
+    let test = new MongolInfantry();
     this.allies.push(test);
   }
 

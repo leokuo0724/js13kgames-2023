@@ -1,2 +1,2 @@
 type UnitCamp = "ally" | "enemy";
-type UnitType = "soldier" | "castle";
+type UnitType = "castle" | "infantry";

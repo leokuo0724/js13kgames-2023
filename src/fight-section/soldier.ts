@@ -1,33 +1,24 @@
-import { GameObject, GameObjectClass, Sprite } from "kontra";
-import { ASSET_IDS, GENERAL_SCALE } from "../constants/assets";
+import { Sprite } from "kontra";
+import { ASSET_IDS } from "../constants/assets";
 import { CustomSprite } from "./custom-sprite";
-import { HealthBar } from "./health-bar";
+import { BaseSolider } from "./base-soldier";
 
-export class BaseSolider
-  extends GameObjectClass
-  implements IAnimated, IMovableUnit, IAttackUnit
-{
-  public camp: UnitCamp = "ally";
-  public type: UnitType = "soldier";
-
-  public timer = 0;
-
-  public moveSpeed = 10;
-  public moveRate = 10;
-
-  public health = 10;
-  public attackRange = 50; // width + range
-  public attackRate = 60;
-  public attackUnit = 1;
-  public attackTarget: GameObject | null = null;
-
+export class MongolInfantry extends BaseSolider {
   protected main: Sprite;
   protected shield: Sprite;
   protected sword: Sprite;
-  protected healthBar: HealthBar;
 
   constructor() {
-    super();
+    super({
+      camp: "ally",
+      type: "infantry",
+      moveSpeed: 10,
+      moveRate: 10,
+      health: 10,
+      attackRange: 50,
+      attackRate: 60,
+      attackUnit: 1,
+    });
     this.shield = new CustomSprite({
       assetId: ASSET_IDS.SHIELD,
       x: 3,
@@ -48,44 +39,17 @@ export class BaseSolider
         setTimeout(() => (this.rotation! = 0), 100);
       },
     });
-    this.healthBar = new HealthBar(0, 12.8, this.health);
-    this.healthBar.setScale(1 / GENERAL_SCALE);
-    this.setScale(GENERAL_SCALE);
-    // this.x = 1000;
 
     this.addChild([this.shield, this.main, this.sword, this.healthBar]);
     this.y = this.context.canvas.height / 3 - 2;
   }
 
-  protected jump() {
-    this.y -= 2;
-    setTimeout(() => (this.y += 2), 100);
+  protected placeHealthBar() {
+    this.healthBar.x = 0;
+    this.healthBar.y = 12.8;
   }
 
-  protected attack() {
-    if (!this.attackTarget) return;
+  protected attackAnim() {
     this.sword.attack();
-    this.attackTarget.takeDamage(1);
-    if (!this.attackTarget?.isAlive()) this.attackTarget = null;
-  }
-
-  public takeDamage(damage: number) {
-    if (this.healthBar.health <= 0) return;
-    const isDead = this.healthBar.takeDamage(damage);
-    if (isDead) this.ttl = 0;
-  }
-
-  public update() {
-    this.timer++;
-    if (this.timer % this.moveRate === 0 && !this.attackTarget) {
-      this.x += this.moveSpeed;
-      this.jump();
-    }
-    if (this.attackTarget) {
-      if (this.timer % this.attackRate === 0) {
-        this.jump();
-        this.attack();
-      }
-    }
   }
 }
