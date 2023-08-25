@@ -80,6 +80,7 @@ export abstract class BaseSolider
   }
 
   public update() {
+    if (!this.isAlive()) return;
     this.timer++;
     if (this.timer % this.moveRate === 0 && !this.attackTarget) {
       this.x += this.moveSpeed;

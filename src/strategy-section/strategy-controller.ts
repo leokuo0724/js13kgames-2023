@@ -1,12 +1,14 @@
 import { GameObject } from "kontra";
 import { DisplayBoard } from "./display-board";
 import { TimelineBoard } from "./timeline-board";
+import { BlockManager } from "./block-manager";
 
 export class StrategyController {
   private group: GameObject[];
   protected timelineBoard: TimelineBoard;
   protected currentBlockBoard: DisplayBoard;
   protected nextBlockBoard: DisplayBoard;
+  protected blockManager: BlockManager = BlockManager.getInstance();
 
   constructor() {
     this.timelineBoard = new TimelineBoard();
@@ -18,7 +20,7 @@ export class StrategyController {
       this.nextBlockBoard,
     ];
 
-    this.currentBlockBoard.setBlock();
+    this.blockManager.reload();
   }
 
   public update() {

@@ -11,12 +11,12 @@ export class MongolArcher extends BaseSolider {
   constructor() {
     super({
       camp: "ally",
-      type: "infantry",
+      type: "archer",
       moveSpeed: 10,
       moveRate: 10,
       health: 10,
       attackRange: 200,
-      attackRate: 60,
+      attackRate: 100,
       attackUnit: 1,
     });
     this.hand = new CustomSprite({
