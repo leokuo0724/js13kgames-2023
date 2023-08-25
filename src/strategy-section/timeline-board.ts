@@ -5,7 +5,7 @@ export class TimelineBoard extends Board {
   public grids: Grid[][] = [];
 
   constructor() {
-    super(20, 5, 40, "Strategy Timeline Board");
+    super(20, 5, 40, "Strategy Timeline Board", "interact");
     this.x = 36;
   }
 }

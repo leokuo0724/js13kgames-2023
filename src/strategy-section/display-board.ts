@@ -10,7 +10,13 @@ export class DisplayBoard extends Board {
   public type: "current" | "next";
 
   constructor(type: "current" | "next") {
-    super(4, 4, 36, type === "current" ? "Current Block" : "Next Block");
+    super(
+      4,
+      4,
+      36,
+      type === "current" ? "Current Block" : "Next Block",
+      "display"
+    );
     this.type = type;
     this.x = this.type === "current" ? 866 : 1020;
 
