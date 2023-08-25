@@ -41,6 +41,7 @@ export class TimelineBoard extends Board {
         if (map[i][j] === 1) {
           if (x < 0 || x >= this.grids.length) return [];
           if (y < 0 || y >= this.grids[x].length) return [];
+          if (this.grids[x][y].occupiedId) return [];
           coords.push([x, y]);
         }
       }
