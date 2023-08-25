@@ -13,6 +13,8 @@ export class Grid extends SpriteClass {
   public coord: [number, number];
   public covered: Sprite;
   protected isPointerOver: boolean = false;
+  public occupiedId: string | null = null;
+  public occupiedUnitType: UnitType | null = null;
 
   constructor({ x, y, boxSize, coord, interact = false }: GridProps) {
     super({
@@ -44,6 +46,6 @@ export class Grid extends SpriteClass {
   }
   onDown() {
     if (this.covered.color === "transparent") return;
-    // TODO: set block
+    emit(EVENTS.SET_BLOCK, this.coord);
   }
 }

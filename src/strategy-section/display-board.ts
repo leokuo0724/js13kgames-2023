@@ -2,8 +2,6 @@ import { on } from "kontra";
 import { Board } from "./board";
 import { EVENTS } from "../constants/events";
 import { BlockManager } from "./block-manager";
-import blockMetadata from "../block-metadata.json";
-import { BlockId } from "../types/block-metadata";
 
 export class DisplayBoard extends Board {
   /** 4x4 2D array */
