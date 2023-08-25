@@ -5,15 +5,21 @@ import { BlockManager } from "./block-manager";
 import { BlockMetadata } from "../types/block-metadata";
 
 export class TimelineBoard extends Board {
+  protected currentOveredCoord: [number, number] | null = null;
+
   constructor() {
     super(20, 5, 40, "Strategy Timeline Board", "interact");
     this.x = 36;
 
     on(EVENTS.ON_GRID_OVER, this.onGridOver.bind(this));
     on(EVENTS.SET_BLOCK, this.onSetBlock.bind(this));
+    on(EVENTS.UPDATE_BLOCK, () => {
+      this.onGridOver(this.currentOveredCoord);
+    });
   }
 
   protected clearCoveredGrid() {
+    this.currentOveredCoord = null;
     this.grids.flat().forEach((grid) => {
       if (!grid.occupiedId) {
         grid.covered.color = "transparent";
@@ -42,13 +48,15 @@ export class TimelineBoard extends Board {
     return coords;
   }
 
-  protected onGridOver(coord: [number, number]) {
+  protected onGridOver(coord?: [number, number]) {
+    if (!coord) return;
     this.clearCoveredGrid();
 
     const blockManager = BlockManager.getInstance();
     const currentBlockMetadata = blockManager.blockData[0];
     if (!currentBlockMetadata) return;
 
+    this.currentOveredCoord = coord;
     const coords = this.getRelativeCoords(coord, currentBlockMetadata);
     const { color } = currentBlockMetadata;
     coords.forEach((coord) => {
@@ -71,14 +79,14 @@ export class TimelineBoard extends Board {
       this.grids[coord[0]][coord[1]].occupiedUnitType = type;
     });
 
-    // TODO: block manager update
+    // TODO: block manager update to next blocks
   }
 }
 
-function generateUUID(): string {
+const generateUUID = () => {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
     const r = (Math.random() * 16) | 0;
     const v = c === "x" ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
-}
+};

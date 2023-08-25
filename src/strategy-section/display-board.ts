@@ -18,12 +18,10 @@ export class DisplayBoard extends Board {
     this.type = type;
     this.x = this.type === "current" ? 866 : 1020;
 
-    on(EVENTS.RELOAD_BLOCKS, () => {
-      this.onReloadBlocks();
-    });
+    on(EVENTS.UPDATE_BLOCK, this.onUpdateBlock.bind(this));
   }
 
-  protected onReloadBlocks() {
+  protected onUpdateBlock() {
     const blockManager = BlockManager.getInstance();
     const targetIndex = this.type === "current" ? 0 : 1;
     const targetBlock = blockManager.blockData[targetIndex];

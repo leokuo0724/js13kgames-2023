@@ -1,4 +1,4 @@
-import { GameLoop, init, initPointer } from "kontra";
+import { GameLoop, init, initKeys, initPointer } from "kontra";
 import { ASSET_IDS } from "./constants/assets";
 import { Background } from "./backgound/background";
 import { GameController } from "./fight-section/game-controller";
@@ -7,6 +7,7 @@ import { StrategyController } from "./strategy-section/strategy-controller";
 const { canvas } = init();
 
 initPointer();
+initKeys();
 
 function resize() {
   const ctx = canvas.getContext("2d");
