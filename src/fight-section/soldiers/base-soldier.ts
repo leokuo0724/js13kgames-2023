@@ -1,6 +1,6 @@
 import { GameObject, GameObjectClass } from "kontra";
-import { HealthBar } from "./health-bar";
-import { GENERAL_SCALE } from "../constants/assets";
+import { HealthBar } from "../health-bar";
+import { GENERAL_SCALE } from "../../constants/assets";
 
 type BaseSoliderConfig = {
   camp: UnitCamp;

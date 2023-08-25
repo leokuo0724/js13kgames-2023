@@ -1,6 +1,7 @@
 import { GameObject } from "kontra";
 import { EnemyCastle } from "./enemy-castle";
-import { MongolInfantry } from "./soldier";
+import { MongolInfantry } from "./soldiers/mongol-infantry";
+import { MongolArcher } from "./soldiers/mongol-archer";
 
 export class GameController {
   protected allies: GameObject[] = [];
@@ -8,11 +9,15 @@ export class GameController {
   protected enemies: GameObject[] = [];
 
   constructor() {
-    let castle = new EnemyCastle();
+    const castle = new EnemyCastle();
     this.enemies.push(castle);
 
-    let test = new MongolInfantry();
-    this.allies.push(test);
+    const infantry = new MongolInfantry();
+    const archer = new MongolArcher();
+    this.allies.push(archer);
+    setTimeout(() => {
+      this.allies.push(infantry);
+    }, 2000);
   }
 
   public update() {

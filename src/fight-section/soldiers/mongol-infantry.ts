@@ -1,6 +1,6 @@
 import { Sprite } from "kontra";
-import { ASSET_IDS } from "../constants/assets";
-import { CustomSprite } from "./custom-sprite";
+import { ASSET_IDS } from "../../constants/assets";
+import { CustomSprite } from "../custom-sprite";
 import { BaseSolider } from "./base-soldier";
 
 export class MongolInfantry extends BaseSolider {
@@ -45,7 +45,6 @@ export class MongolInfantry extends BaseSolider {
   }
 
   protected placeHealthBar() {
-    this.healthBar.x = 0;
     this.healthBar.y = 12.8;
   }
 
