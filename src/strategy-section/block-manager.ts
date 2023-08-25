@@ -1,12 +1,13 @@
 import { emit } from "kontra";
 import blockMetadata from "../block-metadata.json";
 import { EVENTS } from "../constants/events";
+import { BlockMetadata } from "../types/block-metadata";
 
 const TOTAL_BLOCK_COUNT = 30;
 
 export class BlockManager {
   private static instance: BlockManager;
-  public blockIds: string[] = [];
+  public blockData: BlockMetadata[] = [];
 
   private constructor() {}
 
@@ -18,8 +19,8 @@ export class BlockManager {
   }
 
   public reload() {
-    this.blockIds = randomPickNElements(
-      Object.keys(blockMetadata),
+    this.blockData = randomPickNElements(
+      Object.values(blockMetadata) as BlockMetadata[],
       TOTAL_BLOCK_COUNT
     );
 

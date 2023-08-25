@@ -1,4 +1,5 @@
-import { Sprite, SpriteClass, track } from "kontra";
+import { Sprite, SpriteClass, emit, track } from "kontra";
+import { EVENTS } from "../constants/events";
 
 type GridProps = {
   x: number;
@@ -36,8 +37,13 @@ export class Grid extends SpriteClass {
   onOver() {
     if (this.isPointerOver) return;
     this.isPointerOver = true;
+    emit(EVENTS.ON_GRID_OVER, this.coord);
   }
   onOut() {
     this.isPointerOver = false;
+  }
+  onDown() {
+    if (this.covered.color === "transparent") return;
+    // TODO: set block
   }
 }

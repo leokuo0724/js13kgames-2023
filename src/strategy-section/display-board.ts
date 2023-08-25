@@ -28,10 +28,10 @@ export class DisplayBoard extends Board {
   protected onReloadBlocks() {
     const blockManager = BlockManager.getInstance();
     const targetIndex = this.type === "current" ? 0 : 1;
-    const id = blockManager.blockIds[targetIndex] as BlockId;
+    const targetBlock = blockManager.blockData[targetIndex];
 
-    if (id) {
-      const { map, color } = blockMetadata[id];
+    if (targetBlock) {
+      const { map, color } = targetBlock;
       this.setBlock(map, color);
     } else {
       this.clear();
