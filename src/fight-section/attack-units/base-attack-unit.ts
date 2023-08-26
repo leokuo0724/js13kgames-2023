@@ -13,7 +13,7 @@ type BaseSoliderConfig = {
   attackUnit: number;
 };
 
-export abstract class BaseSolider
+export abstract class BaseAttackUnit
   extends GameObjectClass
   implements IAnimated, IMovableUnit, IAttackUnit
 {
@@ -67,13 +67,14 @@ export abstract class BaseSolider
 
   public respawn() {
     this.ttl = Infinity;
-    this.x = 0;
+    this.x = this.camp === "ally" ? 0 : this.context.canvas.width;
     this.healthBar.reset();
     this.timer = 0;
     this.attackTarget = null;
   }
 
   protected jump() {
+    if (this.moveRate === 0 || this.moveSpeed === 0) return;
     this.y -= 2;
     setTimeout(() => (this.y += 2), 100);
   }

@@ -1,9 +1,8 @@
 import { Sprite } from "kontra";
 import { ASSET_IDS } from "../../constants/assets";
 import { CustomSprite } from "../custom-sprite";
-import { BaseSolider } from "./base-soldier";
-
-export class MongolInfantry extends BaseSolider {
+import { BaseAttackUnit } from "./base-attack-unit";
+export class MongolInfantry extends BaseAttackUnit {
   protected main: Sprite;
   protected shield: Sprite;
   protected sword: Sprite;

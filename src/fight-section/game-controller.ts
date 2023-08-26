@@ -1,17 +1,17 @@
-import { GameObject, on } from "kontra";
-import { EnemyCastle } from "./enemy-castle";
+import { on } from "kontra";
 import { EVENTS } from "../constants/events";
-import { MongolInfantry } from "./soldiers/mongol-infantry";
-import { MongolArcher } from "./soldiers/mongol-archer";
-import { BaseSolider } from "./soldiers/base-soldier";
+import { MongolInfantry } from "./attack-units/mongol-infantry";
+import { MongolArcher } from "./attack-units/mongol-archer";
+import { BaseAttackUnit } from "./attack-units/base-attack-unit";
+import { EuropeCastle } from "./attack-units/europe-castle";
 
 export class GameController {
-  protected allies: BaseSolider[] = [];
+  protected allies: BaseAttackUnit[] = [];
 
-  protected enemies: GameObject[] = [];
+  protected enemies: BaseAttackUnit[] = [];
 
   constructor() {
-    const castle = new EnemyCastle();
+    const castle = new EuropeCastle();
     this.enemies.push(castle);
 
     on(EVENTS.SPAWN_ALLY, this.onSpawnAlly.bind(this));
