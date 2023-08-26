@@ -15,6 +15,7 @@ export class Grid extends SpriteClass {
   protected isPointerOver: boolean = false;
   public occupiedId: string | null = null;
   public occupiedUnitType: UnitType | null = null;
+  public isScanned: boolean = false;
 
   constructor({ x, y, boxSize, coord, interact = false }: GridProps) {
     super({
@@ -47,5 +48,13 @@ export class Grid extends SpriteClass {
   onDown() {
     if (this.covered.color === "transparent") return;
     emit(EVENTS.PLACE_BLOCK, this.coord);
+  }
+
+  setScanned() {
+    this.isScanned = true;
+    this.covered.color = "#847875";
+  }
+  reset() {
+    this.covered.color = "transparent";
   }
 }

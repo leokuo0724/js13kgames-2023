@@ -2,24 +2,14 @@ import { SpriteClass } from "kontra";
 
 export class Timeline extends SpriteClass {
   protected isActive: boolean = false;
-  protected maxX: number;
+  public scanned: Set<number> = new Set();
 
-  constructor({
-    width,
-    height,
-    maxX,
-  }: {
-    width: number;
-    height: number;
-    maxX: number;
-  }) {
+  constructor({ width, height }: { width: number; height: number }) {
     super({
       width,
       height,
       color: "black",
     });
-
-    this.maxX = maxX;
   }
 
   public start() {
@@ -29,12 +19,11 @@ export class Timeline extends SpriteClass {
   public reset() {
     this.isActive = false;
     this.x = 0;
+    this.scanned.clear();
   }
 
   public render() {
     if (!this.isActive) return;
     super.render();
-    if (this.x >= this.maxX) return;
-    this.x += 0.2;
   }
 }

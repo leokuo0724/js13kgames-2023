@@ -1,6 +1,5 @@
-import { GameObject, on } from "kontra";
+import { GameObject } from "kontra";
 import { EnemyCastle } from "./enemy-castle";
-import { EVENTS } from "../constants/events";
 
 export class GameController {
   protected allies: GameObject[] = [];

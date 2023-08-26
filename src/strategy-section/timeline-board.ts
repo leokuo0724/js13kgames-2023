@@ -4,23 +4,23 @@ import { Sprite, on } from "kontra";
 import { BlockManager } from "./block-manager";
 import { BlockMetadata } from "../types/block-metadata";
 import { Timeline } from "./timeline";
+import { TIMELINE_GRID_SIZE } from "../constants/board";
 
-const GRID_SIZE = 40;
 const ROW = 5;
 const COL = 20;
+const MAX_X = TIMELINE_GRID_SIZE * COL;
 
 export class TimelineBoard extends Board {
   protected currentOveredCoord: [number, number] | null = null;
   protected timeline: Sprite;
 
   constructor() {
-    super(COL, ROW, GRID_SIZE, "Strategy Board", "interact");
+    super(COL, ROW, TIMELINE_GRID_SIZE, "Strategy Board", "interact");
     this.x = 36;
 
     this.timeline = new Timeline({
       width: 2,
-      height: GRID_SIZE * ROW,
-      maxX: GRID_SIZE * COL,
+      height: TIMELINE_GRID_SIZE * ROW,
     });
     this.addChild(this.timeline);
 
@@ -35,6 +35,30 @@ export class TimelineBoard extends Board {
   protected onStateChange(state: GameState) {
     if (state !== "fight") return;
     this.timeline.start();
+  }
+
+  protected scanGridsCol(col: number) {
+    const blockIds = new Set();
+    for (let i = 0; i < this.grids.length; i++) {
+      const grid = this.grids[i][col];
+      if (grid.isScanned || blockIds.has(grid.occupiedId)) continue;
+      console.log(blockIds);
+      blockIds.add(grid.occupiedId);
+      // TODO: emit spawn unit
+      // console.log(grid.occupiedUnitType);
+    }
+
+    if (blockIds.size === 0) return;
+    // Scan rest grids
+    for (let i = 0; i < this.grids.length; i++) {
+      for (let j = col; j < this.grids[i].length; j++) {
+        const grid = this.grids[i][j];
+        if (!grid.occupiedId || grid.isScanned) continue;
+        if (blockIds.has(grid.occupiedId)) {
+          grid.setScanned();
+        }
+      }
+    }
   }
 
   protected clearCoveredGrid() {
@@ -93,14 +117,30 @@ export class TimelineBoard extends Board {
     const coords = this.getRelativeCoords(coord, currentBlockMetadata);
     const { color, type } = currentBlockMetadata;
     if (coords.length === 0) return;
+    const id = generateUUID();
     coords.forEach((coord) => {
       this.grids[coord[0]][coord[1]].covered.color = color;
       this.grids[coord[0]][coord[1]].covered.opacity = 1;
-      this.grids[coord[0]][coord[1]].occupiedId = generateUUID();
+      this.grids[coord[0]][coord[1]].occupiedId = id;
       this.grids[coord[0]][coord[1]].occupiedUnitType = type;
     });
 
     blockManager.shiftBlock();
+  }
+
+  public update() {
+    super.update();
+    // Handle timeline movement
+    if (!this.timeline.isActive) return;
+    if (this.timeline.x >= MAX_X) return;
+    this.timeline.x += 0.2;
+
+    // Check block
+    const currentCol = Math.floor(this.timeline.x / TIMELINE_GRID_SIZE);
+    if (currentCol >= COL) return;
+    if (this.timeline.scanned.has(currentCol)) return;
+    this.timeline.scanned.add(currentCol);
+    this.scanGridsCol(currentCol);
   }
 }
 
