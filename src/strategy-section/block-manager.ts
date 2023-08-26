@@ -10,7 +10,7 @@ export class BlockManager {
   public blockData: BlockMetadata[] = [];
 
   private constructor() {
-    onKey("arrowup", () => {
+    onKey("z", () => {
       this.rotateCurrentBlock();
       emit(EVENTS.UPDATE_BLOCK);
     });
@@ -28,7 +28,11 @@ export class BlockManager {
       Object.values(blockMetadata) as BlockMetadata[],
       TOTAL_BLOCK_COUNT
     );
+    emit(EVENTS.UPDATE_BLOCK);
+  }
 
+  public shiftBlock() {
+    this.blockData.shift();
     emit(EVENTS.UPDATE_BLOCK);
   }
 

@@ -8,7 +8,7 @@ export class TimelineBoard extends Board {
   protected currentOveredCoord: [number, number] | null = null;
 
   constructor() {
-    super(20, 5, 40, "Strategy Timeline Board", "interact");
+    super(20, 5, 40, "Strategy Board", "interact");
     this.x = 36;
 
     on(EVENTS.ON_GRID_OVER, this.onGridOver.bind(this));
@@ -49,7 +49,7 @@ export class TimelineBoard extends Board {
     return coords;
   }
 
-  protected onGridOver(coord?: [number, number]) {
+  protected onGridOver(coord: [number, number] | null) {
     if (!coord) return;
     this.clearCoveredGrid();
 
@@ -80,7 +80,7 @@ export class TimelineBoard extends Board {
       this.grids[coord[0]][coord[1]].occupiedUnitType = type;
     });
 
-    // TODO: block manager update to next blocks
+    blockManager.shiftBlock();
   }
 }
 

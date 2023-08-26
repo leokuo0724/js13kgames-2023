@@ -26,7 +26,7 @@ export class CustomSprite extends SpriteClass {
     render?: Function;
     [props: string]: any;
   }) {
-    let image = document.querySelector(
+    const image = document.querySelector(
       `#${properties.assetId}`
     ) as HTMLImageElement;
     super({ image, ...properties });
