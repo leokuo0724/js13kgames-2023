@@ -1,21 +1,40 @@
 import { Board } from "./board";
 import { EVENTS } from "../constants/events";
-import { on } from "kontra";
+import { Sprite, on } from "kontra";
 import { BlockManager } from "./block-manager";
 import { BlockMetadata } from "../types/block-metadata";
+import { Timeline } from "./timeline";
+
+const GRID_SIZE = 40;
+const ROW = 5;
+const COL = 20;
 
 export class TimelineBoard extends Board {
   protected currentOveredCoord: [number, number] | null = null;
+  protected timeline: Sprite;
 
   constructor() {
-    super(20, 5, 40, "Strategy Board", "interact");
+    super(COL, ROW, GRID_SIZE, "Strategy Board", "interact");
     this.x = 36;
+
+    this.timeline = new Timeline({
+      width: 2,
+      height: GRID_SIZE * ROW,
+      maxX: GRID_SIZE * COL,
+    });
+    this.addChild(this.timeline);
 
     on(EVENTS.ON_GRID_OVER, this.onGridOver.bind(this));
     on(EVENTS.PLACE_BLOCK, this.onPlaceBlock.bind(this));
     on(EVENTS.UPDATE_BLOCK, () => {
       this.onGridOver(this.currentOveredCoord);
     });
+    on(EVENTS.STATE_CHANGE, this.onStateChange.bind(this));
+  }
+
+  protected onStateChange(state: GameState) {
+    if (state !== "fight") return;
+    this.timeline.start();
   }
 
   protected clearCoveredGrid() {

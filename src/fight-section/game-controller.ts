@@ -1,5 +1,6 @@
-import { GameObject } from "kontra";
+import { GameObject, on } from "kontra";
 import { EnemyCastle } from "./enemy-castle";
+import { EVENTS } from "../constants/events";
 
 export class GameController {
   protected allies: GameObject[] = [];
@@ -9,13 +10,11 @@ export class GameController {
   constructor() {
     const castle = new EnemyCastle();
     this.enemies.push(castle);
-    // const infantry = new MongolInfantry();
-    // const archer = new MongolArcher();
-    // this.allies.push(archer);
-    // setTimeout(() => {
-    //   this.allies.push(infantry);
-    // }, 2000);
+
+    // on(EVENTS.STATE_CHANGE, this.onStateChange.bind(this));
   }
+
+  // protected onStateChange(state: GameState) {}
 
   public update() {
     this.enemies
