@@ -4,4 +4,5 @@ export const EVENTS = {
   PLACE_BLOCK: "place-block",
   STATE_CHANGE: "state-change",
   ON_START_CLICK: "on-start-click",
+  SPAWN_ALLY: "spawn-ally",
 };

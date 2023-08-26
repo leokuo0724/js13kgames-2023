@@ -1,6 +1,6 @@
 import { Board } from "./board";
 import { EVENTS } from "../constants/events";
-import { Sprite, on } from "kontra";
+import { Sprite, emit, on } from "kontra";
 import { BlockManager } from "./block-manager";
 import { BlockMetadata } from "../types/block-metadata";
 import { Timeline } from "./timeline";
@@ -41,11 +41,16 @@ export class TimelineBoard extends Board {
     const blockIds = new Set();
     for (let i = 0; i < this.grids.length; i++) {
       const grid = this.grids[i][col];
-      if (grid.isScanned || blockIds.has(grid.occupiedId)) continue;
-      console.log(blockIds);
+      if (
+        grid.isScanned ||
+        blockIds.has(grid.occupiedId) ||
+        !grid.occupiedUnitType
+      )
+        continue;
       blockIds.add(grid.occupiedId);
-      // TODO: emit spawn unit
-      // console.log(grid.occupiedUnitType);
+      setTimeout(() => {
+        emit(EVENTS.SPAWN_ALLY, grid.occupiedUnitType);
+      }, 500 * i);
     }
 
     if (blockIds.size === 0) return;

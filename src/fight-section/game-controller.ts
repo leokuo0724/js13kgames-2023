@@ -1,8 +1,12 @@
-import { GameObject } from "kontra";
+import { GameObject, on } from "kontra";
 import { EnemyCastle } from "./enemy-castle";
+import { EVENTS } from "../constants/events";
+import { MongolInfantry } from "./soldiers/mongol-infantry";
+import { MongolArcher } from "./soldiers/mongol-archer";
+import { BaseSolider } from "./soldiers/base-soldier";
 
 export class GameController {
-  protected allies: GameObject[] = [];
+  protected allies: BaseSolider[] = [];
 
   protected enemies: GameObject[] = [];
 
@@ -10,10 +14,22 @@ export class GameController {
     const castle = new EnemyCastle();
     this.enemies.push(castle);
 
-    // on(EVENTS.STATE_CHANGE, this.onStateChange.bind(this));
+    on(EVENTS.SPAWN_ALLY, this.onSpawnAlly.bind(this));
   }
 
-  // protected onStateChange(state: GameState) {}
+  protected onSpawnAlly(unitType: UnitType) {
+    const reusableObj = this.allies.find(
+      (e) => e.type === unitType && !e.isAlive()
+    );
+    if (reusableObj) {
+      reusableObj.respawn();
+      return;
+    }
+
+    // Create new instance
+    const unit = getAttackUnitClass(unitType);
+    this.allies.push(new unit());
+  }
 
   public update() {
     this.enemies
@@ -51,5 +67,16 @@ export class GameController {
   public render() {
     this.enemies.filter((e) => e.isAlive()).forEach((enemy) => enemy.render());
     this.allies.filter((e) => e.isAlive()).forEach((ally) => ally.render());
+  }
+}
+
+function getAttackUnitClass(unitType: UnitType) {
+  switch (unitType) {
+    case "archer":
+      return MongolArcher;
+    case "infantry":
+      return MongolInfantry;
+    case "castle":
+      throw new Error();
   }
 }

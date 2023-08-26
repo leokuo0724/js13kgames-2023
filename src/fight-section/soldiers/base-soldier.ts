@@ -65,6 +65,14 @@ export abstract class BaseSolider
     if (isDead) this.ttl = 0;
   }
 
+  public respawn() {
+    this.ttl = Infinity;
+    this.x = 0;
+    this.healthBar.reset();
+    this.timer = 0;
+    this.attackTarget = null;
+  }
+
   protected jump() {
     this.y -= 2;
     setTimeout(() => (this.y += 2), 100);
@@ -91,6 +99,9 @@ export abstract class BaseSolider
         this.jump();
         this.attack();
       }
+    }
+    if (this.x >= this.context.canvas.width) {
+      this.ttl = 0;
     }
   }
 }

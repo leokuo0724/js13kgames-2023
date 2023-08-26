@@ -8,7 +8,7 @@ export class EnemyCastle extends CustomSprite implements IAttackUnit {
   public health = 100;
   public attackTarget: GameObject | null = null;
   public attackRange = -200;
-  public attackRate = 30;
+  public attackRate = 50;
   public attackUnit = 1;
 
   protected healthBar: HealthBar;
