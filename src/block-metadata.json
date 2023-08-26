@@ -62,7 +62,7 @@
       [0, 0, 0, 0]
     ],
     "anchor": [2, 2],
-    "color": "#b3a555",
+    "color": "#a8984c",
     "type": "infantry"
   },
   "g": {
@@ -73,7 +73,7 @@
       [0, 0, 0, 0]
     ],
     "anchor": [2, 1],
-    "color": "#8caba1",
+    "color": "#79444a",
     "type": "infantry"
   }
 }

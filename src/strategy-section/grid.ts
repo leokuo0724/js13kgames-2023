@@ -23,7 +23,7 @@ export class Grid extends SpriteClass {
       width: boxSize,
       height: boxSize,
       color: (coord[0] + coord[1]) % 2 === 0 ? "#ab9b8e" : "#847875",
-      opacity: 0.5,
+      opacity: 0.4,
     });
     if (interact) track(this);
 
