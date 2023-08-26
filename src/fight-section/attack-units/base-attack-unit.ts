@@ -74,7 +74,7 @@ export abstract class BaseAttackUnit
   }
 
   protected jump() {
-    if (this.moveRate === 0 || this.moveSpeed === 0) return;
+    if (this.moveSpeed === 0) return;
     this.y -= 2;
     setTimeout(() => (this.y += 2), 100);
   }

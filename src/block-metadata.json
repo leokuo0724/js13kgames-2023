@@ -41,7 +41,7 @@
     ],
     "anchor": [1, 1],
     "color": "#c77b58",
-    "type": "infantry"
+    "type": "archer"
   },
   "e": {
     "map": [
@@ -63,7 +63,7 @@
     ],
     "anchor": [2, 2],
     "color": "#a8984c",
-    "type": "infantry"
+    "type": "archer"
   },
   "g": {
     "map": [

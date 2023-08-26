@@ -15,7 +15,7 @@ export class EuropeCastle extends BaseAttackUnit {
       moveRate: 0,
       health: 100,
       attackRange: -200,
-      attackRate: 50,
+      attackRate: 40,
       attackUnit: 1,
     });
 

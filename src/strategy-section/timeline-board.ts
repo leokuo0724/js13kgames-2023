@@ -138,7 +138,7 @@ export class TimelineBoard extends Board {
     // Handle timeline movement
     if (!this.timeline.isActive) return;
     if (this.timeline.x >= MAX_X) return;
-    this.timeline.x += 0.2;
+    this.timeline.x += 0.3;
 
     // Check block
     const currentCol = Math.floor(this.timeline.x / TIMELINE_GRID_SIZE);
