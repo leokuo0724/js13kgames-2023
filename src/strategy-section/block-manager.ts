@@ -1,4 +1,4 @@
-import { emit, onKey } from "kontra";
+import { emit, on, onKey } from "kontra";
 import blockMetadata from "../block-metadata.json";
 import { EVENTS } from "../constants/events";
 import { BlockMetadata } from "../types/block-metadata";
@@ -9,11 +9,14 @@ export class BlockManager {
   private static instance: BlockManager;
   public blockData: BlockMetadata[] = [];
 
+  public state: GameState = "prepare";
+
   private constructor() {
     onKey("z", () => {
       this.rotateCurrentBlock();
       emit(EVENTS.UPDATE_BLOCK);
     });
+    on(EVENTS.ON_START_CLICK, this.onStartClick.bind(this));
   }
 
   static getInstance() {
@@ -34,6 +37,16 @@ export class BlockManager {
   public shiftBlock() {
     this.blockData.shift();
     emit(EVENTS.UPDATE_BLOCK);
+
+    if (this.blockData.length === 0) {
+      this.state = "ready";
+      emit(EVENTS.STATE_CHANGE, this.state);
+    }
+  }
+
+  protected onStartClick() {
+    this.state = "fight";
+    emit(EVENTS.STATE_CHANGE, this.state);
   }
 
   protected rotateCurrentBlock() {

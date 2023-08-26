@@ -12,7 +12,7 @@ export class TimelineBoard extends Board {
     this.x = 36;
 
     on(EVENTS.ON_GRID_OVER, this.onGridOver.bind(this));
-    on(EVENTS.SET_BLOCK, this.onSetBlock.bind(this));
+    on(EVENTS.PLACE_BLOCK, this.onPlaceBlock.bind(this));
     on(EVENTS.UPDATE_BLOCK, () => {
       this.onGridOver(this.currentOveredCoord);
     });
@@ -66,13 +66,14 @@ export class TimelineBoard extends Board {
     });
   }
 
-  protected onSetBlock(coord: [number, number]) {
+  protected onPlaceBlock(coord: [number, number]) {
     const blockManager = BlockManager.getInstance();
     const currentBlockMetadata = blockManager.blockData[0];
     if (!currentBlockMetadata) return;
 
     const coords = this.getRelativeCoords(coord, currentBlockMetadata);
     const { color, type } = currentBlockMetadata;
+    if (coords.length === 0) return;
     coords.forEach((coord) => {
       this.grids[coord[0]][coord[1]].covered.color = color;
       this.grids[coord[0]][coord[1]].covered.opacity = 1;
