@@ -6,6 +6,7 @@ import { BaseAttackUnit } from "./attack-units/base-attack-unit";
 import { EuropeCastle } from "./attack-units/europe-castle";
 import { EuropeInfantry } from "./attack-units/europe-intantry";
 import { EuropeArcher } from "./attack-units/europe-archer";
+import { BlockManager } from "../strategy-section/block-manager";
 
 export class GameController {
   protected allies: BaseAttackUnit[] = [];
@@ -91,9 +92,13 @@ export class GameController {
     });
 
     // check alive allies
-    // if (aliveAllies.length === 0 && this.finalColScanned) {
-    //   console.log("You lose");
-    // }
+    if (
+      BlockManager.getInstance().state === "fight" &&
+      aliveAllies.length === 0 &&
+      this.finalColScanned
+    ) {
+      console.log("You lose");
+    }
   }
   public render() {
     this.enemies.filter((e) => e.isAlive()).forEach((enemy) => enemy.render());
