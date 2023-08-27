@@ -14,7 +14,7 @@ export class EuropeArcher extends BaseAttackUnit {
       type: "archer",
       moveSpeed: -5,
       moveRate: 10,
-      health: 12,
+      health: 10,
       attackRange: -200,
       attackRate: 100,
       attackUnit: 1,

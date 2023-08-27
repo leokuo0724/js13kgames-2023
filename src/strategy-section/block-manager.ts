@@ -29,6 +29,7 @@ export class BlockManager {
   public setState(state: GameState) {
     this.state = state;
     emit(EVENTS.STATE_CHANGE, this.state);
+    if (state === "prepare") this.reload();
   }
 
   public reload() {

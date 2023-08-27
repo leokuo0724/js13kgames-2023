@@ -57,7 +57,7 @@ export class Grid extends SpriteClass {
   }
   setLocked() {
     this.locked = true;
-    this.color = "red";
+    this.color = "#d2c9a5";
   }
   reset() {
     this.covered.color = "transparent";

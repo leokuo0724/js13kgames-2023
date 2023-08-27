@@ -40,8 +40,16 @@ export class TimelineBoard extends Board {
   }
 
   protected onStateChange(state: GameState) {
-    if (state !== "fight") return;
-    this.timeline.start();
+    if (state === "prepare") {
+      this.timeline.reset();
+      this.grids.flat().forEach((grid) => {
+        grid.reset();
+      });
+      this.clearCoveredGrid();
+    }
+    if (state === "fight") {
+      this.timeline.start();
+    }
   }
 
   protected scanGridsCol(col: number) {
@@ -75,7 +83,7 @@ export class TimelineBoard extends Board {
   protected clearCoveredGrid() {
     this.currentOveredCoord = null;
     this.grids.flat().forEach((grid) => {
-      if (!grid.occupiedId) {
+      if (!grid.occupiedId && !grid.locked) {
         grid.covered.color = "transparent";
         grid.covered.opacity = 0;
       }
@@ -95,7 +103,7 @@ export class TimelineBoard extends Board {
         if (map[i][j] === 1) {
           if (x < 0 || x >= this.grids.length) return [];
           if (y < 0 || y >= this.grids[x].length) return [];
-          if (this.grids[x][y].occupiedId) return [];
+          if (this.grids[x][y].occupiedId || this.grids[x][y].locked) return [];
           coords.push([x, y]);
         }
       }
@@ -114,10 +122,11 @@ export class TimelineBoard extends Board {
     this.currentOveredCoord = coord;
     const coords = this.getRelativeCoords(coord, currentBlockMetadata);
     const { color } = currentBlockMetadata;
-    coords.forEach((coord) => {
+    for (const coord of coords) {
+      if (this.grids[coord[0]][coord[1]].locked) continue;
       this.grids[coord[0]][coord[1]].covered.color = color;
       this.grids[coord[0]][coord[1]].covered.opacity = 1;
-    });
+    }
   }
 
   protected onPlaceBlock(coord: [number, number]) {

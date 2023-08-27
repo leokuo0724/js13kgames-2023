@@ -17,7 +17,7 @@ export class MongolArcher extends BaseAttackUnit {
       health: 10,
       attackRange: 200,
       attackRate: 100,
-      attackUnit: 1,
+      attackUnit: 1.5,
     });
     this.hand = new CustomSprite({
       assetId: ASSET_IDS.FIST,
