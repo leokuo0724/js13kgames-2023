@@ -4,23 +4,29 @@ import { Sprite, emit, on } from "kontra";
 import { BlockManager } from "./block-manager";
 import { BlockMetadata } from "../types/block-metadata";
 import { Timeline } from "./timeline";
-import { TIMELINE_GRID_SIZE } from "../constants/board";
-
-const ROW = 5;
-const COL = 20;
-const MAX_X = TIMELINE_GRID_SIZE * COL;
+import {
+  TIMELINE_COL,
+  TIMELINE_GRID_SIZE,
+  TIMELINE_ROW,
+} from "../constants/board";
 
 export class TimelineBoard extends Board {
   protected currentOveredCoord: [number, number] | null = null;
   protected timeline: Sprite;
 
   constructor() {
-    super(COL, ROW, TIMELINE_GRID_SIZE, "Strategy Board", "interact");
+    super(
+      TIMELINE_COL,
+      TIMELINE_ROW,
+      TIMELINE_GRID_SIZE,
+      "Strategy Board",
+      "interact"
+    );
     this.x = 36;
 
     this.timeline = new Timeline({
       width: 2,
-      height: TIMELINE_GRID_SIZE * ROW,
+      height: TIMELINE_GRID_SIZE * TIMELINE_ROW,
     });
     this.addChild(this.timeline);
 
@@ -30,6 +36,7 @@ export class TimelineBoard extends Board {
       this.onGridOver(this.currentOveredCoord);
     });
     on(EVENTS.STATE_CHANGE, this.onStateChange.bind(this));
+    on(EVENTS.COL_SCANNED, this.scanGridsCol.bind(this));
   }
 
   protected onStateChange(state: GameState) {
@@ -131,21 +138,6 @@ export class TimelineBoard extends Board {
     });
 
     blockManager.shiftBlock();
-  }
-
-  public update() {
-    super.update();
-    // Handle timeline movement
-    if (!this.timeline.isActive) return;
-    if (this.timeline.x >= MAX_X) return;
-    this.timeline.x += 0.3;
-
-    // Check block
-    const currentCol = Math.floor(this.timeline.x / TIMELINE_GRID_SIZE);
-    if (currentCol >= COL) return;
-    if (this.timeline.scanned.has(currentCol)) return;
-    this.timeline.scanned.add(currentCol);
-    this.scanGridsCol(currentCol);
   }
 }
 

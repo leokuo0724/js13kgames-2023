@@ -1,5 +1,8 @@
-import { SpriteClass } from "kontra";
+import { SpriteClass, emit } from "kontra";
+import { TIMELINE_COL, TIMELINE_GRID_SIZE } from "../constants/board";
+import { EVENTS } from "../constants/events";
 
+const MAX_X = TIMELINE_GRID_SIZE * TIMELINE_COL;
 export class Timeline extends SpriteClass {
   protected isActive: boolean = false;
   public scanned: Set<number> = new Set();
@@ -20,6 +23,18 @@ export class Timeline extends SpriteClass {
     this.isActive = false;
     this.x = 0;
     this.scanned.clear();
+  }
+
+  public update() {
+    if (!this.isActive) return;
+    if (this.x >= MAX_X) return;
+    this.x += 0.3;
+
+    const currentCol = Math.floor(this.x / TIMELINE_GRID_SIZE);
+    if (currentCol >= TIMELINE_COL) return;
+    if (this.scanned.has(currentCol)) return;
+    this.scanned.add(currentCol);
+    emit(EVENTS.COL_SCANNED, currentCol);
   }
 
   public render() {

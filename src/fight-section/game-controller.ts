@@ -14,8 +14,12 @@ export class GameController {
     const castle = new EuropeCastle();
     this.enemies.push(castle);
 
-    this.allies.push(new MongolArcher());
+    on(EVENTS.STATE_CHANGE, this.onStateChange.bind(this));
     on(EVENTS.SPAWN_ALLY, this.onSpawnAlly.bind(this));
+  }
+
+  protected onStateChange(state: GameState) {
+    if (state !== "fight") return;
   }
 
   protected onSpawnAlly(unitType: UnitType) {
