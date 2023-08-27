@@ -16,6 +16,7 @@ export class Grid extends SpriteClass {
   public occupiedId: string | null = null;
   public occupiedUnitType: UnitType | null = null;
   public isScanned: boolean = false;
+  public locked: boolean = false;
 
   constructor({ x, y, boxSize, coord, interact = false }: GridProps) {
     super({
@@ -54,7 +55,15 @@ export class Grid extends SpriteClass {
     this.isScanned = true;
     this.covered.color = "#847875";
   }
+  setLocked() {
+    this.locked = true;
+    this.color = "red";
+  }
   reset() {
     this.covered.color = "transparent";
+    this.isScanned = false;
+    // locked is not reset til game over
+    this.occupiedId = null;
+    this.occupiedUnitType = null;
   }
 }

@@ -67,16 +67,16 @@ export class BlockManager {
   }
 }
 
-const randomPickNElements = <T>(elements: Array<T>, count: number) => {
+function randomPickNElements<T>(elements: Array<T>, count: number) {
   const result = [];
   for (let i = 0; i < count; i++) {
     const randomIndex = Math.floor(Math.random() * elements.length);
     result.push(elements[randomIndex]);
   }
   return result;
-};
+}
 
-const rotate90DegMatrix = <T>(matrix: Array<Array<T>>) => {
+function rotate90DegMatrix<T>(matrix: Array<Array<T>>) {
   const rows = matrix.length;
   const cols = matrix[0].length;
 
@@ -91,10 +91,10 @@ const rotate90DegMatrix = <T>(matrix: Array<Array<T>>) => {
   }
 
   return rotatedMatrix;
-};
+}
 
-const rotate90DegAnchor = (anchor: [number, number], arrayLength: number) => {
+function rotate90DegAnchor(anchor: [number, number], arrayLength: number) {
   const newX = anchor[1];
   const newY = arrayLength - 1 - anchor[0];
   return [newX, newY];
-};
+}

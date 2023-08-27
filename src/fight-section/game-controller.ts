@@ -6,7 +6,6 @@ import { BaseAttackUnit } from "./attack-units/base-attack-unit";
 import { EuropeCastle } from "./attack-units/europe-castle";
 import { EuropeInfantry } from "./attack-units/europe-intantry";
 import { EuropeArcher } from "./attack-units/europe-archer";
-import { TIMELINE_COL } from "../constants/board";
 
 export class GameController {
   protected allies: BaseAttackUnit[] = [];
