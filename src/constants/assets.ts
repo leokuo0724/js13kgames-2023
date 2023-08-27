@@ -1,11 +1,10 @@
 export const ASSET_IDS = {
-  // character components
   MONGOL: "mongol",
   SHIELD: "shield",
   SWORD: "sword",
-  HAND: "hand",
+  FIST: "fist",
   BOW: "bow",
-  // bg
+  EUROPE: "europe",
   CASTLE: "castle",
 } as const;
 export type AssetId = (typeof ASSET_IDS)[keyof typeof ASSET_IDS];

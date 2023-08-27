@@ -9,7 +9,7 @@ export class CTAButton extends ButtonClass {
       text: {
         text: "waive",
         color: "white",
-        font: "16px sans-serif",
+        font: "16px Verdana",
         anchor: { x: 0.5, y: 0.5 },
       },
       width: 100,

@@ -101,7 +101,11 @@ export abstract class BaseAttackUnit
         this.attack();
       }
     }
-    if (this.x >= this.context.canvas.width) {
+    // deal with boundary
+    if (this.camp === "ally" && this.x >= this.context.canvas.width) {
+      this.ttl = 0;
+    }
+    if (this.camp === "enemy" && this.x <= 0) {
       this.ttl = 0;
     }
   }

@@ -14,6 +14,7 @@ export class GameController {
     const castle = new EuropeCastle();
     this.enemies.push(castle);
 
+    this.allies.push(new MongolArcher());
     on(EVENTS.SPAWN_ALLY, this.onSpawnAlly.bind(this));
   }
 

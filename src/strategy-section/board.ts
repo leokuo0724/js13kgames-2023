@@ -33,7 +33,7 @@ export abstract class Board extends GameObjectClass {
       y: -24,
       color: "#574852",
       text: title,
-      font: "16px sans-serif",
+      font: "16px Verdana",
     });
     this.addChild(text);
   }
