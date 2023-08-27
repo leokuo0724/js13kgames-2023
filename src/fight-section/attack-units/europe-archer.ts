@@ -12,7 +12,7 @@ export class EuropeArcher extends BaseAttackUnit {
     super({
       camp: "enemy",
       type: "archer",
-      moveSpeed: -10,
+      moveSpeed: -5,
       moveRate: 10,
       health: 12,
       attackRange: -200,

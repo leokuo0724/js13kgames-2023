@@ -5,10 +5,14 @@ export class HealthBar extends SpriteClass {
   public health: number;
   protected inner: Sprite;
 
-  constructor(x: number, y: number, maxHealth: number) {
+  constructor({
+    maxHealth,
+    camp = "ally",
+  }: {
+    maxHealth: number;
+    camp: UnitCamp;
+  }) {
     super({
-      x,
-      y,
       width: 60,
       height: 16,
       color: "#4d3d44",
@@ -28,7 +32,7 @@ export class HealthBar extends SpriteClass {
       y: 3,
       width: 54,
       height: 10,
-      color: "#79444a",
+      color: camp === "ally" ? "#ae5d40" : "#927441",
     });
     this.addChild([innerBg, this.inner]);
   }

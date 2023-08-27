@@ -50,7 +50,7 @@ export abstract class BaseAttackUnit
     this.attackRate = attackRate;
     this.attackUnit = attackUnit;
 
-    this.healthBar = new HealthBar(0, 0, this.health);
+    this.healthBar = new HealthBar({ maxHealth: this.health, camp: this.camp });
     this.healthBar.setScale(1 / GENERAL_SCALE);
     this.setScale(GENERAL_SCALE);
     this.placeHealthBar();

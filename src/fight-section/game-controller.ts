@@ -4,6 +4,9 @@ import { MongolInfantry } from "./attack-units/mongol-infantry";
 import { MongolArcher } from "./attack-units/mongol-archer";
 import { BaseAttackUnit } from "./attack-units/base-attack-unit";
 import { EuropeCastle } from "./attack-units/europe-castle";
+import { EuropeInfantry } from "./attack-units/europe-intantry";
+import { EuropeArcher } from "./attack-units/europe-archer";
+import { TIMELINE_COL } from "../constants/board";
 
 export class GameController {
   protected allies: BaseAttackUnit[] = [];
@@ -14,16 +17,19 @@ export class GameController {
     const castle = new EuropeCastle();
     this.enemies.push(castle);
 
-    on(EVENTS.STATE_CHANGE, this.onStateChange.bind(this));
-    on(EVENTS.SPAWN_ALLY, this.onSpawnAlly.bind(this));
+    on(EVENTS.COL_SCANNED, this.onColScanned.bind(this));
+    on(EVENTS.SPAWN_ALLY, (unitType: UnitType) => {
+      this.spawnAttackUnit("ally", unitType);
+    });
   }
 
-  protected onStateChange(state: GameState) {
-    if (state !== "fight") return;
+  protected onColScanned(col: number) {
+    this.spawnAttackUnit("enemy", "infantry");
   }
 
-  protected onSpawnAlly(unitType: UnitType) {
-    const reusableObj = this.allies.find(
+  protected spawnAttackUnit(camp: UnitCamp, unitType: UnitType) {
+    const targetCamp = camp === "ally" ? this.allies : this.enemies;
+    const reusableObj = targetCamp.find(
       (e) => e.type === unitType && !e.isAlive()
     );
     if (reusableObj) {
@@ -32,8 +38,8 @@ export class GameController {
     }
 
     // Create new instance
-    const unit = getAttackUnitClass(unitType);
-    this.allies.push(new unit());
+    const unit = getAttackUnitClass(camp, unitType);
+    targetCamp.push(new unit());
   }
 
   public update() {
@@ -75,12 +81,12 @@ export class GameController {
   }
 }
 
-function getAttackUnitClass(unitType: UnitType) {
+function getAttackUnitClass(camp: UnitCamp, unitType: UnitType) {
   switch (unitType) {
     case "archer":
-      return MongolArcher;
+      return camp === "ally" ? MongolArcher : EuropeArcher;
     case "infantry":
-      return MongolInfantry;
+      return camp === "ally" ? MongolInfantry : EuropeInfantry;
     case "castle":
       throw new Error();
   }
