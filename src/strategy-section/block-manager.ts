@@ -26,6 +26,11 @@ export class BlockManager {
     return BlockManager.instance;
   }
 
+  public setState(state: GameState) {
+    this.state = state;
+    emit(EVENTS.STATE_CHANGE, this.state);
+  }
+
   public reload() {
     this.blockData = randomPickNElements(
       Object.values(blockMetadata) as BlockMetadata[],
@@ -39,14 +44,12 @@ export class BlockManager {
     emit(EVENTS.UPDATE_BLOCK);
 
     if (this.blockData.length === 0) {
-      this.state = "ready";
-      emit(EVENTS.STATE_CHANGE, this.state);
+      this.setState("ready");
     }
   }
 
   protected onStartClick() {
-    this.state = "fight";
-    emit(EVENTS.STATE_CHANGE, this.state);
+    this.setState("fight");
   }
 
   protected rotateCurrentBlock() {

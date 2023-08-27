@@ -1,7 +1,6 @@
 import { GameObject, GameObjectClass } from "kontra";
 import { HealthBar } from "../health-bar";
 import { GENERAL_SCALE } from "../../constants/assets";
-import { EVENTS } from "../../constants/events";
 
 type BaseSoliderConfig = {
   camp: UnitCamp;
@@ -66,12 +65,24 @@ export abstract class BaseAttackUnit
     if (isDead) this.ttl = 0;
   }
 
-  public respawn() {
-    this.ttl = Infinity;
-    this.x = this.camp === "ally" ? 0 : this.context.canvas.width;
+  protected reset() {
+    if (this.type !== "castle") {
+      // Should not reset castle position
+      this.x = this.camp === "ally" ? 0 : this.context.canvas.width;
+    }
     this.healthBar.reset();
     this.timer = 0;
     this.attackTarget = null;
+  }
+
+  public stop() {
+    this.ttl = 0;
+    this.reset();
+  }
+
+  public respawn() {
+    this.ttl = Infinity;
+    this.reset();
   }
 
   protected jump() {

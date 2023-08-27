@@ -24,10 +24,23 @@ export class GameController {
     on(EVENTS.FINAL_COL_SCANNED, () => {
       this.finalColScanned = true;
     });
+    on(EVENTS.STATE_CHANGE, this.onStateChange.bind(this));
+  }
+
+  protected onStateChange(state: GameState) {
+    if (state === "prepare") {
+      this.finalColScanned = false;
+      this.allies.forEach((e) => e.stop());
+      this.enemies.forEach((e) => e.stop());
+    }
+    if (state === "fight") {
+      this.enemies.find((e) => e.type === "castle")?.respawn();
+    }
   }
 
   protected onColScanned(col: number) {
-    // this.spawnAttackUnit("enemy", "infantry");
+    console.log(col);
+    this.spawnAttackUnit("enemy", "infantry");
   }
 
   protected spawnAttackUnit(camp: UnitCamp, unitType: UnitType) {
@@ -78,9 +91,9 @@ export class GameController {
     });
 
     // check alive allies
-    if (aliveAllies.length === 0 && this.finalColScanned) {
-      console.log("You lose");
-    }
+    // if (aliveAllies.length === 0 && this.finalColScanned) {
+    //   console.log("You lose");
+    // }
   }
   public render() {
     this.enemies.filter((e) => e.isAlive()).forEach((enemy) => enemy.render());

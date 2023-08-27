@@ -2,6 +2,7 @@ import { Sprite, getWorldRect } from "kontra";
 import { BaseAttackUnit } from "./base-attack-unit";
 import { CustomSprite } from "../custom-sprite";
 import { ASSET_IDS, GENERAL_SCALE } from "../../constants/assets";
+import { BlockManager } from "../../strategy-section/block-manager";
 
 export class EuropeCastle extends BaseAttackUnit {
   protected main: Sprite;
@@ -39,6 +40,7 @@ export class EuropeCastle extends BaseAttackUnit {
     this.addChild([this.main, this.healthBar, this.particle]);
     this.y = this.context.canvas.height / 3 - 116;
     this.x = this.context.canvas.width - 88;
+    this.ttl = 0;
   }
 
   protected placeHealthBar() {
@@ -71,7 +73,7 @@ export class EuropeCastle extends BaseAttackUnit {
     super.takeDamage(damage);
     // check win
     if (this.healthBar.health <= 0) {
-      console.log("You win!");
+      BlockManager.getInstance().setState("prepare");
     }
   }
 }
