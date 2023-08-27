@@ -6,4 +6,5 @@ export const EVENTS = {
   ON_START_CLICK: "on-start-click",
   SPAWN_ALLY: "spawn-ally",
   COL_SCANNED: "col-scanned",
+  FINAL_COL_SCANNED: "final-col-scanned",
 };

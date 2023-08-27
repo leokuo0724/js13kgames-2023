@@ -27,7 +27,10 @@ export class Timeline extends SpriteClass {
 
   public update() {
     if (!this.isActive) return;
-    if (this.x >= MAX_X) return;
+    if (this.x >= MAX_X) {
+      emit(EVENTS.FINAL_COL_SCANNED);
+      return;
+    }
     this.x += 0.3;
 
     const currentCol = Math.floor(this.x / TIMELINE_GRID_SIZE);

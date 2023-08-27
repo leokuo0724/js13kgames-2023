@@ -70,5 +70,8 @@ export class EuropeCastle extends BaseAttackUnit {
   public takeDamage(damage: number): void {
     super.takeDamage(damage);
     // check win
+    if (this.healthBar.health <= 0) {
+      console.log("You win!");
+    }
   }
 }

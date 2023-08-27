@@ -9,8 +9,9 @@ import { EuropeArcher } from "./attack-units/europe-archer";
 
 export class GameController {
   protected allies: BaseAttackUnit[] = [];
-
   protected enemies: BaseAttackUnit[] = [];
+
+  protected finalColScanned = false;
 
   constructor() {
     const castle = new EuropeCastle();
@@ -20,10 +21,13 @@ export class GameController {
     on(EVENTS.SPAWN_ALLY, (unitType: UnitType) => {
       this.spawnAttackUnit("ally", unitType);
     });
+    on(EVENTS.FINAL_COL_SCANNED, () => {
+      this.finalColScanned = true;
+    });
   }
 
   protected onColScanned(col: number) {
-    this.spawnAttackUnit("enemy", "infantry");
+    // this.spawnAttackUnit("enemy", "infantry");
   }
 
   protected spawnAttackUnit(camp: UnitCamp, unitType: UnitType) {
@@ -58,21 +62,25 @@ export class GameController {
         enemy.update();
       });
 
-    this.allies
-      .filter((e) => e.isAlive())
-      .forEach((ally) => {
-        if (!ally.attackTarget) {
-          // assign attack target
-          this.enemies
-            .filter((e) => e.isAlive())
-            .forEach((enemy) => {
-              if (ally.x + ally.attackRange > enemy.x) {
-                ally.attackTarget = enemy;
-              }
-            });
-        }
-        ally.update();
-      });
+    const aliveAllies = this.allies.filter((e) => e.isAlive());
+    aliveAllies.forEach((ally) => {
+      if (!ally.attackTarget) {
+        // assign attack target
+        this.enemies
+          .filter((e) => e.isAlive())
+          .forEach((enemy) => {
+            if (ally.x + ally.attackRange > enemy.x) {
+              ally.attackTarget = enemy;
+            }
+          });
+      }
+      ally.update();
+    });
+
+    // check alive allies
+    if (aliveAllies.length === 0 && this.finalColScanned) {
+      console.log("You lose");
+    }
   }
   public render() {
     this.enemies.filter((e) => e.isAlive()).forEach((enemy) => enemy.render());
