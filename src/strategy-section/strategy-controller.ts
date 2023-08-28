@@ -1,5 +1,5 @@
 import { GameObject } from "kontra";
-import { DisplayBoard } from "./display-board";
+import { DisplayBoard, NextBlockBoard } from "./display-board";
 import { TimelineBoard } from "./timeline-board";
 import { BlockManager } from "./block-manager";
 import { CTAButton } from "./cta-button";
@@ -15,7 +15,7 @@ export class StrategyController {
   constructor() {
     this.timelineBoard = new TimelineBoard();
     this.currentBlockBoard = new DisplayBoard("current");
-    this.nextBlockBoard = new DisplayBoard("next");
+    this.nextBlockBoard = new NextBlockBoard();
     this.button = new CTAButton();
     this.group = [
       this.timelineBoard,
