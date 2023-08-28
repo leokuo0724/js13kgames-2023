@@ -3,6 +3,7 @@ import { ASSET_IDS } from "./constants/assets";
 import { Background } from "./backgound/background";
 import { GameController } from "./fight-section/game-controller";
 import { StrategyController } from "./strategy-section/strategy-controller";
+import { Tutorial } from "./ui/tutorial";
 
 const { canvas } = init();
 
@@ -29,19 +30,21 @@ Object.values(ASSET_IDS).forEach((id) => {
   );
 });
 
-// FIXME: Image onload
 const bg = new Background();
+const tutorial = new Tutorial();
 const gameController = new GameController();
 const strategyController = new StrategyController();
 
 const loop = GameLoop({
   update: () => {
     bg.update();
+    tutorial.update();
     gameController.update();
     strategyController.update();
   },
   render: () => {
     bg.render();
+    tutorial.render();
     gameController.render();
     strategyController.render();
   },
