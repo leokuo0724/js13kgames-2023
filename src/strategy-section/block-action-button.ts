@@ -1,37 +1,16 @@
-import { ButtonClass, emit, on } from "kontra";
+import { emit, on } from "kontra";
 import { BlockManager } from "./block-manager";
 import { EVENTS } from "../constants/events";
+import { CTAButton } from "../ui/cta-button";
 
-export class CTAButton extends ButtonClass {
+export class BlockActionButton extends CTAButton {
   constructor() {
     super({
-      anchor: { x: 0.5, y: 0.5 },
-      text: {
-        text: "waive",
-        color: "white",
-        font: "16px Verdana",
-        anchor: { x: 0.5, y: 0.5 },
-      },
-      width: 100,
-      height: 36,
+      colorScheme: { normal: "#c77b58", hover: "#ae5d40", pressed: "#79444a" },
     });
-
     this.x = this.context.canvas.width - 88;
     this.y = this.context.canvas.height - 50;
-
     on(EVENTS.STATE_CHANGE, this.onStateChange.bind(this));
-  }
-
-  public draw() {
-    super.draw();
-    this.context.fillStyle = this.disabled
-      ? "#ab9b8e"
-      : this.pressed
-      ? "#79444a"
-      : this.hovered
-      ? "#ae5d40"
-      : "#c77b58";
-    this.context.fillRect(0, 0, this.width, this.height);
   }
 
   public onDown() {

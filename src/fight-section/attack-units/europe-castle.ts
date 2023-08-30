@@ -73,7 +73,7 @@ export class EuropeCastle extends BaseAttackUnit {
     super.takeDamage(damage);
     // check win
     if (this.healthBar.health <= 0) {
-      BlockManager.getInstance().setState("prepare");
+      BlockManager.getInstance().setState("victory");
     }
   }
 }

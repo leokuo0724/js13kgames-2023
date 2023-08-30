@@ -4,6 +4,8 @@ import { Background } from "./backgound/background";
 import { GameController } from "./fight-section/game-controller";
 import { StrategyController } from "./strategy-section/strategy-controller";
 import { Tutorial } from "./ui/tutorial";
+import { BlockManager } from "./strategy-section/block-manager";
+import { ResultBoard } from "./ui/result-board";
 
 const { canvas } = init();
 
@@ -32,12 +34,15 @@ Object.values(ASSET_IDS).forEach((id) => {
 
 const bg = new Background();
 const tutorial = new Tutorial();
+const resultBoard = new ResultBoard();
 const gameController = new GameController();
 const strategyController = new StrategyController();
 
 const loop = GameLoop({
   update: () => {
     bg.update();
+    // resultBoard.update();
+    if (BlockManager.getInstance().state === "victory") return;
     tutorial.update();
     gameController.update();
     strategyController.update();
@@ -47,6 +52,7 @@ const loop = GameLoop({
     tutorial.render();
     gameController.render();
     strategyController.render();
+    // resultBoard.render();
   },
 });
 loop.start();

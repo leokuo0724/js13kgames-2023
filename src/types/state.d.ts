@@ -1,1 +1,1 @@
-type GameState = "prepare" | "ready" | "fight";
+type GameState = "prepare" | "ready" | "fight" | "victory";

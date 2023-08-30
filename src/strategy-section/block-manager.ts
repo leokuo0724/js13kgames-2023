@@ -10,6 +10,7 @@ export class BlockManager {
   public blockData: BlockMetadata[] = [];
 
   public state: GameState = "prepare";
+  public wave: number = 1;
 
   private constructor() {
     onKey("z", () => {
