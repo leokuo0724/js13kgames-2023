@@ -7,7 +7,7 @@ const TEXT_CONFIG = {
   anchor: { x: 0.5, y: 0.5 },
 };
 
-export class Tutorial extends GameObjectClass {
+export class MainBanner extends GameObjectClass {
   constructor() {
     super();
     const title = Text({

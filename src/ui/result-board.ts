@@ -1,4 +1,6 @@
 import { Sprite, SpriteClass, Text } from "kontra";
+import { CTAButton } from "./cta-button";
+import { BlockManager } from "../strategy-section/block-manager";
 
 export class ResultBoard extends SpriteClass {
   constructor() {
@@ -26,6 +28,22 @@ export class ResultBoard extends SpriteClass {
       color: "#d2c9a5",
       y: -64,
     });
-    this.addChild([board, text]);
+
+    const button = new ConfirmButton();
+    this.addChild([board, text, button]);
+  }
+}
+
+class ConfirmButton extends CTAButton {
+  constructor() {
+    super({
+      colorScheme: { normal: "#8caba1", hover: "#6e8e82", pressed: "#6e8e82" },
+    });
+    this.text = "next";
+    this.y = 64;
+  }
+
+  public onDown() {
+    BlockManager.getInstance().setState("prepare");
   }
 }

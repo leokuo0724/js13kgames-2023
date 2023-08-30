@@ -13,7 +13,6 @@ export class CTAButton extends ButtonClass {
     super({
       anchor: { x: 0.5, y: 0.5 },
       text: {
-        text: "waive",
         color: "white",
         font: "16px Verdana",
         anchor: { x: 0.5, y: 0.5 },

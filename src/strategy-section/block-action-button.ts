@@ -10,6 +10,7 @@ export class BlockActionButton extends CTAButton {
     });
     this.x = this.context.canvas.width - 88;
     this.y = this.context.canvas.height - 50;
+    this.text = "waive";
     on(EVENTS.STATE_CHANGE, this.onStateChange.bind(this));
   }
 
