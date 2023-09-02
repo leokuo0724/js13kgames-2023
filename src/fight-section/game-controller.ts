@@ -6,7 +6,7 @@ import { BaseAttackUnit } from "./attack-units/base-attack-unit";
 import { EuropeCastle } from "./attack-units/europe-castle";
 import { EuropeInfantry } from "./attack-units/europe-intantry";
 import { EuropeArcher } from "./attack-units/europe-archer";
-import { BlockManager } from "../strategy-section/block-manager";
+import { GameManager } from "../strategy-section/game-manager";
 
 export class GameController {
   public allies: BaseAttackUnit[] = [];
@@ -95,7 +95,7 @@ export class GameController {
 
     // check alive allies
     if (
-      BlockManager.getInstance().state === "fight" &&
+      GameManager.getInstance().state === "fight" &&
       aliveAllies.length === 0 &&
       this.finalColScanned
     ) {

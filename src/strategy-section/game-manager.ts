@@ -4,8 +4,8 @@ import { EVENTS } from "../constants/events";
 import { BlockMetadata } from "../types/block-metadata";
 import { TIMELINE_COL, TIMELINE_ROW } from "../constants/board";
 
-export class BlockManager {
-  private static instance: BlockManager;
+export class GameManager {
+  private static instance: GameManager;
   public blockData: BlockMetadata[] = [];
 
   public state: GameState = "prepare";
@@ -21,10 +21,10 @@ export class BlockManager {
   }
 
   static getInstance() {
-    if (!BlockManager.instance) {
-      BlockManager.instance = new BlockManager();
+    if (!GameManager.instance) {
+      GameManager.instance = new GameManager();
     }
-    return BlockManager.instance;
+    return GameManager.instance;
   }
 
   public setState(state: GameState) {

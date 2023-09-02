@@ -1,7 +1,7 @@
 import { Text, on } from "kontra";
 import { Board } from "./board";
 import { EVENTS } from "../constants/events";
-import { BlockManager } from "./block-manager";
+import { GameManager } from "./game-manager";
 
 const DISPLAY_GRID_SIZE = 34;
 const DISPLAY_ROW = 4;
@@ -36,9 +36,9 @@ export class DisplayBoard extends Board {
   }
 
   protected onUpdateBlock() {
-    const blockManager = BlockManager.getInstance();
+    const gameManager = GameManager.getInstance();
     const targetIndex = this.type === "current" ? 0 : 1;
-    const targetBlock = blockManager.blockData[targetIndex];
+    const targetBlock = gameManager.blockData[targetIndex];
 
     if (targetBlock) {
       const { map, color, type: unitType } = targetBlock;
@@ -84,7 +84,7 @@ export class NextBlockBoard extends DisplayBoard {
   protected onUpdateBlock() {
     super.onUpdateBlock();
     this.remainText.text = `remain: ${
-      BlockManager.getInstance().blockData.length
+      GameManager.getInstance().blockData.length
     }`;
   }
 }

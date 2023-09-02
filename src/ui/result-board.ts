@@ -1,6 +1,6 @@
 import { Sprite, SpriteClass, Text, on } from "kontra";
 import { CTAButton } from "./cta-button";
-import { BlockManager } from "../strategy-section/block-manager";
+import { GameManager } from "../strategy-section/game-manager";
 import { EVENTS } from "../constants/events";
 import { GameController } from "../fight-section/game-controller";
 
@@ -55,7 +55,7 @@ export class ResultBoard extends SpriteClass {
   protected onStateChange(state: GameState) {
     if (state !== "victory") return;
     const aliveAllies = this.gameController.allies.filter((e) => e.isAlive());
-    const wave = BlockManager.getInstance().wave;
+    const wave = GameManager.getInstance().wave;
     this.remains.text = `Conquered territory: ${wave}\nRemain ${aliveAllies.length} soldier(s)`;
   }
 }
@@ -70,6 +70,6 @@ class ConfirmButton extends CTAButton {
   }
 
   public onDown() {
-    BlockManager.getInstance().setState("prepare");
+    GameManager.getInstance().setState("prepare");
   }
 }

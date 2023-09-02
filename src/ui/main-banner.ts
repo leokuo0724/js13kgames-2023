@@ -1,6 +1,6 @@
 import { GameObjectClass, Text, on } from "kontra";
 import { EVENTS } from "../constants/events";
-import { BlockManager } from "../strategy-section/block-manager";
+import { GameManager } from "../strategy-section/game-manager";
 
 const TEXT_CONFIG = {
   color: "#4b726e",
@@ -38,7 +38,7 @@ export class MainBanner extends GameObjectClass {
       ? (this.ttl = Infinity)
       : (this.ttl = 0);
     if (state === "prepare") {
-      this.title.text = `Wave ${BlockManager.getInstance().wave}`;
+      this.title.text = `Wave ${GameManager.getInstance().wave}`;
     }
   }
 

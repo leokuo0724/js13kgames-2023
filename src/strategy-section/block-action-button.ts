@@ -1,5 +1,5 @@
 import { emit, on } from "kontra";
-import { BlockManager } from "./block-manager";
+import { GameManager } from "./game-manager";
 import { EVENTS } from "../constants/events";
 import { CTAButton } from "../ui/cta-button";
 
@@ -15,10 +15,10 @@ export class BlockActionButton extends CTAButton {
   }
 
   public onDown() {
-    const blockManager = BlockManager.getInstance();
-    switch (blockManager.state) {
+    const gameManager = GameManager.getInstance();
+    switch (gameManager.state) {
       case "prepare":
-        blockManager.shiftBlock();
+        gameManager.shiftBlock();
         break;
       case "ready":
         emit(EVENTS.ON_START_CLICK);

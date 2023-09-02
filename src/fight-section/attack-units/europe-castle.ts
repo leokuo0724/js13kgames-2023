@@ -2,7 +2,7 @@ import { Sprite, getWorldRect } from "kontra";
 import { BaseAttackUnit } from "./base-attack-unit";
 import { CustomSprite } from "../custom-sprite";
 import { ASSET_IDS, GENERAL_SCALE } from "../../constants/assets";
-import { BlockManager } from "../../strategy-section/block-manager";
+import { GameManager } from "../../strategy-section/game-manager";
 
 export class EuropeCastle extends BaseAttackUnit {
   protected main: Sprite;
@@ -73,7 +73,7 @@ export class EuropeCastle extends BaseAttackUnit {
     super.takeDamage(damage);
     // check win
     if (this.healthBar.health <= 0) {
-      BlockManager.getInstance().setState("victory");
+      GameManager.getInstance().setState("victory");
     }
   }
 }

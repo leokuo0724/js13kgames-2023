@@ -1,7 +1,7 @@
 import { Board } from "./board";
 import { EVENTS } from "../constants/events";
 import { Sprite, emit, on } from "kontra";
-import { BlockManager } from "./block-manager";
+import { GameManager } from "./game-manager";
 import { BlockMetadata } from "../types/block-metadata";
 import { Timeline } from "./timeline";
 import {
@@ -59,7 +59,7 @@ export class TimelineBoard extends Board {
       if (grid.isScanned || blockIds.has(grid.occupiedId)) continue;
       if (!grid.occupiedId && !grid.occupiedUnitType) {
         grid.setLocked();
-        BlockManager.getInstance().freeGridsCount--;
+        GameManager.getInstance().freeGridsCount--;
         continue;
       }
       blockIds.add(grid.occupiedId);
@@ -116,8 +116,8 @@ export class TimelineBoard extends Board {
     if (!coord) return;
     this.clearCoveredGrid();
 
-    const blockManager = BlockManager.getInstance();
-    const currentBlockMetadata = blockManager.blockData[0];
+    const gameManager = GameManager.getInstance();
+    const currentBlockMetadata = gameManager.blockData[0];
     if (!currentBlockMetadata) return;
 
     this.currentOveredCoord = coord;
@@ -131,8 +131,8 @@ export class TimelineBoard extends Board {
   }
 
   protected onPlaceBlock(coord: [number, number]) {
-    const blockManager = BlockManager.getInstance();
-    const currentBlockMetadata = blockManager.blockData[0];
+    const gameManager = GameManager.getInstance();
+    const currentBlockMetadata = gameManager.blockData[0];
     if (!currentBlockMetadata) return;
 
     const coords = this.getRelativeCoords(coord, currentBlockMetadata);
@@ -146,7 +146,7 @@ export class TimelineBoard extends Board {
       this.grids[coord[0]][coord[1]].occupiedUnitType = type;
     });
 
-    blockManager.shiftBlock();
+    gameManager.shiftBlock();
   }
 }
 
