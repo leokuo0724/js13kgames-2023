@@ -1,9 +1,15 @@
-import { Sprite, SpriteClass, Text } from "kontra";
+import { Sprite, SpriteClass, Text, on } from "kontra";
 import { CTAButton } from "./cta-button";
 import { BlockManager } from "../strategy-section/block-manager";
+import { EVENTS } from "../constants/events";
+import { GameController } from "../fight-section/game-controller";
 
 export class ResultBoard extends SpriteClass {
-  constructor() {
+  protected gameController: GameController;
+
+  protected remains: Text;
+
+  constructor({ gameController }: { gameController: GameController }) {
     super({
       color: "#d2c9a5",
       anchor: { x: 0.5, y: 0.5 },
@@ -14,6 +20,8 @@ export class ResultBoard extends SpriteClass {
     this.x = this.context.canvas.width / 2;
     this.y = this.context.canvas.height / 2;
 
+    this.gameController = gameController;
+
     const board = Sprite({
       anchor: { x: 0.5, y: 0.5 },
       color: "#4b726e",
@@ -21,16 +29,34 @@ export class ResultBoard extends SpriteClass {
       height: 200,
     });
 
-    const text = Text({
+    const title = Text({
       anchor: { x: 0.5, y: 0.5 },
-      text: "Victory",
-      font: "24px Verdana",
       color: "#d2c9a5",
+      font: "24px Verdana",
+      text: "Victory",
       y: -64,
+    });
+    this.remains = Text({
+      anchor: { x: 0.5, y: 0 },
+      color: "#d2c9a5",
+      font: "14px Verdana",
+      textAlign: "center",
+      text: "",
+      lineHeight: 1.4,
+      y: -28,
     });
 
     const button = new ConfirmButton();
-    this.addChild([board, text, button]);
+    this.addChild([board, title, this.remains, button]);
+
+    on(EVENTS.STATE_CHANGE, this.onStateChange.bind(this));
+  }
+
+  protected onStateChange(state: GameState) {
+    if (state !== "victory") return;
+    const aliveAllies = this.gameController.allies.filter((e) => e.isAlive());
+    const wave = BlockManager.getInstance().wave;
+    this.remains.text = `Conquered territory: ${wave}\nRemain ${aliveAllies.length} soldier(s)`;
   }
 }
 

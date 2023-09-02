@@ -2,8 +2,7 @@ import { emit, on, onKey } from "kontra";
 import blockMetadata from "../block-metadata.json";
 import { EVENTS } from "../constants/events";
 import { BlockMetadata } from "../types/block-metadata";
-
-const TOTAL_BLOCK_COUNT = 30;
+import { TIMELINE_COL, TIMELINE_ROW } from "../constants/board";
 
 export class BlockManager {
   private static instance: BlockManager;
@@ -11,6 +10,7 @@ export class BlockManager {
 
   public state: GameState = "prepare";
   public wave: number = 1;
+  public freeGridsCount: number = TIMELINE_COL * TIMELINE_ROW;
 
   private constructor() {
     onKey("z", () => {
@@ -31,12 +31,14 @@ export class BlockManager {
     this.state = state;
     emit(EVENTS.STATE_CHANGE, this.state);
     if (state === "prepare") this.reload();
+    if (state === "victory") this.wave++;
   }
 
   public reload() {
+    const max = Math.floor(this.freeGridsCount / 4) + 5; // 5 is buffer for users
     this.blockData = randomPickNElements(
       Object.values(blockMetadata) as BlockMetadata[],
-      TOTAL_BLOCK_COUNT
+      max
     );
     emit(EVENTS.UPDATE_BLOCK);
   }

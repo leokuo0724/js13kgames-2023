@@ -9,7 +9,6 @@ export class StrategyController {
   protected timelineBoard: TimelineBoard;
   protected currentBlockBoard: DisplayBoard;
   protected nextBlockBoard: DisplayBoard;
-  protected blockManager: BlockManager = BlockManager.getInstance();
   protected button: BlockActionButton;
 
   constructor() {
@@ -24,7 +23,7 @@ export class StrategyController {
       this.button,
     ];
 
-    this.blockManager.reload();
+    BlockManager.getInstance().reload();
   }
 
   public update() {

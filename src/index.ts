@@ -34,8 +34,8 @@ Object.values(ASSET_IDS).forEach((id) => {
 
 const bg = new Background();
 const mainBanner = new MainBanner();
-const resultBoard = new ResultBoard();
 const gameController = new GameController();
+const resultBoard = new ResultBoard({ gameController });
 const strategyController = new StrategyController();
 
 const loop = GameLoop({

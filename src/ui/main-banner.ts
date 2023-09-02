@@ -1,5 +1,6 @@
 import { GameObjectClass, Text, on } from "kontra";
 import { EVENTS } from "../constants/events";
+import { BlockManager } from "../strategy-section/block-manager";
 
 const TEXT_CONFIG = {
   color: "#4b726e",
@@ -8,9 +9,11 @@ const TEXT_CONFIG = {
 };
 
 export class MainBanner extends GameObjectClass {
+  protected title: Text;
+
   constructor() {
     super();
-    const title = Text({
+    this.title = Text({
       font: "36px Verdana",
       text: "Mongol March",
       ...TEXT_CONFIG,
@@ -22,10 +25,10 @@ export class MainBanner extends GameObjectClass {
       ...TEXT_CONFIG,
     });
 
-    this.addChild([title, text]);
+    this.addChild([this.title, text]);
     this.x = this.context.canvas.width / 2;
     this.y = this.context.canvas.height / 3;
-    title.y = -64;
+    this.title.y = -64;
 
     on(EVENTS.STATE_CHANGE, this.onStateChange.bind(this));
   }
@@ -34,6 +37,9 @@ export class MainBanner extends GameObjectClass {
     state === "prepare" || state === "ready"
       ? (this.ttl = Infinity)
       : (this.ttl = 0);
+    if (state === "prepare") {
+      this.title.text = `Wave ${BlockManager.getInstance().wave}`;
+    }
   }
 
   public render() {

@@ -9,8 +9,8 @@ import { EuropeArcher } from "./attack-units/europe-archer";
 import { BlockManager } from "../strategy-section/block-manager";
 
 export class GameController {
-  protected allies: BaseAttackUnit[] = [];
-  protected enemies: BaseAttackUnit[] = [];
+  public allies: BaseAttackUnit[] = [];
+  public enemies: BaseAttackUnit[] = [];
 
   protected finalColScanned = false;
 
@@ -41,7 +41,9 @@ export class GameController {
 
   protected onColScanned(col: number) {
     console.log(col);
-    this.spawnAttackUnit("enemy", "infantry");
+    const types: UnitType[] = ["infantry", "infantry", "archer"];
+    const randomIndex = Math.floor(Math.random() * types.length);
+    this.spawnAttackUnit("enemy", types[randomIndex]);
   }
 
   protected spawnAttackUnit(camp: UnitCamp, unitType: UnitType) {
