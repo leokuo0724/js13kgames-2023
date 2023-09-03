@@ -39,7 +39,7 @@ const mainBanner = new MainBanner();
 const gameController = new GameController();
 const resultBoard = new ResultBoard({ gameController });
 const strategyController = new StrategyController();
-const detailsBox = new DetailsBox();
+const detailsBox = DetailsBox.getInstance();
 
 const loop = GameLoop({
   update: () => {

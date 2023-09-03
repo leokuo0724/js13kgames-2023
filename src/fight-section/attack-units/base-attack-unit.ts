@@ -1,6 +1,7 @@
-import { GameObject, GameObjectClass } from "kontra";
+import { GameObject, GameObjectClass, emit } from "kontra";
 import { HealthBar } from "../health-bar";
 import { GENERAL_SCALE } from "../../constants/assets";
+import { EVENTS } from "../../constants/events";
 
 type BaseSoliderConfig = {
   camp: UnitCamp;
@@ -62,7 +63,12 @@ export abstract class BaseAttackUnit
   public takeDamage(damage: number) {
     if (this.healthBar.health <= 0) return;
     const isDead = this.healthBar.takeDamage(damage);
-    if (isDead) this.ttl = 0;
+    if (isDead) {
+      this.ttl = 0;
+      if (this.camp === "enemy") {
+        emit(EVENTS.DEFEAT_ENEMY, this.type);
+      }
+    }
   }
 
   protected reset() {

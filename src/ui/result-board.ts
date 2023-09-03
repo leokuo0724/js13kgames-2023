@@ -3,6 +3,7 @@ import { CTAButton } from "./cta-button";
 import { GameManager } from "../strategy-section/game-manager";
 import { EVENTS } from "../constants/events";
 import { GameController } from "../fight-section/game-controller";
+import { DetailsBox } from "./details-box";
 
 export class ResultBoard extends SpriteClass {
   protected gameController: GameController;
@@ -27,7 +28,7 @@ export class ResultBoard extends SpriteClass {
     const board = Sprite({
       anchor: { x: 0.5, y: 0.5 },
       color: "#4b726e",
-      width: 300,
+      width: 348,
       height: 200,
     });
 
@@ -61,8 +62,9 @@ export class ResultBoard extends SpriteClass {
       this.body.text = `Conquered territory: ${wave}\nRemain ${aliveAllies.length} soldier(s)`;
     }
     if (state === "defeat") {
+      const details = DetailsBox.getInstance();
       this.title.text = "Defeat";
-      this.body.text = `You have been conquered ${wave} territory!`;
+      this.body.text = `You have been conquered ${details.conquered} territory!\n Slayed ${details.slayed} enemies.`;
       this.confirmButton.text = "restart";
     }
   }
