@@ -7,7 +7,9 @@ import { GameController } from "../fight-section/game-controller";
 export class ResultBoard extends SpriteClass {
   protected gameController: GameController;
 
-  protected remains: Text;
+  protected title: Text;
+  protected body: Text;
+  protected confirmButton: ConfirmButton;
 
   constructor({ gameController }: { gameController: GameController }) {
     super({
@@ -29,14 +31,14 @@ export class ResultBoard extends SpriteClass {
       height: 200,
     });
 
-    const title = Text({
+    this.title = Text({
       anchor: { x: 0.5, y: 0.5 },
       color: "#d2c9a5",
       font: "24px Verdana",
       text: "Victory",
       y: -64,
     });
-    this.remains = Text({
+    this.body = Text({
       anchor: { x: 0.5, y: 0 },
       color: "#d2c9a5",
       font: "14px Verdana",
@@ -46,17 +48,23 @@ export class ResultBoard extends SpriteClass {
       y: -28,
     });
 
-    const button = new ConfirmButton();
-    this.addChild([board, title, this.remains, button]);
+    this.confirmButton = new ConfirmButton();
+    this.addChild([board, this.title, this.body, this.confirmButton]);
 
     on(EVENTS.STATE_CHANGE, this.onStateChange.bind(this));
   }
 
   protected onStateChange(state: GameState) {
-    if (state !== "victory") return;
-    const aliveAllies = this.gameController.allies.filter((e) => e.isAlive());
     const wave = GameManager.getInstance().wave;
-    this.remains.text = `Conquered territory: ${wave}\nRemain ${aliveAllies.length} soldier(s)`;
+    if (state === "victory") {
+      const aliveAllies = this.gameController.allies.filter((e) => e.isAlive());
+      this.body.text = `Conquered territory: ${wave}\nRemain ${aliveAllies.length} soldier(s)`;
+    }
+    if (state === "defeat") {
+      this.title.text = "Defeat";
+      this.body.text = `You have been conquered ${wave} territory!`;
+      this.confirmButton.text = "restart";
+    }
   }
 }
 
@@ -70,6 +78,12 @@ class ConfirmButton extends CTAButton {
   }
 
   public onDown() {
-    GameManager.getInstance().setState("prepare");
+    const gameManager = GameManager.getInstance();
+    if (gameManager.state === "victory") {
+      GameManager.getInstance().setState("prepare");
+    }
+    if (gameManager.state === "defeat") {
+      window.location.reload();
+    }
   }
 }

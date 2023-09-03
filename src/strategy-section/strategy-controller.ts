@@ -1,7 +1,6 @@
 import { GameObject } from "kontra";
 import { DisplayBoard, NextBlockBoard } from "./display-board";
 import { TimelineBoard } from "./timeline-board";
-import { GameManager } from "./game-manager";
 import { BlockActionButton } from "./block-action-button";
 
 export class StrategyController {

@@ -99,7 +99,7 @@ export class GameController {
       aliveAllies.length === 0 &&
       this.finalColScanned
     ) {
-      console.log("You lose");
+      GameManager.getInstance().setState("defeat");
     }
   }
   public render() {

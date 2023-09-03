@@ -1,1 +1,7 @@
-type GameState = "prologue" | "prepare" | "ready" | "fight" | "victory";
+type GameState =
+  | "prologue"
+  | "prepare"
+  | "ready"
+  | "fight"
+  | "victory"
+  | "defeat";
