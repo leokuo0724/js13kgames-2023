@@ -47,7 +47,6 @@ export class MongolInfantry extends BaseAttackUnit {
   protected placeHealthBar() {
     this.healthBar.y = 12.8;
   }
-
   protected attackAnim() {
     this.sword.attack();
   }

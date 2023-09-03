@@ -9,6 +9,8 @@ import { EuropeArcher } from "./attack-units/europe-archer";
 import { GameManager } from "../strategy-section/game-manager";
 import { MongolCavalry } from "./attack-units/mongol-cavalry";
 import { EuropeCavalry } from "./attack-units/europe-cavalry";
+import { MongolGuarder } from "./attack-units/mongol-guarder";
+import { EuropeGuarder } from "./attack-units/europe-guarder";
 
 export class GameController {
   public allies: BaseAttackUnit[] = [];
@@ -43,7 +45,13 @@ export class GameController {
 
   protected onColScanned(col: number) {
     console.log(col);
-    const types: UnitType[] = ["infantry", "infantry", "archer", "cavalry"];
+    const types: UnitType[] = [
+      "infantry",
+      "infantry",
+      "archer",
+      "cavalry",
+      "guarder",
+    ];
     const randomIndex = Math.floor(Math.random() * types.length);
     this.spawnAttackUnit("enemy", types[randomIndex]);
   }
@@ -118,6 +126,8 @@ function getAttackUnitClass(camp: UnitCamp, unitType: UnitType) {
       return camp === "ally" ? MongolInfantry : EuropeInfantry;
     case "cavalry":
       return camp === "ally" ? MongolCavalry : EuropeCavalry;
+    case "guarder":
+      return camp === "ally" ? MongolGuarder : EuropeGuarder;
     case "castle":
       throw new Error();
   }

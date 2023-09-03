@@ -30,7 +30,7 @@
     ],
     "anchor": [1, 1],
     "color": "#ba9158",
-    "type": "infantry"
+    "type": "archer"
   },
   "d": {
     "map": [
@@ -41,7 +41,7 @@
     ],
     "anchor": [1, 1],
     "color": "#c77b58",
-    "type": "archer"
+    "type": "guarder"
   },
   "e": {
     "map": [
@@ -63,7 +63,7 @@
     ],
     "anchor": [2, 2],
     "color": "#a8984c",
-    "type": "archer"
+    "type": "infantry"
   },
   "g": {
     "map": [
@@ -74,6 +74,6 @@
     ],
     "anchor": [2, 1],
     "color": "#79444a",
-    "type": "infantry"
+    "type": "archer"
   }
 }

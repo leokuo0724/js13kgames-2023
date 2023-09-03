@@ -14,7 +14,7 @@ export class MongolArcher extends BaseAttackUnit {
       type: "archer",
       moveSpeed: 10,
       moveRate: 10,
-      health: 10,
+      health: 8,
       attackRange: 200,
       attackRate: 100,
       attackUnit: 1.5,
