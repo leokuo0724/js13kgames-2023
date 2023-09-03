@@ -34,8 +34,6 @@ export class MainBanner extends GameObjectClass {
       text: PROLOGUES.PART1,
       lineHeight: 2,
       y: 12,
-      // autoFadeOut: true,
-      // callback: this.setNextPrologue.bind(this),
     });
     this.body.startFadingIn = true;
     this.title.startFadingIn = true;
@@ -92,6 +90,7 @@ class BannerText extends TextClass {
 
   public fadeOutInText(text: string) {
     this.startFadingOut = true;
+    this.startFadingIn = false;
     this.fadeOutCallback = () => {
       this.text = text;
       this.startFadingIn = true;

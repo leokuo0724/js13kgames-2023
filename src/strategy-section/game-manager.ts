@@ -8,7 +8,7 @@ export class GameManager {
   private static instance: GameManager;
   public blockData: BlockMetadata[] = [];
 
-  public state: GameState = "prepare";
+  public state: GameState = "prologue";
   public wave: number = 1;
   public freeGridsCount: number = TIMELINE_COL * TIMELINE_ROW;
 

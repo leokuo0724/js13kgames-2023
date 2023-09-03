@@ -22,8 +22,6 @@ export class StrategyController {
       this.nextBlockBoard,
       this.button,
     ];
-
-    GameManager.getInstance().reload();
   }
 
   public update() {

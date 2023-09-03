@@ -10,7 +10,8 @@ export class BlockActionButton extends CTAButton {
     });
     this.x = this.context.canvas.width - 88;
     this.y = this.context.canvas.height - 50;
-    this.text = "waive";
+    this.text = "waiting...";
+    this.disabled = true;
     on(EVENTS.STATE_CHANGE, this.onStateChange.bind(this));
   }
 
@@ -23,7 +24,7 @@ export class BlockActionButton extends CTAButton {
       case "ready":
         emit(EVENTS.ON_START_CLICK);
         break;
-      case "fight":
+      default:
         break;
     }
   }
