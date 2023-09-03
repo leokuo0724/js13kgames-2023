@@ -12,4 +12,5 @@
     <svg id="cloud" width="59.9" height="26.4" viewBox="0 0 59.9 26.4"><path fill="#D2C9A5" d="M60 26s0-14-15-14c1 0 1-12-11-12S22 7 22 7 10 5 10 17c0 0-10 0-10 9h60z"/></svg>
     <svg id="horse" width="54.3" height="44.1" viewBox="0 0 54.3 44.1"><path fill="#4B3D44" d="m34 3-7 20h3l6-17V4zM12 24H5l-5 9h5l3-6h4z"/><path fill="#927441" d="M41 6V0h-5v6l-6 17H12v10h25l5-18h12V6z"/><path fill="#BA9158" d="M37 33H12v5h24l5-5 3-18h-2z"/><path fill="#927441" d="M12 27v17h4v-8l5-5v-4zM38 27v4l-2 5v8h-4V27z"/><path fill="#4B3D44" d="M12 43h4v1h-4zM32 43h4v1h-4zM52 6l2 2V6z"/></svg>
     <svg id="shell" width="21.9" height="37.5" viewBox="0 0 21.9 37.5"><path fill="#574852" d="M0 0h22v38H0z"/><path fill="#847875" d="M1 2h20v34H1z"/><path fill="#79444A" d="M10 16h2v8h-2z"/><path fill="#D1B187" d="M10 18h2v3l-2 1H7z"/></svg>
+    <svg id="gun" width="38.1" height="5.7" viewBox="0 0 38.1 5.7"><path fill="#AE5D40" d="M10 0h28v5H10z"/><path fill="#4D4539" d="M3 1h7v3H3z"/><path fill="#79444A" d="M29 0h1v5h-1zM19 0h1v5h-1z"/><path fill="#D1B187" d="M1 1 0 4l5 1 2-2-1-2-2-1zM22 6V4h4v2z"/></svg>
   </svg>

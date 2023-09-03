@@ -9,6 +9,7 @@ export const ASSET_IDS = {
   CLOUD: "cloud",
   HORSE: "horse",
   SHELL: "shell",
+  GUN: "gun",
 } as const;
 export type AssetId = (typeof ASSET_IDS)[keyof typeof ASSET_IDS];
 

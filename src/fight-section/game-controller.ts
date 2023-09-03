@@ -11,6 +11,7 @@ import { MongolCavalry } from "./attack-units/mongol-cavalry";
 import { EuropeCavalry } from "./attack-units/europe-cavalry";
 import { MongolGuarder } from "./attack-units/mongol-guarder";
 import { EuropeGuarder } from "./attack-units/europe-guarder";
+import { MongolGunner } from "./attack-units/mongol-gunner";
 
 export class GameController {
   public allies: BaseAttackUnit[] = [];
@@ -128,6 +129,9 @@ function getAttackUnitClass(camp: UnitCamp, unitType: UnitType) {
       return camp === "ally" ? MongolCavalry : EuropeCavalry;
     case "guarder":
       return camp === "ally" ? MongolGuarder : EuropeGuarder;
+    case "gunner":
+      if (camp === "enemy") throw new Error();
+      return MongolGunner;
     case "castle":
       throw new Error();
   }
