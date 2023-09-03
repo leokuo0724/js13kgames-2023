@@ -7,6 +7,7 @@ import { MainBanner } from "./ui/main-banner";
 import { GameManager } from "./strategy-section/game-manager";
 import { ResultBoard } from "./ui/result-board";
 import { RESULT_STATES } from "./constants/game-states";
+import { DetailsBox } from "./ui/details-box";
 
 const { canvas } = init();
 
@@ -38,6 +39,7 @@ const mainBanner = new MainBanner();
 const gameController = new GameController();
 const resultBoard = new ResultBoard({ gameController });
 const strategyController = new StrategyController();
+const detailsBox = new DetailsBox();
 
 const loop = GameLoop({
   update: () => {
@@ -47,6 +49,7 @@ const loop = GameLoop({
     mainBanner.update();
     gameController.update();
     strategyController.update();
+    detailsBox.update();
   },
   render: () => {
     bg.render();
@@ -56,6 +59,7 @@ const loop = GameLoop({
     if (RESULT_STATES.includes(GameManager.getInstance().state)) {
       resultBoard.render();
     }
+    detailsBox.render();
   },
 });
 loop.start();
