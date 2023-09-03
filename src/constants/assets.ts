@@ -6,6 +6,7 @@ export const ASSET_IDS = {
   BOW: "bow",
   EUROPE: "europe",
   CASTLE: "castle",
+  CLOUD: "cloud",
 } as const;
 export type AssetId = (typeof ASSET_IDS)[keyof typeof ASSET_IDS];
 
