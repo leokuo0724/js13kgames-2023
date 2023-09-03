@@ -35,7 +35,7 @@ export class GameManager {
   }
 
   public reload() {
-    const max = Math.floor(this.freeGridsCount / 4) + 5; // 5 is buffer for users
+    const max = Math.floor(this.freeGridsCount / 4) + 4; // 4 is buffer for users
     this.blockData = randomPickNElements(
       Object.values(blockMetadata) as BlockMetadata[],
       max
