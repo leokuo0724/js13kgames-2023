@@ -17,6 +17,7 @@ export class HealthBar extends SpriteClass {
       height: 16,
       color: "#4d3d44",
     });
+    this.type = "health-bar";
     this.maxHealth = maxHealth;
     this.health = maxHealth;
 
