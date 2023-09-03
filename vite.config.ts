@@ -64,6 +64,10 @@ export default defineConfig(({ command, mode }) => {
         sprite: {
           image: true,
         },
+        text: {
+          align: true,
+          newline: true,
+        },
       }),
       roadrollerPlugin(),
       ectPlugin(),
