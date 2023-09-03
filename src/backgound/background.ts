@@ -23,8 +23,9 @@ export class Background extends GameObjectClass {
     const cloud0 = new Cloud({ x: 100, y: 30, speed: 0.2 });
     const cloud1 = new Cloud({ x: 500, y: 90, speed: 0.1, scale: 1.3 });
     const cloud2 = new Cloud({ x: 900, y: 60, speed: 0.15 });
+    const cloud3 = new Cloud({ x: -100, y: 80, speed: 0.1, scale: 0.6 });
 
-    this.addChild([bg, ground, cloud0, cloud1, cloud2]);
+    this.addChild([bg, ground, cloud0, cloud1, cloud2, cloud3]);
   }
 }
 
