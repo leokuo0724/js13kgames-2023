@@ -56,9 +56,9 @@ const loop = GameLoop({
     mainBanner.render();
     gameController.render();
     strategyController.render();
-    // if (RESULT_STATES.includes(GameManager.getInstance().state)) {
-    resultBoard.render();
-    // }
+    if (RESULT_STATES.includes(GameManager.getInstance().state)) {
+      resultBoard.render();
+    }
     detailsBox.render();
   },
 });

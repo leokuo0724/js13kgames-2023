@@ -4,6 +4,7 @@ import { GameManager } from "../strategy-section/game-manager";
 import { EVENTS } from "../constants/events";
 import { GameController } from "../fight-section/game-controller";
 import { DetailsBox } from "./details-box";
+import giftMetadata from "../gift-metadata.json";
 
 export class ResultBoard extends SpriteClass {
   protected gameController: GameController;
@@ -70,8 +71,19 @@ export class ResultBoard extends SpriteClass {
     const wave = GameManager.getInstance().wave;
     if (state === "victory") {
       const aliveAllies = this.gameController.allies.filter((e) => e.isAlive());
-      this.body.text = `Conquered territory: ${wave}\nRemain ${aliveAllies.length} soldier(s). Select a gift below or skip to conquer next territory.`;
-      // TODO: random pick gift
+      this.body.text = `Conquered territory: ${wave}. Remain ${aliveAllies.length} soldier(s).\nSelect a gift below or skip to conquer next territory.`;
+      // Pick gifts
+      const { negative, positive } = giftMetadata;
+      const positiveGift1 =
+        positive[Math.floor(Math.random() * positive.length)];
+      const negativeGift1 =
+        negative[Math.floor(Math.random() * negative.length)];
+      const positiveGift2 =
+        positive[Math.floor(Math.random() * positive.length)];
+      const negativeGift2 =
+        negative[Math.floor(Math.random() * negative.length)];
+      this.gift1.setGifts(positiveGift1, negativeGift1);
+      this.gift2.setGifts(positiveGift2, negativeGift2);
     }
     if (state === "defeat") {
       const details = DetailsBox.getInstance();
@@ -103,6 +115,9 @@ class ConfirmButton extends CTAButton {
 }
 
 class GiftButton extends CTAButton {
+  protected positiveGift?: Gift;
+  protected negativeGift?: Gift;
+
   constructor(y: number) {
     super({
       colorScheme: {
@@ -113,7 +128,20 @@ class GiftButton extends CTAButton {
     });
     this.y = y;
     this.height = 24;
-    this.text = "ally +1 attack, enemy +1 health";
     this.textNode.font = "14px Verdana";
+  }
+
+  public setGifts(positiveGift: Gift, negativeGift: Gift) {
+    this.positiveGift = positiveGift;
+    this.negativeGift = negativeGift;
+    this.text = `ally ${positiveGift.text}, enemy ${negativeGift.text}`;
+  }
+
+  public onDown() {
+    const gameManager = GameManager.getInstance();
+    if (!this.positiveGift || !this.negativeGift) return;
+    gameManager.updateAllyBonus(this.positiveGift);
+    gameManager.updateEnemyBonus(this.negativeGift);
+    gameManager.setState("prepare");
   }
 }

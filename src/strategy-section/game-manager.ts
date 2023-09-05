@@ -84,6 +84,27 @@ export class GameManager {
 
     this.blockData[0] = rotatedBlockMetadata;
   }
+
+  public updateAllyBonus(gift: Gift) {
+    if (gift.effect === "addSolider") return; // Should not have this type
+    if (gift.effect === "fixGrids") {
+      // TODO: fix grids
+      return;
+    }
+    if (gift.effect === "attackRate") {
+      this.bonus.enemy[gift.effect] *= gift.value;
+      return;
+    }
+    this.bonus.ally[gift.effect] += gift.value;
+  }
+  public updateEnemyBonus(gift: Gift) {
+    if (gift.effect === "fixGrids") return; // Should not have this type
+    if (gift.effect === "attackRate") {
+      this.bonus.enemy[gift.effect] *= gift.value;
+      return;
+    }
+    this.bonus.enemy[gift.effect] += gift.value;
+  }
 }
 
 function randomPickNElements<T>(elements: Array<T>, count: number) {
