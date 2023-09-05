@@ -1,4 +1,4 @@
-import { Sprite, SpriteClass, Text, on } from "kontra";
+import { Button, Sprite, SpriteClass, Text, on } from "kontra";
 import { CTAButton } from "./cta-button";
 import { GameManager } from "../strategy-section/game-manager";
 import { EVENTS } from "../constants/events";
@@ -10,6 +10,8 @@ export class ResultBoard extends SpriteClass {
 
   protected title: Text;
   protected body: Text;
+  protected gift1: Button;
+  protected gift2: Button;
   protected confirmButton: ConfirmButton;
 
   constructor({ gameController }: { gameController: GameController }) {
@@ -28,8 +30,8 @@ export class ResultBoard extends SpriteClass {
     const board = Sprite({
       anchor: { x: 0.5, y: 0.5 },
       color: "#4b726e",
-      width: 348,
-      height: 200,
+      width: 368,
+      height: 260,
     });
 
     this.title = Text({
@@ -37,7 +39,7 @@ export class ResultBoard extends SpriteClass {
       color: "#d2c9a5",
       font: "24px Verdana",
       text: "Victory",
-      y: -64,
+      y: -86,
     });
     this.body = Text({
       anchor: { x: 0.5, y: 0 },
@@ -46,11 +48,20 @@ export class ResultBoard extends SpriteClass {
       textAlign: "center",
       text: "",
       lineHeight: 1.4,
-      y: -28,
+      y: -56,
     });
+    this.gift1 = new GiftButton(8);
+    this.gift2 = new GiftButton(36);
 
-    this.confirmButton = new ConfirmButton();
-    this.addChild([board, this.title, this.body, this.confirmButton]);
+    this.confirmButton = new ConfirmButton(86);
+    this.addChild([
+      board,
+      this.title,
+      this.body,
+      this.gift1,
+      this.gift2,
+      this.confirmButton,
+    ]);
 
     on(EVENTS.STATE_CHANGE, this.onStateChange.bind(this));
   }
@@ -59,7 +70,8 @@ export class ResultBoard extends SpriteClass {
     const wave = GameManager.getInstance().wave;
     if (state === "victory") {
       const aliveAllies = this.gameController.allies.filter((e) => e.isAlive());
-      this.body.text = `Conquered territory: ${wave}\nRemain ${aliveAllies.length} soldier(s)`;
+      this.body.text = `Conquered territory: ${wave}\nRemain ${aliveAllies.length} soldier(s). Select a gift below or skip to conquer next territory.`;
+      // TODO: random pick gift
     }
     if (state === "defeat") {
       const details = DetailsBox.getInstance();
@@ -71,12 +83,12 @@ export class ResultBoard extends SpriteClass {
 }
 
 class ConfirmButton extends CTAButton {
-  constructor() {
+  constructor(y: number) {
     super({
       colorScheme: { normal: "#8caba1", hover: "#6e8e82", pressed: "#6e8e82" },
     });
     this.text = "next";
-    this.y = 64;
+    this.y = y;
   }
 
   public onDown() {
@@ -87,5 +99,21 @@ class ConfirmButton extends CTAButton {
     if (gameManager.state === "defeat") {
       window.location.reload();
     }
+  }
+}
+
+class GiftButton extends CTAButton {
+  constructor(y: number) {
+    super({
+      colorScheme: {
+        normal: "transparent",
+        hover: "#6e8e82",
+        pressed: "#6e8e82",
+      },
+    });
+    this.y = y;
+    this.height = 24;
+    this.text = "ally +1 attack, enemy +1 health";
+    this.textNode.font = "14px Verdana";
   }
 }

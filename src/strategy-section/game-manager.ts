@@ -4,6 +4,14 @@ import { EVENTS } from "../constants/events";
 import { BlockMetadata } from "../types/block-metadata";
 import { TIMELINE_COL, TIMELINE_ROW } from "../constants/board";
 
+const INIT_BONUS: BonusInfo = {
+  attackUnit: 0,
+  attackRange: 0,
+  attackRate: 0,
+  health: 0,
+  addSolider: 0,
+};
+
 export class GameManager {
   private static instance: GameManager;
   public blockData: BlockMetadata[] = [];
@@ -11,6 +19,10 @@ export class GameManager {
   public state: GameState = "prologue";
   public wave: number = 1;
   public freeGridsCount: number = TIMELINE_COL * TIMELINE_ROW;
+  public bonus: Bonus = {
+    ally: INIT_BONUS,
+    enemy: INIT_BONUS,
+  };
 
   private constructor() {
     onKey("z", () => {
