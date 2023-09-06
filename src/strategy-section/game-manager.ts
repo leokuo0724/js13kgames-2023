@@ -4,13 +4,24 @@ import { EVENTS } from "../constants/events";
 import { BlockMetadata } from "../types/block-metadata";
 import { TIMELINE_COL, TIMELINE_ROW } from "../constants/board";
 
+const INIT_BONUS: BonusInfo = {
+  attackUnit: 0,
+  attackRange: 0,
+  attackRate: 1,
+  health: 0,
+  addSolider: 0,
+};
+
 export class GameManager {
   private static instance: GameManager;
   public blockData: BlockMetadata[] = [];
 
   public state: GameState = "prologue";
-  public wave: number = 1;
   public freeGridsCount: number = TIMELINE_COL * TIMELINE_ROW;
+  public bonus: Bonus = {
+    ally: INIT_BONUS,
+    enemy: INIT_BONUS,
+  };
 
   private constructor() {
     onKey("z", () => {
@@ -31,7 +42,6 @@ export class GameManager {
     this.state = state;
     emit(EVENTS.STATE_CHANGE, this.state);
     if (state === "prepare") this.reload();
-    if (state === "victory") this.wave++;
   }
 
   public reload() {
@@ -71,6 +81,27 @@ export class GameManager {
     } as BlockMetadata;
 
     this.blockData[0] = rotatedBlockMetadata;
+  }
+
+  public updateAllyBonus(gift: Gift) {
+    if (gift.effect === "addSolider") return; // Should not have this type
+    if (gift.effect === "fixGrids") {
+      emit(EVENTS.FIX_GRIDS, gift.value);
+      return;
+    }
+    if (gift.effect === "attackRate") {
+      this.bonus.ally[gift.effect] *= gift.value;
+      return;
+    }
+    this.bonus.ally[gift.effect] += gift.value;
+  }
+  public updateEnemyBonus(gift: Gift) {
+    if (gift.effect === "fixGrids") return; // Should not have this type
+    if (gift.effect === "attackRate") {
+      this.bonus.enemy[gift.effect] *= gift.value;
+      return;
+    }
+    this.bonus.enemy[gift.effect] += gift.value;
   }
 }
 

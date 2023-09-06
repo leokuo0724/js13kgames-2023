@@ -6,7 +6,12 @@ import { CTAButton } from "../ui/cta-button";
 export class BlockActionButton extends CTAButton {
   constructor() {
     super({
-      colorScheme: { normal: "#c77b58", hover: "#ae5d40", pressed: "#79444a" },
+      colorScheme: {
+        normal: "#c77b58",
+        hover: "#ae5d40",
+        pressed: "#79444a",
+        disabled: "#ab9b8e",
+      },
     });
     this.x = this.context.canvas.width - 88;
     this.y = this.context.canvas.height - 50;

@@ -1,5 +1,6 @@
 import { Sprite, SpriteClass, emit, track } from "kontra";
 import { EVENTS } from "../constants/events";
+import { GameManager } from "./game-manager";
 
 type GridProps = {
   x: number;
@@ -57,7 +58,14 @@ export class Grid extends SpriteClass {
   }
   setLocked() {
     this.locked = true;
-    this.color = "#d2c9a5";
+    this.color = "#4d3d44";
+    GameManager.getInstance().freeGridsCount--;
+  }
+  setUnlocked() {
+    this.locked = false;
+    this.color =
+      (this.coord[0] + this.coord[1]) % 2 === 0 ? "#ab9b8e" : "#847875";
+    GameManager.getInstance().freeGridsCount++;
   }
   reset() {
     this.covered.color = "transparent";

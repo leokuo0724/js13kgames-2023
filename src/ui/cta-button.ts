@@ -4,6 +4,7 @@ type CTAColorSchema = {
   normal: string;
   hover: string;
   pressed: string;
+  disabled: string;
 };
 
 export class CTAButton extends ButtonClass {
@@ -25,7 +26,7 @@ export class CTAButton extends ButtonClass {
 
   public draw() {
     this.context.fillStyle = this.disabled
-      ? "#ab9b8e"
+      ? this.colorScheme.disabled
       : this.pressed
       ? this.colorScheme.pressed
       : this.hovered
