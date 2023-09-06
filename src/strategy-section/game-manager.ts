@@ -7,7 +7,7 @@ import { TIMELINE_COL, TIMELINE_ROW } from "../constants/board";
 const INIT_BONUS: BonusInfo = {
   attackUnit: 0,
   attackRange: 0,
-  attackRate: 0,
+  attackRate: 1,
   health: 0,
   addSolider: 0,
 };

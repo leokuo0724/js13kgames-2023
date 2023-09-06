@@ -17,7 +17,7 @@ export class EuropeCastle extends BaseAttackUnit {
       health: 100,
       attackRange: -250,
       attackRate: 40,
-      attackUnit: 2,
+      attackUnit: 1,
     });
 
     this.main = new CustomSprite({

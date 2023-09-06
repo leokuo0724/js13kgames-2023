@@ -2,14 +2,14 @@
   "positive": [
     { "text": "+1 attack", "effect": "attackUnit", "value": 1 },
     { "text": "+10 attack range", "effect": "attackRange", "value": 10 },
-    { "text": "+5% attack rate", "effect": "attackRate", "value": 0.95 },
+    { "text": "+2% attack rate", "effect": "attackRate", "value": 0.98 },
     { "text": "+1 health", "effect": "health", "value": 1 },
     { "text": "repair 2 grids", "effect": "fixGrids", "value": 2 }
   ],
   "negative": [
     { "text": "+1 attack", "effect": "attackUnit", "value": 1 },
     { "text": "+10 attack range", "effect": "attackRange", "value": -10 },
-    { "text": "+5% attack rate", "effect": "attackRate", "value": 0.95 },
+    { "text": "+2% attack rate", "effect": "attackRate", "value": 0.98 },
     { "text": "+1 health", "effect": "health", "value": 1 },
     { "text": "+1 solider", "effect": "addSolider", "value": 1 }
   ]

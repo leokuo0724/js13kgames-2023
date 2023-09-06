@@ -38,8 +38,9 @@ export class HealthBar extends SpriteClass {
     this.addChild([innerBg, this.inner]);
   }
 
-  public reset() {
-    this.health = this.maxHealth;
+  public updateMaxHealth(maxHealth: number) {
+    this.maxHealth = maxHealth;
+    this.health = maxHealth;
     this.updateHealth();
   }
 

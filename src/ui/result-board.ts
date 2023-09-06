@@ -31,7 +31,7 @@ export class ResultBoard extends SpriteClass {
     const board = Sprite({
       anchor: { x: 0.5, y: 0.5 },
       color: "#4b726e",
-      width: 368,
+      width: 400,
       height: 260,
     });
 
@@ -89,6 +89,8 @@ export class ResultBoard extends SpriteClass {
       const details = DetailsBox.getInstance();
       this.title.text = "Defeat";
       this.body.text = `You have been conquered ${details.conquered} territory!\n Slayed ${details.slayed} enemies.`;
+      this.gift1.setDisabled();
+      this.gift2.setDisabled();
       this.confirmButton.text = "restart";
     }
   }
@@ -97,7 +99,12 @@ export class ResultBoard extends SpriteClass {
 class ConfirmButton extends CTAButton {
   constructor(y: number) {
     super({
-      colorScheme: { normal: "#8caba1", hover: "#6e8e82", pressed: "#6e8e82" },
+      colorScheme: {
+        normal: "#8caba1",
+        hover: "#6e8e82",
+        pressed: "#6e8e82",
+        disabled: "#ab9b8e",
+      },
     });
     this.text = "next";
     this.y = y;
@@ -124,6 +131,7 @@ class GiftButton extends CTAButton {
         normal: "transparent",
         hover: "#6e8e82",
         pressed: "#6e8e82",
+        disabled: "#4b726e",
       },
     });
     this.y = y;
@@ -135,6 +143,11 @@ class GiftButton extends CTAButton {
     this.positiveGift = positiveGift;
     this.negativeGift = negativeGift;
     this.text = `ally ${positiveGift.text}, enemy ${negativeGift.text}`;
+  }
+
+  public setDisabled() {
+    this.disabled = true;
+    this.text = "";
   }
 
   public onDown() {

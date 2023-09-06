@@ -2,6 +2,7 @@ import { GameObject, GameObjectClass, emit } from "kontra";
 import { HealthBar } from "../health-bar";
 import { GENERAL_SCALE } from "../../constants/assets";
 import { EVENTS } from "../../constants/events";
+import { GameManager } from "../../strategy-section/game-manager";
 
 type BaseSoliderConfig = {
   camp: UnitCamp;
@@ -23,9 +24,13 @@ export abstract class BaseAttackUnit
   public timer = 0;
   public moveSpeed: number;
   public moveRate: number;
+  private baseHealth: number;
   public health: number;
+  private baseAttackRange: number;
   public attackRange: number;
+  private baseAttackRate: number;
   public attackRate: number;
+  private baseAttackUnit: number;
   public attackUnit: number;
   public attackTarget: GameObject | null = null;
 
@@ -46,19 +51,35 @@ export abstract class BaseAttackUnit
     this.type = type;
     this.moveSpeed = moveSpeed;
     this.moveRate = moveRate;
+    this.baseHealth = health;
     this.health = health;
+    this.baseAttackRange = attackRange;
     this.attackRange = attackRange;
+    this.baseAttackRate = attackRate;
     this.attackRate = attackRate;
+    this.baseAttackUnit = attackUnit;
     this.attackUnit = attackUnit;
 
     this.healthBar = new HealthBar({ maxHealth: this.health, camp: this.camp });
     this.healthBar.setScale(1 / GENERAL_SCALE);
     this.setScale(GENERAL_SCALE);
     this.placeHealthBar();
+
+    this.updateAbilities();
   }
 
   protected abstract placeHealthBar(): void;
   protected abstract attackAnim(): void;
+
+  private updateAbilities() {
+    const { bonus } = GameManager.getInstance();
+    console.log(bonus);
+    this.health = this.baseHealth + bonus[this.camp].health;
+    this.healthBar.updateMaxHealth(this.health);
+    this.attackRange = this.baseAttackRange + bonus[this.camp].attackRange;
+    this.attackRate = this.baseAttackRate * bonus[this.camp].attackRate;
+    this.attackUnit = this.baseAttackUnit + bonus[this.camp].attackUnit;
+  }
 
   public takeDamage(damage: number) {
     if (this.healthBar.health <= 0) return;
@@ -76,7 +97,7 @@ export abstract class BaseAttackUnit
       // Should not reset castle position
       this.x = this.camp === "ally" ? 0 : this.context.canvas.width;
     }
-    this.healthBar.reset();
+    this.updateAbilities();
     this.timer = 0;
     this.attackTarget = null;
   }
