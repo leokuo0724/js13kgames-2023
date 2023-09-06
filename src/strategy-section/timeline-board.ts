@@ -60,7 +60,6 @@ export class TimelineBoard extends Board {
       if (grid.isScanned || blockIds.has(grid.occupiedId)) continue;
       if (!grid.occupiedId && !grid.occupiedUnitType) {
         grid.setLocked();
-        GameManager.getInstance().freeGridsCount--;
         continue;
       }
       blockIds.add(grid.occupiedId);
