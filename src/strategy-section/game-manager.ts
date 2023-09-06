@@ -88,7 +88,7 @@ export class GameManager {
   public updateAllyBonus(gift: Gift) {
     if (gift.effect === "addSolider") return; // Should not have this type
     if (gift.effect === "fixGrids") {
-      // TODO: fix grids
+      emit(EVENTS.FIX_GRIDS, gift.value);
       return;
     }
     if (gift.effect === "attackRate") {

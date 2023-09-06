@@ -59,6 +59,11 @@ export class Grid extends SpriteClass {
     this.locked = true;
     this.color = "#d2c9a5";
   }
+  setUnlocked() {
+    this.locked = false;
+    this.color =
+      (this.coord[0] + this.coord[1]) % 2 === 0 ? "#ab9b8e" : "#847875";
+  }
   reset() {
     this.covered.color = "transparent";
     this.isScanned = false;

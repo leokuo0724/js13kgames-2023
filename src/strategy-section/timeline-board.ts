@@ -37,6 +37,7 @@ export class TimelineBoard extends Board {
     });
     on(EVENTS.STATE_CHANGE, this.onStateChange.bind(this));
     on(EVENTS.COL_SCANNED, this.scanGridsCol.bind(this));
+    on(EVENTS.FIX_GRIDS, this.fixGrids.bind(this));
   }
 
   protected onStateChange(state: GameState) {
@@ -147,6 +148,17 @@ export class TimelineBoard extends Board {
     });
 
     gameManager.shiftBlock();
+  }
+
+  protected fixGrids(count: number) {
+    let counter = 0;
+    for (const grid of this.grids.flat()) {
+      if (counter === count) break;
+      if (grid.locked) {
+        grid.setUnlocked();
+        counter++;
+      }
+    }
   }
 }
 
