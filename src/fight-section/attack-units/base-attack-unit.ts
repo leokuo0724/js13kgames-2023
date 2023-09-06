@@ -73,11 +73,12 @@ export abstract class BaseAttackUnit
 
   private updateAbilities() {
     const { bonus } = GameManager.getInstance();
-    console.log(bonus);
     this.health = this.baseHealth + bonus[this.camp].health;
     this.healthBar.updateMaxHealth(this.health);
     this.attackRange = this.baseAttackRange + bonus[this.camp].attackRange;
-    this.attackRate = this.baseAttackRate * bonus[this.camp].attackRate;
+    this.attackRate = Math.floor(
+      this.baseAttackRate * bonus[this.camp].attackRate
+    );
     this.attackUnit = this.baseAttackUnit + bonus[this.camp].attackUnit;
   }
 

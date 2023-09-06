@@ -1,6 +1,7 @@
 import { GameObjectClass, Text, TextClass, on } from "kontra";
 import { EVENTS } from "../constants/events";
 import { GameManager } from "../strategy-section/game-manager";
+import { DetailsBox } from "./details-box";
 
 const TEXT_CONFIG = {
   color: "#4b726e",
@@ -57,7 +58,9 @@ export class MainBanner extends GameObjectClass {
       ? (this.ttl = Infinity)
       : (this.ttl = 0);
     if (state === "prepare") {
-      this.title.fadeOutInText(`Wave ${GameManager.getInstance().wave}`);
+      this.title.fadeOutInText(
+        `Wave ${DetailsBox.getInstance().conquered + 1}`
+      );
       this.body.fadeOutInText(
         "Place blocks into board as possible as you can\nZ: rotate the block"
       );

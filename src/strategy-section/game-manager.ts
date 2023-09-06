@@ -17,7 +17,6 @@ export class GameManager {
   public blockData: BlockMetadata[] = [];
 
   public state: GameState = "prologue";
-  public wave: number = 1;
   public freeGridsCount: number = TIMELINE_COL * TIMELINE_ROW;
   public bonus: Bonus = {
     ally: INIT_BONUS,
@@ -43,7 +42,6 @@ export class GameManager {
     this.state = state;
     emit(EVENTS.STATE_CHANGE, this.state);
     if (state === "prepare") this.reload();
-    if (state === "victory") this.wave++;
   }
 
   public reload() {
@@ -92,7 +90,7 @@ export class GameManager {
       return;
     }
     if (gift.effect === "attackRate") {
-      this.bonus.enemy[gift.effect] *= gift.value;
+      this.bonus.ally[gift.effect] *= gift.value;
       return;
     }
     this.bonus.ally[gift.effect] += gift.value;

@@ -68,10 +68,10 @@ export class ResultBoard extends SpriteClass {
   }
 
   protected onStateChange(state: GameState) {
-    const wave = GameManager.getInstance().wave;
+    const details = DetailsBox.getInstance();
     if (state === "victory") {
       const aliveAllies = this.gameController.allies.filter((e) => e.isAlive());
-      this.body.text = `Conquered territory: ${wave}. Remain ${aliveAllies.length} soldier(s).\nSelect a gift below or skip to conquer next territory.`;
+      this.body.text = `Conquered territory: ${details.conquered}. Remain ${aliveAllies.length} soldier(s).\nSelect a gift below or skip to conquer next territory.`;
       // Pick gifts
       const { negative, positive } = giftMetadata;
       const positiveGift1 =
@@ -86,7 +86,6 @@ export class ResultBoard extends SpriteClass {
       this.gift2.setGifts(positiveGift2, negativeGift2);
     }
     if (state === "defeat") {
-      const details = DetailsBox.getInstance();
       this.title.text = "Defeat";
       this.body.text = `You have been conquered ${details.conquered} territory!\n Slayed ${details.slayed} enemies.`;
       this.gift1.setDisabled();

@@ -45,16 +45,24 @@ export class GameController {
   }
 
   protected onColScanned(col: number) {
-    console.log(col);
     const types: UnitType[] = [
       "infantry",
       "infantry",
+      "infantry",
+      "guarder",
+      "guarder",
       "archer",
       "cavalry",
-      "guarder",
     ];
     const randomIndex = Math.floor(Math.random() * types.length);
     this.spawnAttackUnit("enemy", types[randomIndex]);
+    const extraSoliderCount = GameManager.getInstance().bonus.enemy.addSolider;
+    if (col === 10 && extraSoliderCount > 0) {
+      for (let i = 0; i < extraSoliderCount; i++) {
+        const randomIndex = Math.floor(Math.random() * types.length);
+        this.spawnAttackUnit("enemy", types[randomIndex]);
+      }
+    }
   }
 
   protected spawnAttackUnit(camp: UnitCamp, unitType: UnitType) {
