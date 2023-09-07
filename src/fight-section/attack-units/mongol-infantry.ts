@@ -21,17 +21,19 @@ export class MongolInfantry extends BaseAttackUnit {
     });
     this.shield = new CustomSprite({
       assetId: ASSET_IDS.SHIELD,
-      x: 3,
-      y: 4,
+      x: 12,
+      y: -18,
+      anchor: { x: 0.5, y: 0.5 },
     });
     this.main = new CustomSprite({
       assetId: ASSET_IDS.MONGOL,
+      anchor: { x: 0.5, y: 1 },
     });
     this.sword = new CustomSprite({
       assetId: ASSET_IDS.SWORD,
-      x: 1,
-      y: 10,
-      anchor: { x: 0, y: 0.07 },
+      x: -10,
+      y: -18,
+      anchor: { x: 0, y: 1 },
       attack: function () {
         this.rotation! = 0.4;
         setTimeout(() => (this.rotation! = 0.8), 25);
@@ -41,11 +43,10 @@ export class MongolInfantry extends BaseAttackUnit {
     });
 
     this.addChild([this.shield, this.main, this.sword, this.healthBar]);
-    this.y = this.context.canvas.height / 3 - 2;
   }
 
   protected placeHealthBar() {
-    this.healthBar.y = 12.8;
+    this.healthBar.x = -12;
   }
   protected attackAnim() {
     this.sword.attack();

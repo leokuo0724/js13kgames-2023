@@ -20,14 +20,14 @@ export class MongolGuarder extends BaseAttackUnit {
     });
 
     this.shell = new CustomSprite({
-      x: 3.5,
-      y: 2,
+      x: 14,
+      y: 8,
       assetId: ASSET_IDS.SHELL,
       attack: function () {
-        this.x! += 2;
-        setTimeout(() => (this.x! -= 1), 25);
-        setTimeout(() => (this.x! -= 0.5), 50);
-        setTimeout(() => (this.x! -= 0.5), 100);
+        this.x! += 6;
+        setTimeout(() => (this.x! -= 3), 25);
+        setTimeout(() => (this.x! -= 2), 50);
+        setTimeout(() => (this.x! -= 1), 100);
       },
     });
     this.main = new CustomSprite({
@@ -35,8 +35,8 @@ export class MongolGuarder extends BaseAttackUnit {
     });
     this.fist = new CustomSprite({
       assetId: ASSET_IDS.FIST,
-      x: 1,
-      y: 7,
+      x: 3,
+      y: 27,
     });
 
     this.addChild([this.shell, this.main, this.healthBar, this.fist]);
@@ -44,7 +44,7 @@ export class MongolGuarder extends BaseAttackUnit {
   }
 
   protected placeHealthBar() {
-    this.healthBar.y = 12.8;
+    this.healthBar.y = 52;
   }
   protected attackAnim() {
     this.shell.attack();

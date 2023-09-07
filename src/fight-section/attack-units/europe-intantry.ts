@@ -21,21 +21,22 @@ export class EuropeInfantry extends BaseAttackUnit {
     });
     this.shield = new CustomSprite({
       assetId: ASSET_IDS.SHIELD,
-      x: 5,
-      y: 3,
+      x: -12,
+      y: -18,
       scaleX: -1,
+      anchor: { x: 0.5, y: 0.5 },
     });
     this.main = new CustomSprite({
-      x: 8,
       assetId: ASSET_IDS.EUROPE,
       scaleX: -1,
+      anchor: { x: 0.5, y: 1 },
     });
     this.sword = new CustomSprite({
       assetId: ASSET_IDS.SWORD,
-      x: 7.5,
-      y: 6,
+      x: 10,
+      y: -18,
       scaleX: -1,
-      anchor: { x: 0, y: 0.05 },
+      anchor: { x: 0, y: 1 },
       attack: function () {
         this.rotation! = -0.4;
         setTimeout(() => (this.rotation! = -0.8), 25);
@@ -46,11 +47,10 @@ export class EuropeInfantry extends BaseAttackUnit {
 
     this.addChild([this.shield, this.main, this.sword, this.healthBar]);
     this.x = this.context.canvas.width;
-    this.y = this.context.canvas.height / 2 - 94;
   }
 
   protected placeHealthBar() {
-    this.healthBar.y = 12;
+    this.healthBar.x = -18;
   }
 
   protected attackAnim() {

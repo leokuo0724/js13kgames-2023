@@ -23,10 +23,10 @@ export class MongolGunner extends BaseAttackUnit {
       assetId: ASSET_IDS.MONGOL,
     });
     this.gun = new CustomSprite({
-      x: 0.5,
-      y: 8.5,
+      x: 3,
+      y: 32,
       assetId: ASSET_IDS.GUN,
-      anchor: { x: 0, y: 0.01 },
+      anchor: { x: 0, y: 1 },
       attack: function () {
         this.x! -= 1;
         this.rotation! -= 0.3;
@@ -50,14 +50,9 @@ export class MongolGunner extends BaseAttackUnit {
   }
 
   protected placeHealthBar() {
-    this.healthBar.y = 12.8;
+    this.healthBar.y = 52;
   }
   protected attackAnim() {
     this.gun.attack();
-  }
-
-  update() {
-    super.update();
-    // this.gun.attack();
   }
 }
