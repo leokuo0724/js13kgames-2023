@@ -58,7 +58,7 @@ export class Grid extends SpriteClass {
   }
   setLocked() {
     this.locked = true;
-    this.color = "#4d3d44";
+    this.color = "#79444a";
     GameManager.getInstance().freeGridsCount--;
   }
   setUnlocked() {
