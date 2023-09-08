@@ -137,10 +137,6 @@ export abstract class BaseAttackUnit
       this.x += this.moveSpeed;
       this.jump();
     }
-    if (this.timer % this.attackRate === 0) {
-      this.jump();
-      this.attack();
-    }
     if (this.attackTarget) {
       if (this.timer % this.attackRate === 0) {
         this.jump();

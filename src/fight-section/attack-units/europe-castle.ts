@@ -25,22 +25,21 @@ export class EuropeCastle extends BaseAttackUnit {
       anchor: { x: 0.5, y: 1 },
     });
     this.particle = Sprite({
-      x: 5,
-      y: 11,
-      width: 1,
-      height: 1,
+      y: -60,
+      width: 5,
+      height: 5,
       color: "#4b3d44",
       opacity: 0,
+      anchor: { x: 0.5, y: 0.5 },
       reset: () => {
-        this.particle.x = 5;
-        this.particle.y = 11;
+        this.particle.x = 0;
+        this.particle.y = -60;
         this.particle.opacity = 0;
       },
     });
 
     this.addChild([this.main, this.healthBar, this.particle]);
     this.x = this.context.canvas.width - 44;
-    this.ttl = 0;
   }
 
   protected placeHealthBar() {
@@ -50,8 +49,9 @@ export class EuropeCastle extends BaseAttackUnit {
   protected attackAnim() {
     if (!this.attackTarget) return;
     const particleRect = getWorldRect(this.particle);
-    const deltaX = particleRect.x - this.attackTarget.x - 24;
-    const deltaY = particleRect.y - this.attackTarget.y - 24;
+    const targetRect = getWorldRect(this.attackTarget);
+    const deltaX = particleRect.x - targetRect.x;
+    const deltaY = particleRect.y - (targetRect.y - 40);
     const fly = () => {
       this.particle.x -= deltaX / 3 / GENERAL_SCALE;
       this.particle.y -= deltaY / 3 / GENERAL_SCALE;
