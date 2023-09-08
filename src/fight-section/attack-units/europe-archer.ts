@@ -21,21 +21,21 @@ export class EuropeArcher extends BaseAttackUnit {
     });
     this.hand = new CustomSprite({
       assetId: ASSET_IDS.FIST,
-      x: 3,
-      y: 6,
+      x: -10,
+      y: -20,
       scaleX: -1,
     });
     this.main = new CustomSprite({
-      x: 8,
       assetId: ASSET_IDS.EUROPE,
       scaleX: -1,
+      anchor: { x: 0.5, y: 1 },
     });
     this.bow = new CustomSprite({
       assetId: ASSET_IDS.BOW,
-      x: 7,
-      y: 4,
+      x: 10,
+      y: -18,
       scaleX: -1,
-      anchor: { x: 0, y: 0.01 },
+      anchor: { x: 0, y: 0.5 },
       attack: function () {
         this.x! += 1;
         this.rotation! += 0.3;
@@ -56,11 +56,10 @@ export class EuropeArcher extends BaseAttackUnit {
 
     this.addChild([this.hand, this.main, this.bow, this.healthBar]);
     this.x = this.context.canvas.width;
-    this.y = this.context.canvas.height / 2 - 94;
   }
 
   protected placeHealthBar() {
-    this.healthBar.y = 12;
+    this.healthBar.x = -18;
   }
 
   protected attackAnim() {

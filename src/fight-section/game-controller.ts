@@ -22,8 +22,8 @@ export class GameController {
   constructor() {
     const castle = new EuropeCastle();
     this.enemies.push(castle);
-    this.enemies.push(new EuropeCavalry());
-    this.allies.push(new MongolCavalry());
+    this.enemies.push(new EuropeArcher());
+    this.allies.push(new MongolArcher());
 
     on(EVENTS.COL_SCANNED, this.onColScanned.bind(this));
     on(EVENTS.SPAWN_ALLY, (unitType: UnitType) => {
