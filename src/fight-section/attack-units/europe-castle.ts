@@ -22,6 +22,7 @@ export class EuropeCastle extends BaseAttackUnit {
 
     this.main = new CustomSprite({
       assetId: ASSET_IDS.CASTLE,
+      anchor: { x: 0.5, y: 1 },
     });
     this.particle = Sprite({
       x: 5,
@@ -38,14 +39,12 @@ export class EuropeCastle extends BaseAttackUnit {
     });
 
     this.addChild([this.main, this.healthBar, this.particle]);
-    this.y = this.context.canvas.height / 3 - 116;
-    this.x = this.context.canvas.width - 88;
+    this.x = this.context.canvas.width - 44;
     this.ttl = 0;
   }
 
   protected placeHealthBar() {
-    this.healthBar.x = 2;
-    this.healthBar.y = 27;
+    this.healthBar.x = -12;
   }
 
   protected attackAnim() {
