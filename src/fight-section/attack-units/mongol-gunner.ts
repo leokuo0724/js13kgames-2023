@@ -21,10 +21,11 @@ export class MongolGunner extends BaseAttackUnit {
 
     this.main = new CustomSprite({
       assetId: ASSET_IDS.MONGOL,
+      anchor: { x: 0.5, y: 1 },
     });
     this.gun = new CustomSprite({
-      x: 3,
-      y: 32,
+      x: -10,
+      y: -16,
       assetId: ASSET_IDS.GUN,
       anchor: { x: 0, y: 1 },
       attack: function () {
@@ -46,11 +47,10 @@ export class MongolGunner extends BaseAttackUnit {
     });
 
     this.addChild([this.main, this.gun, this.healthBar]);
-    this.y = this.context.canvas.height / 3 - 2;
   }
 
   protected placeHealthBar() {
-    this.healthBar.y = 52;
+    this.healthBar.x = -12;
   }
   protected attackAnim() {
     this.gun.attack();
