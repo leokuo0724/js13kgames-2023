@@ -20,10 +20,11 @@ export class EuropeGuarder extends BaseAttackUnit {
     });
 
     this.shell = new CustomSprite({
-      x: 4.5,
-      y: 1,
+      x: -6,
+      y: -18,
       scaleX: -1,
       assetId: ASSET_IDS.SHELL,
+      anchor: { x: 0.5, y: 0.5 },
       attack: function () {
         this.x! -= 2;
         setTimeout(() => (this.x! += 1), 25);
@@ -35,21 +36,21 @@ export class EuropeGuarder extends BaseAttackUnit {
       x: 8,
       assetId: ASSET_IDS.EUROPE,
       scaleX: -1,
+      anchor: { x: 0.5, y: 1 },
     });
     this.fist = new CustomSprite({
       assetId: ASSET_IDS.FIST,
-      x: 7,
-      y: 6,
+      x: 18,
+      y: -21,
       scaleX: -1,
     });
 
     this.addChild([this.shell, this.main, this.healthBar, this.fist]);
     this.x = this.context.canvas.width;
-    this.y = this.context.canvas.height / 2 - 94;
   }
 
   protected placeHealthBar() {
-    this.healthBar.y = 12.8;
+    this.healthBar.x = -10;
   }
   protected attackAnim() {
     this.shell.attack();
