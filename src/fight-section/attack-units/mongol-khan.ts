@@ -3,6 +3,7 @@ import { MongolCavalry } from "./mongol-cavalry";
 export class MongolKhan extends MongolCavalry {
   constructor() {
     super({
+      camp: "ally",
       health: 50,
       attackUnit: 10,
       attackRange: 120,

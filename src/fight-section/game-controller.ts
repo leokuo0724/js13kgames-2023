@@ -3,13 +3,9 @@ import { EVENTS } from "../constants/events";
 import { MongolInfantry } from "./attack-units/mongol-infantry";
 import { MongolArcher } from "./attack-units/mongol-archer";
 import { BaseAttackUnit } from "./attack-units/base-attack-unit";
-import { EuropeInfantry } from "./attack-units/europe-intantry";
-import { EuropeArcher } from "./attack-units/europe-archer";
 import { GameManager } from "../strategy-section/game-manager";
 import { MongolCavalry } from "./attack-units/mongol-cavalry";
-import { EuropeCavalry } from "./attack-units/europe-cavalry";
 import { MongolGuarder } from "./attack-units/mongol-guarder";
-import { EuropeGuarder } from "./attack-units/europe-guarder";
 import { MongolGunner } from "./attack-units/mongol-gunner";
 import { EuropeCastle } from "./attack-units/europe-castle";
 import { DetailsBox } from "../ui/details-box";
@@ -150,13 +146,29 @@ export class GameController {
 function getAttackUnit(camp: UnitCamp, unitType: UnitType) {
   switch (unitType) {
     case "archer":
-      return camp === "ally" ? new MongolArcher() : new EuropeArcher();
+      return camp === "ally"
+        ? new MongolArcher({ camp: "ally" })
+        : new MongolArcher({ camp: "enemy" });
     case "infantry":
-      return camp === "ally" ? new MongolInfantry({}) : new EuropeInfantry({});
+      return camp === "ally"
+        ? new MongolInfantry({ camp: "ally" })
+        : new MongolInfantry({
+            camp: "enemy",
+            moveSpeed: -5,
+            attackRange: -80,
+          });
     case "cavalry":
-      return camp === "ally" ? new MongolCavalry({}) : new EuropeCavalry();
+      return camp === "ally"
+        ? new MongolCavalry({ camp: "ally" })
+        : new MongolCavalry({
+            camp: "enemy",
+            moveSpeed: -12,
+            attackRange: -80,
+          });
     case "guarder":
-      return camp === "ally" ? new MongolGuarder() : new EuropeGuarder();
+      return camp === "ally"
+        ? new MongolGuarder({ camp: "ally" })
+        : new MongolGuarder({ camp: "enemy" });
     case "gunner":
       if (camp === "enemy") throw new Error();
       return new MongolGunner();

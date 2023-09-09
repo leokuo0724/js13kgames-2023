@@ -8,54 +8,60 @@ export class MongolArcher extends BaseAttackUnit {
   protected hand: Sprite;
   protected bow: Sprite;
 
-  constructor() {
+  constructor({ camp }: { camp: UnitCamp }) {
+    const isAlly = camp === "ally";
     super({
-      camp: "ally",
+      camp,
       type: "archer",
-      moveSpeed: 10,
+      moveSpeed: isAlly ? 10 : -5,
       moveRate: 10,
       health: 8,
-      attackRange: 200,
+      attackRange: isAlly ? 200 : -200,
       attackRate: 100,
-      attackUnit: 1.5,
+      attackUnit: isAlly ? 1.5 : 1,
     });
     this.hand = new CustomSprite({
       assetId: ASSET_IDS.FIST,
-      x: 10,
+      x: isAlly ? 10 : -10,
       y: -20,
+      scaleX: isAlly ? 1 : -1,
     });
     this.main = new CustomSprite({
-      assetId: ASSET_IDS.MONGOL,
+      assetId: isAlly ? ASSET_IDS.MONGOL : ASSET_IDS.EUROPE,
+      scaleX: isAlly ? 1 : -1,
       anchor: { x: 0.5, y: 1 },
     });
     this.bow = new CustomSprite({
       assetId: ASSET_IDS.BOW,
-      x: -10,
+      x: isAlly ? -10 : 10,
       y: -18,
+      scaleX: isAlly ? 1 : -1,
       anchor: { x: 0, y: 0.5 },
+      attackAnim: function (x: number, rotation: number) {
+        const isAlly = this.camp === "ally";
+        isAlly ? (this.x! += x) : (this.x! -= x);
+        isAlly ? (this.rotation! += rotation) : (this.rotation! -= rotation);
+      },
       attack: function () {
-        this.x! -= 1;
-        this.rotation! -= 0.3;
+        this.attackAnim(-1, -0.3);
         setTimeout(() => {
-          this.x! -= 0.5;
-          this.rotation! += 0.1;
+          this.attackAnim(-0.5, 0.1);
         }, 25);
         setTimeout(() => {
-          this.x! += 0.5;
-          this.rotation! += 0.1;
+          this.attackAnim(0.5, 0.1);
         }, 50);
         setTimeout(() => {
-          this.x! += 1;
-          this.rotation! += 0.1;
+          this.attackAnim(1, 0.1);
         }, 100);
       },
     });
 
     this.addChild([this.hand, this.main, this.bow, this.healthBar]);
+    this.x = isAlly ? 0 : this.context.canvas.width;
   }
 
   protected placeHealthBar() {
-    this.healthBar.x = -12;
+    this.healthBar.x = this.camp === "ally" ? -12 : -18;
   }
 
   protected attackAnim() {

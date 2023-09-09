@@ -4,6 +4,7 @@ import { MongolInfantry } from "./mongol-infantry";
 
 export class MongolCavalry extends MongolInfantry {
   constructor({
+    camp,
     moveSpeed = 12,
     moveRate = 8,
     health = 12,
@@ -11,6 +12,7 @@ export class MongolCavalry extends MongolInfantry {
     attackRate = 60,
     attackUnit = 1.5,
   }: {
+    camp: UnitCamp;
     moveSpeed?: number;
     moveRate?: number;
     health?: number;
@@ -18,12 +20,22 @@ export class MongolCavalry extends MongolInfantry {
     attackRate?: number;
     attackUnit?: number;
   }) {
-    super({ moveSpeed, moveRate, health, attackRange, attackRate, attackUnit });
+    const isAlly = camp === "ally";
+    super({
+      camp,
+      moveSpeed,
+      moveRate,
+      health,
+      attackRange,
+      attackRate,
+      attackUnit,
+    });
     this.type = "cavalry";
 
     this.horse = new CustomSprite({
       assetId: ASSET_IDS.HORSE,
-      x: 9,
+      x: isAlly ? 9 : -9,
+      scaleX: isAlly ? 1 : -1,
       anchor: { x: 0.5, y: 1 },
     });
     this.children.forEach((child) => {
