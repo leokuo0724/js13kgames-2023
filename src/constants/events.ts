@@ -7,6 +7,5 @@ export const EVENTS = {
   SPAWN_ALLY: "spawn-ally",
   COL_SCANNED: "col-scanned",
   FINAL_COL_SCANNED: "final-col-scanned",
-  DEFEAT_ENEMY: "defeat-enemy",
   FIX_GRIDS: "fix-grids",
 };

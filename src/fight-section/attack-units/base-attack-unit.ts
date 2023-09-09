@@ -3,6 +3,7 @@ import { HealthBar } from "../health-bar";
 import { GENERAL_SCALE } from "../../constants/assets";
 import { EVENTS } from "../../constants/events";
 import { GameManager } from "../../strategy-section/game-manager";
+import { DetailsBox } from "../../ui/details-box";
 
 type BaseSoliderConfig = {
   camp: UnitCamp;
@@ -84,13 +85,31 @@ export abstract class BaseAttackUnit
     this.attackUnit = this.baseAttackUnit + bonus[this.camp].attackUnit;
   }
 
+  private calculateScore() {
+    const { bonus } = GameManager.getInstance();
+    const healthScore = this.baseHealth + bonus[this.camp].health;
+    const attackRangeScore = Math.abs(
+      this.baseAttackRange + bonus[this.camp].attackRange
+    );
+    const attackUnitScore = this.baseAttackUnit + bonus[this.camp].attackUnit;
+    const attackRateScoreRatio =
+      60 / Math.floor(this.baseAttackRate * bonus[this.camp].attackRate);
+    return Math.round(
+      (healthScore + attackRangeScore + attackUnitScore) * attackRateScoreRatio
+    );
+  }
+
   public takeDamage(damage: number) {
     if (this.healthBar.health <= 0) return;
     const isDead = this.healthBar.takeDamage(damage);
-    if (isDead) {
-      this.ttl = 0;
-      if (this.camp === "enemy") {
-        emit(EVENTS.DEFEAT_ENEMY, this.type);
+    if (!isDead) return;
+
+    this.ttl = 0;
+    if (this.camp === "enemy") {
+      const score = this.calculateScore();
+      DetailsBox.getInstance().updateScore(score);
+      if (this.type === "castle") {
+        DetailsBox.getInstance().updateConquered();
       }
     }
   }

@@ -8,8 +8,8 @@ export class DetailsBox extends GameObjectClass {
   private static instance: DetailsBox;
   public conquered = 0;
   protected conqueredText: Text;
-  public slayed = 0;
-  protected slayedText: Text;
+  public score = 0;
+  protected scoreText: Text;
 
   private constructor() {
     super();
@@ -33,7 +33,7 @@ export class DetailsBox extends GameObjectClass {
       x: 72,
       y: 1,
     });
-    this.slayedText = Text({
+    this.scoreText = Text({
       color: "#4b726e",
       font: "20px Verdana",
       text: "0",
@@ -41,11 +41,9 @@ export class DetailsBox extends GameObjectClass {
       y: 8,
     });
 
-    this.addChild([castleIcon, scoreIcon, this.conqueredText, this.slayedText]);
+    this.addChild([castleIcon, scoreIcon, this.conqueredText, this.scoreText]);
     this.x = 12;
     this.y = 12;
-
-    on(EVENTS.DEFEAT_ENEMY, this.onDefeatEnemy.bind(this));
   }
 
   static getInstance() {
@@ -55,18 +53,17 @@ export class DetailsBox extends GameObjectClass {
     return DetailsBox.instance;
   }
 
-  protected onDefeatEnemy(type: UnitType) {
-    if (type === "castle") {
-      this.conquered++;
-      this.conqueredText.text = this.conquered.toString();
-    } else {
-      this.slayed++;
-      this.slayedText.text = this.slayed.toString();
-    }
+  public updateScore(score: number) {
+    this.score += score;
+    this.scoreText.text = this.score.toString();
+  }
+  public updateConquered() {
+    this.conquered++;
+    this.conqueredText.text = this.conquered.toString();
   }
 
   public render() {
-    // if (GameManager.getInstance().state === "prologue") return;
+    if (GameManager.getInstance().state === "prologue") return;
     super.render();
   }
 }
