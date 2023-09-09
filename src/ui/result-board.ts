@@ -1,12 +1,4 @@
-import {
-  Button,
-  Sprite,
-  SpriteClass,
-  Text,
-  getStoreItem,
-  on,
-  setStoreItem,
-} from "kontra";
+import { Button, Sprite, SpriteClass, Text, on } from "kontra";
 import { CTAButton } from "./cta-button";
 import { GameManager } from "../strategy-section/game-manager";
 import { EVENTS } from "../constants/events";
@@ -105,9 +97,9 @@ export class ResultBoard extends SpriteClass {
       this.gift2.setGifts(positiveGift2, negativeGift2);
     }
     if (state === "defeat") {
-      const bestScore = Number(getStoreItem("_bs") ?? 0);
+      const bestScore = Number(localStorage.getItem("_bs") ?? 0);
       const higherScore = Math.max(details.score, bestScore);
-      setStoreItem("_bs", higherScore);
+      localStorage.setItem("_bs", higherScore.toString());
 
       this.title.text = "Defeat";
       this.body.text = `You have been conquered ${details.conquered} territory!`;
