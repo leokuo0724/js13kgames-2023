@@ -15,4 +15,4 @@ export const ASSET_IDS = {
 } as const;
 export type AssetId = (typeof ASSET_IDS)[keyof typeof ASSET_IDS];
 
-export const GENERAL_SCALE = 8;
+export const GENERAL_SCALE = 2;

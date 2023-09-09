@@ -3,7 +3,6 @@ import { EVENTS } from "../constants/events";
 import { MongolInfantry } from "./attack-units/mongol-infantry";
 import { MongolArcher } from "./attack-units/mongol-archer";
 import { BaseAttackUnit } from "./attack-units/base-attack-unit";
-import { EuropeCastle } from "./attack-units/europe-castle";
 import { EuropeInfantry } from "./attack-units/europe-intantry";
 import { EuropeArcher } from "./attack-units/europe-archer";
 import { GameManager } from "../strategy-section/game-manager";
@@ -12,6 +11,7 @@ import { EuropeCavalry } from "./attack-units/europe-cavalry";
 import { MongolGuarder } from "./attack-units/mongol-guarder";
 import { EuropeGuarder } from "./attack-units/europe-guarder";
 import { MongolGunner } from "./attack-units/mongol-gunner";
+import { EuropeCastle } from "./attack-units/europe-castle";
 
 export class GameController {
   public allies: BaseAttackUnit[] = [];
@@ -20,9 +20,6 @@ export class GameController {
   protected finalColScanned = false;
 
   constructor() {
-    const castle = new EuropeCastle();
-    this.enemies.push(castle);
-
     on(EVENTS.COL_SCANNED, this.onColScanned.bind(this));
     on(EVENTS.SPAWN_ALLY, (unitType: UnitType) => {
       this.spawnAttackUnit("ally", unitType);
@@ -40,7 +37,12 @@ export class GameController {
       this.enemies.forEach((e) => e.stop());
     }
     if (state === "fight") {
-      this.enemies.find((e) => e.type === "castle")?.respawn();
+      const castle = this.enemies.find((e) => e.type === "castle");
+      if (!castle) {
+        this.enemies.push(new EuropeCastle());
+      } else {
+        castle.respawn();
+      }
     }
   }
 

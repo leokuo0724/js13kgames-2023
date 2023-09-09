@@ -62,8 +62,10 @@ export abstract class BaseAttackUnit
 
     this.healthBar = new HealthBar({ maxHealth: this.health, camp: this.camp });
     this.healthBar.setScale(1 / GENERAL_SCALE);
+    this.healthBar.y = 4;
     this.setScale(GENERAL_SCALE);
     this.placeHealthBar();
+    this.y = this.context.canvas.height / 2 - 6;
 
     this.updateAbilities();
   }

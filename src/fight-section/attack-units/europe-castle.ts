@@ -15,44 +15,43 @@ export class EuropeCastle extends BaseAttackUnit {
       moveSpeed: 0,
       moveRate: 0,
       health: 100,
-      attackRange: -250,
+      attackRange: -300,
       attackRate: 40,
       attackUnit: 1,
     });
 
     this.main = new CustomSprite({
       assetId: ASSET_IDS.CASTLE,
+      anchor: { x: 0.5, y: 1 },
     });
     this.particle = Sprite({
-      x: 5,
-      y: 11,
-      width: 1,
-      height: 1,
+      y: -60,
+      width: 5,
+      height: 5,
       color: "#4b3d44",
       opacity: 0,
+      anchor: { x: 0.5, y: 0.5 },
       reset: () => {
-        this.particle.x = 5;
-        this.particle.y = 11;
+        this.particle.x = 0;
+        this.particle.y = -60;
         this.particle.opacity = 0;
       },
     });
 
     this.addChild([this.main, this.healthBar, this.particle]);
-    this.y = this.context.canvas.height / 3 - 116;
-    this.x = this.context.canvas.width - 88;
-    this.ttl = 0;
+    this.x = this.context.canvas.width - 44;
   }
 
   protected placeHealthBar() {
-    this.healthBar.x = 2;
-    this.healthBar.y = 27;
+    this.healthBar.x = -12;
   }
 
   protected attackAnim() {
     if (!this.attackTarget) return;
     const particleRect = getWorldRect(this.particle);
-    const deltaX = particleRect.x - this.attackTarget.x - 24;
-    const deltaY = particleRect.y - this.attackTarget.y - 24;
+    const targetRect = getWorldRect(this.attackTarget);
+    const deltaX = particleRect.x - targetRect.x;
+    const deltaY = particleRect.y - (targetRect.y - 40);
     const fly = () => {
       this.particle.x -= deltaX / 3 / GENERAL_SCALE;
       this.particle.y -= deltaY / 3 / GENERAL_SCALE;

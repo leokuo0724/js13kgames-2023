@@ -21,17 +21,18 @@ export class MongolArcher extends BaseAttackUnit {
     });
     this.hand = new CustomSprite({
       assetId: ASSET_IDS.FIST,
-      x: 5,
-      y: 7,
+      x: 10,
+      y: -20,
     });
     this.main = new CustomSprite({
       assetId: ASSET_IDS.MONGOL,
+      anchor: { x: 0.5, y: 1 },
     });
     this.bow = new CustomSprite({
       assetId: ASSET_IDS.BOW,
-      x: 1,
-      y: 5,
-      anchor: { x: 0, y: 0.01 },
+      x: -10,
+      y: -18,
+      anchor: { x: 0, y: 0.5 },
       attack: function () {
         this.x! -= 1;
         this.rotation! -= 0.3;
@@ -51,11 +52,10 @@ export class MongolArcher extends BaseAttackUnit {
     });
 
     this.addChild([this.hand, this.main, this.bow, this.healthBar]);
-    this.y = this.context.canvas.height / 3 - 2;
   }
 
   protected placeHealthBar() {
-    this.healthBar.y = 12.8;
+    this.healthBar.x = -12;
   }
 
   protected attackAnim() {

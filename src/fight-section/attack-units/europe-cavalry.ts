@@ -13,12 +13,12 @@ export class EuropeCavalry extends EuropeInfantry {
 
     this.horse = new CustomSprite({
       assetId: ASSET_IDS.HORSE,
-      x: 10,
-      y: 0,
+      x: -9,
       scaleX: -1,
+      anchor: { x: 0.5, y: 1 },
     });
     this.children.forEach((child) => {
-      if (child.type !== "health-bar") child.y -= 2;
+      if (child.type !== "health-bar") child.y -= 8;
     });
 
     this.addChild(this.horse);

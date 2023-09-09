@@ -13,11 +13,11 @@ export class MongolCavalry extends MongolInfantry {
 
     this.horse = new CustomSprite({
       assetId: ASSET_IDS.HORSE,
-      x: -2,
-      y: 1,
+      x: 9,
+      anchor: { x: 0.5, y: 1 },
     });
     this.children.forEach((child) => {
-      if (child.type !== "health-bar") child.y -= 2;
+      if (child.type !== "health-bar") child.y -= 8;
     });
 
     this.addChild(this.horse);

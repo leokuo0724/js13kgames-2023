@@ -14,19 +14,20 @@ export class MongolGunner extends BaseAttackUnit {
       moveSpeed: 10,
       moveRate: 10,
       health: 6,
-      attackRange: 250,
+      attackRange: 280,
       attackRate: 120,
       attackUnit: 2,
     });
 
     this.main = new CustomSprite({
       assetId: ASSET_IDS.MONGOL,
+      anchor: { x: 0.5, y: 1 },
     });
     this.gun = new CustomSprite({
-      x: 0.5,
-      y: 8.5,
+      x: -10,
+      y: -16,
       assetId: ASSET_IDS.GUN,
-      anchor: { x: 0, y: 0.01 },
+      anchor: { x: 0, y: 1 },
       attack: function () {
         this.x! -= 1;
         this.rotation! -= 0.3;
@@ -46,18 +47,12 @@ export class MongolGunner extends BaseAttackUnit {
     });
 
     this.addChild([this.main, this.gun, this.healthBar]);
-    this.y = this.context.canvas.height / 3 - 2;
   }
 
   protected placeHealthBar() {
-    this.healthBar.y = 12.8;
+    this.healthBar.x = -12;
   }
   protected attackAnim() {
     this.gun.attack();
-  }
-
-  update() {
-    super.update();
-    // this.gun.attack();
   }
 }
