@@ -11,7 +11,6 @@ export class ResultBoard extends SpriteClass {
 
   protected title: Text;
   protected body: Text;
-  protected scores: Text;
   protected gift1: Button;
   protected gift2: Button;
   protected confirmButton: ConfirmButton;
@@ -46,20 +45,11 @@ export class ResultBoard extends SpriteClass {
     this.body = Text({
       anchor: { x: 0.5, y: 0 },
       color: "#d2c9a5",
-      font: "14px Verdana",
+      font: "16px Verdana",
       textAlign: "center",
       text: "",
       lineHeight: 1.4,
       y: -56,
-    });
-    this.scores = Text({
-      anchor: { x: 0.5, y: 0 },
-      color: "#d2c9a5",
-      font: "20px Verdana",
-      textAlign: "center",
-      text: "",
-      lineHeight: 1.4,
-      y: -12,
     });
     this.gift1 = new GiftButton(8);
     this.gift2 = new GiftButton(36);
@@ -71,7 +61,6 @@ export class ResultBoard extends SpriteClass {
       this.gift1,
       this.gift2,
       this.body,
-      this.scores,
       this.confirmButton,
     ]);
 
@@ -82,7 +71,7 @@ export class ResultBoard extends SpriteClass {
     const details = DetailsBox.getInstance();
     if (state === "victory") {
       const aliveAllies = this.gameController.allies.filter((e) => e.isAlive());
-      this.body.text = `Conquered territory: ${details.conquered}. Remain ${aliveAllies.length} soldier(s).\nSelect a gift below or skip to conquer next territory.`;
+      this.body.text = `Remain ${aliveAllies.length} soldier(s).\nSelect a gift below or skip to next round.`;
       // Pick gifts
       const { negative, positive } = giftMetadata;
       const positiveGift1 =
@@ -102,9 +91,9 @@ export class ResultBoard extends SpriteClass {
       localStorage.setItem("_bs", higherScore.toString());
 
       this.title.text = "Defeat";
-      this.body.text = `You have been conquered ${details.conquered} territory!`;
-      this.scores.text = `Score: ${details.score.toLocaleString()}\nBest: ${higherScore.toLocaleString()}`;
-      this.scores.opacity = 1;
+      this.body.text = `You have been conquered ${
+        details.conquered
+      } territory!\n\nScore: ${details.score.toLocaleString()}\nBest: ${higherScore.toLocaleString()}`;
       this.gift1.setDisabled();
       this.gift2.setDisabled();
       this.confirmButton.text = "restart";

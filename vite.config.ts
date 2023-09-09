@@ -210,7 +210,7 @@ async function embedJs(html: string, chunk: OutputChunk): Promise<string> {
   const packer = new Packer(inputs, options);
   await Promise.all([
     fs.writeFile(`${path.join(__dirname, "dist")}/output.js`, htmlInJs),
-    packer.optimize(process.env.LEVEL_2_BUILD ? 2 : 0), // Regular builds use level 2, but rr config builds use the supplied params
+    packer.optimize(2), // Regular builds use level 2, but rr config builds use the supplied params
   ]);
   const { firstLine, secondLine } = packer.makeDecoder();
   return `<script>\n${firstLine}\n${secondLine}\n</script>`;

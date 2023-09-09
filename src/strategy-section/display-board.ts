@@ -83,9 +83,8 @@ export class NextBlockBoard extends DisplayBoard {
 
   protected onUpdateBlock() {
     super.onUpdateBlock();
-    this.remainText.text = `remain: ${Math.max(
-      GameManager.getInstance().blockData.length - 1,
-      0
-    )}`;
+    this.remainText.text = `remain: ${
+      GameManager.getInstance().blockData.length
+    }`;
   }
 }
