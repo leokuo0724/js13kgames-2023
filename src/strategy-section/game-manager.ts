@@ -26,7 +26,6 @@ export class GameManager {
   private constructor() {
     onKey("z", () => {
       this.rotateCurrentBlock();
-      emit(EVENTS.UPDATE_BLOCK);
     });
     on(EVENTS.ON_START_CLICK, this.onStartClick.bind(this));
   }
@@ -66,7 +65,7 @@ export class GameManager {
     this.setState("fight");
   }
 
-  protected rotateCurrentBlock() {
+  public rotateCurrentBlock() {
     const blockMetadata = this.blockData[0];
     if (!blockMetadata) return;
 
@@ -81,6 +80,7 @@ export class GameManager {
     } as BlockMetadata;
 
     this.blockData[0] = rotatedBlockMetadata;
+    emit(EVENTS.UPDATE_BLOCK);
   }
 
   public updateAllyBonus(gift: Gift) {

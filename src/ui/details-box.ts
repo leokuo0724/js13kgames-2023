@@ -30,7 +30,6 @@ export class DetailsBox extends GameObjectClass {
       scaleX: GENERAL_SCALE,
       scaleY: GENERAL_SCALE,
       x: 72,
-      y: 1,
     });
     this.scoreText = Text({
       color: "#4b726e",

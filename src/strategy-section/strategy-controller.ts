@@ -1,18 +1,18 @@
 import { GameObject } from "kontra";
-import { DisplayBoard, NextBlockBoard } from "./display-board";
+import { CurrentBlockBoard, NextBlockBoard } from "./display-board";
 import { TimelineBoard } from "./timeline-board";
 import { BlockActionButton } from "./block-action-button";
 
 export class StrategyController {
   private group: GameObject[];
   protected timelineBoard: TimelineBoard;
-  protected currentBlockBoard: DisplayBoard;
-  protected nextBlockBoard: DisplayBoard;
+  protected currentBlockBoard: CurrentBlockBoard;
+  protected nextBlockBoard: NextBlockBoard;
   protected button: BlockActionButton;
 
   constructor() {
     this.timelineBoard = new TimelineBoard();
-    this.currentBlockBoard = new DisplayBoard("current");
+    this.currentBlockBoard = new CurrentBlockBoard();
     this.nextBlockBoard = new NextBlockBoard();
     this.button = new BlockActionButton();
     this.group = [
