@@ -1,8 +1,7 @@
-import { GameObjectClass, Text, on } from "kontra";
+import { GameObjectClass, Text } from "kontra";
 import { CustomSprite } from "../fight-section/custom-sprite";
 import { ASSET_IDS, GENERAL_SCALE } from "../constants/assets";
 import { GameManager } from "../strategy-section/game-manager";
-import { EVENTS } from "../constants/events";
 
 export class DetailsBox extends GameObjectClass {
   private static instance: DetailsBox;

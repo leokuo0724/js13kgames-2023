@@ -1,7 +1,6 @@
-import { GameObject, GameObjectClass, emit } from "kontra";
+import { GameObject, GameObjectClass } from "kontra";
 import { HealthBar } from "../health-bar";
 import { GENERAL_SCALE } from "../../constants/assets";
-import { EVENTS } from "../../constants/events";
 import { GameManager } from "../../strategy-section/game-manager";
 import { DetailsBox } from "../../ui/details-box";
 

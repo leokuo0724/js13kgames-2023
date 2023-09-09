@@ -1,4 +1,12 @@
-import { Button, Sprite, SpriteClass, Text, on } from "kontra";
+import {
+  Button,
+  Sprite,
+  SpriteClass,
+  Text,
+  getStoreItem,
+  on,
+  setStoreItem,
+} from "kontra";
 import { CTAButton } from "./cta-button";
 import { GameManager } from "../strategy-section/game-manager";
 import { EVENTS } from "../constants/events";
@@ -11,6 +19,7 @@ export class ResultBoard extends SpriteClass {
 
   protected title: Text;
   protected body: Text;
+  protected scores: Text;
   protected gift1: Button;
   protected gift2: Button;
   protected confirmButton: ConfirmButton;
@@ -51,6 +60,15 @@ export class ResultBoard extends SpriteClass {
       lineHeight: 1.4,
       y: -56,
     });
+    this.scores = Text({
+      anchor: { x: 0.5, y: 0 },
+      color: "#d2c9a5",
+      font: "20px Verdana",
+      textAlign: "center",
+      text: "",
+      lineHeight: 1.4,
+      y: -12,
+    });
     this.gift1 = new GiftButton(8);
     this.gift2 = new GiftButton(36);
 
@@ -58,9 +76,10 @@ export class ResultBoard extends SpriteClass {
     this.addChild([
       board,
       this.title,
-      this.body,
       this.gift1,
       this.gift2,
+      this.body,
+      this.scores,
       this.confirmButton,
     ]);
 
@@ -86,8 +105,14 @@ export class ResultBoard extends SpriteClass {
       this.gift2.setGifts(positiveGift2, negativeGift2);
     }
     if (state === "defeat") {
+      const bestScore = Number(getStoreItem("_bs") ?? 0);
+      const higherScore = Math.max(details.score, bestScore);
+      setStoreItem("_bs", higherScore);
+
       this.title.text = "Defeat";
-      this.body.text = `You have been conquered ${details.conquered} territory!\n Slayed ${details.slayed} enemies.`;
+      this.body.text = `You have been conquered ${details.conquered} territory!`;
+      this.scores.text = `Score: ${details.score.toLocaleString()}\nBest: ${higherScore.toLocaleString()}`;
+      this.scores.opacity = 1;
       this.gift1.setDisabled();
       this.gift2.setDisabled();
       this.confirmButton.text = "restart";
@@ -105,7 +130,7 @@ class ConfirmButton extends CTAButton {
         disabled: "#ab9b8e",
       },
     });
-    this.text = "next";
+    this.text = "skip";
     this.y = y;
   }
 
