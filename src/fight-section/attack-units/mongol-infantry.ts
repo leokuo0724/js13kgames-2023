@@ -15,7 +15,7 @@ export class MongolInfantry extends BaseAttackUnit {
       moveSpeed: 10,
       moveRate: 10,
       health: 10,
-      attackRange: 50,
+      attackRange: 80,
       attackRate: 60,
       attackUnit: 1,
     });

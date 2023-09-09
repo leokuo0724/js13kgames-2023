@@ -14,7 +14,7 @@ export class MongolGunner extends BaseAttackUnit {
       moveSpeed: 10,
       moveRate: 10,
       health: 6,
-      attackRange: 250,
+      attackRange: 280,
       attackRate: 120,
       attackUnit: 2,
     });

@@ -15,7 +15,7 @@ export class EuropeInfantry extends BaseAttackUnit {
       moveSpeed: -5,
       moveRate: 10,
       health: 10,
-      attackRange: -50,
+      attackRange: -80,
       attackRate: 60,
       attackUnit: 1,
     });

@@ -14,7 +14,7 @@ export class MongolGuarder extends BaseAttackUnit {
       moveSpeed: 6,
       moveRate: 12,
       health: 20,
-      attackRange: 40,
+      attackRange: 60,
       attackRate: 60,
       attackUnit: 0.5,
     });
