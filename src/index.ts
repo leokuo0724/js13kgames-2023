@@ -37,7 +37,7 @@ const SVG_DATA: Record<(typeof ASSET_IDS)[keyof typeof ASSET_IDS], string> = {
   sl: '<svg xmlns="http://www.w3.org/2000/svg" width="21.9" height="37.5" viewBox="0 0 21.9 37.5"><path fill="#574852" d="M0 0h22v38H0z"/><path fill="#847875" d="M1 2h20v34H1z"/><path fill="#79444A" d="M10 16h2v8h-2z"/><path fill="#D1B187" d="M10 18h2v3l-2 1H7z"/></svg>',
   gn: '<svg xmlns="http://www.w3.org/2000/svg" width="38.1" height="5.7" viewBox="0 0 38.1 5.7"><path fill="#AE5D40" d="M10 0h28v5H10z"/><path fill="#4D4539" d="M3 1h7v3H3z"/><path fill="#79444A" d="M29 0h1v5h-1zM19 0h1v5h-1z"/><path fill="#D1B187" d="M1 1 0 4l5 1 2-2-1-2-2-1zM22 6V4h4v2z"/></svg>',
   ics: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path fill="#4b726e" d="M11.8 5.5V1.2h-1.4v1.4h-.7V1.2H8.3v1.4h-.7V1.2H6.3v1.4h-.7V1.2H4.2v4.3h1l-.9 9.3h7.4l-.9-9.3z"/></svg>',
-  isk: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" ><g fill="#4b726e"><path d="M8 1.5a5.4 5.4 0 0 0-3.1 9.8l1.2 1.3h3.7l1.2-1.3c1.4-1 2.3-2.6 2.3-4.4.1-3-2.3-5.4-5.3-5.4zM6.1 8.9c-.8 0-1.5-.7-1.5-1.5S5.3 6 6.1 6s1.5.7 1.5 1.5-.7 1.4-1.5 1.4zM8 10.4H6.7L8 9.1l1.3 1.3H8zm1.9-1.5c-.8 0-1.5-.7-1.5-1.5S9.1 6 9.9 6s1.5.7 1.5 1.5-.7 1.4-1.5 1.4z"/><path d="m11 11.9-1.1 1.2H6.1L5 11.9v2.6h6v-1.3z"/></g></svg>',
+  isc: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path fill="#4B726E" d="M4.2 1.9v9.6L8 14.8l3.8-3.3V1.9H4.2zm5.4 6.5L8 7.6l-1.6.8.3-1.7-1.3-1.3 1.8-.2.8-1.6.8 1.6 1.8.2-1.3 1.3.3 1.7z"/></svg>',
 };
 
 const imgContainer = document.getElementById("imgs");

@@ -11,7 +11,7 @@ export const ASSET_IDS = {
   SHELL: "sl",
   GUN: "gn",
   ICON_CASTLE: "ics",
-  ICON_SKULL: "isk",
+  ICON_SCORE: "isc",
 } as const;
 export type AssetId = (typeof ASSET_IDS)[keyof typeof ASSET_IDS];
 

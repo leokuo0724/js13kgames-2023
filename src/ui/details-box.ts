@@ -26,21 +26,22 @@ export class DetailsBox extends GameObjectClass {
       y: 8,
     });
 
-    const skullIcon = new CustomSprite({
-      assetId: ASSET_IDS.ICON_SKULL,
+    const scoreIcon = new CustomSprite({
+      assetId: ASSET_IDS.ICON_SCORE,
       scaleX: GENERAL_SCALE,
       scaleY: GENERAL_SCALE,
-      y: 42,
+      x: 72,
+      y: 1,
     });
     this.slayedText = Text({
       color: "#4b726e",
       font: "20px Verdana",
       text: "0",
-      x: 36,
-      y: 50,
+      x: 108,
+      y: 8,
     });
 
-    this.addChild([castleIcon, skullIcon, this.conqueredText, this.slayedText]);
+    this.addChild([castleIcon, scoreIcon, this.conqueredText, this.slayedText]);
     this.x = 12;
     this.y = 12;
 
@@ -65,7 +66,7 @@ export class DetailsBox extends GameObjectClass {
   }
 
   public render() {
-    if (GameManager.getInstance().state === "prologue") return;
+    // if (GameManager.getInstance().state === "prologue") return;
     super.render();
   }
 }
