@@ -2473,7 +2473,7 @@ let ASSET_IDS = {
     SHELL: "sl",
     GUN: "gn",
     ICON_CASTLE: "ics",
-    ICON_SKULL: "isk",
+    ICON_SCORE: "isc",
 };
 let GENERAL_SCALE = 2;
 
@@ -2531,68 +2531,9 @@ let EVENTS = {
     SPAWN_ALLY: "spawn-ally",
     COL_SCANNED: "col-scanned",
     FINAL_COL_SCANNED: "final-col-scanned",
-    DEFEAT_ENEMY: "defeat-enemy",
+    PERFECT_MATCH: "perfect-match",
     FIX_GRIDS: "fix-grids",
 };
-
-class HealthBar extends Sprite {
-    constructor({ maxHealth, camp = "ally", }) {
-        super({
-            width: 60,
-            height: 16,
-            color: "#4d3d44",
-        });
-        Object.defineProperty(this, "maxHealth", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "health", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "inner", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        this.type = "health-bar";
-        this.maxHealth = maxHealth;
-        this.health = maxHealth;
-        let innerBg = factory$8({
-            x: 3,
-            y: 3,
-            width: 54,
-            height: 10,
-            color: "#ab9b8e",
-        });
-        this.inner = factory$8({
-            x: 3,
-            y: 3,
-            width: 54,
-            height: 10,
-            color: camp === "ally" ? "#ae5d40" : "#927441",
-        });
-        this.addChild([innerBg, this.inner]);
-    }
-    updateMaxHealth(maxHealth) {
-        this.maxHealth = maxHealth;
-        this.health = maxHealth;
-        this.updateHealth();
-    }
-    takeDamage(damage) {
-        this.health -= damage;
-        this.updateHealth();
-        return this.health <= 0 ? true : false;
-    }
-    updateHealth() {
-        this.inner.width = (this.health / this.maxHealth) * 54;
-    }
-}
 
 let a = {
 	map: [
@@ -2884,7 +2825,6 @@ class GameManager {
         });
         onKey("z", () => {
             this.rotateCurrentBlock();
-            emit(EVENTS.UPDATE_BLOCK);
         });
         on(EVENTS.ON_START_CLICK, this.onStartClick.bind(this));
     }
@@ -2928,6 +2868,7 @@ class GameManager {
             anchor: rotatedAnchor,
         };
         this.blockData[0] = rotatedBlockMetadata;
+        emit(EVENTS.UPDATE_BLOCK);
     }
     updateAllyBonus(gift) {
         if (gift.effect === "addSolider")
@@ -2977,6 +2918,142 @@ function rotate90DegAnchor(anchor, arrayLength) {
     let newX = anchor[1];
     let newY = arrayLength - 1 - anchor[0];
     return [newX, newY];
+}
+
+class HealthBar extends Sprite {
+    constructor({ maxHealth, camp = "ally", }) {
+        super({
+            width: 60,
+            height: 16,
+            color: "#4d3d44",
+        });
+        Object.defineProperty(this, "maxHealth", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "health", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "inner", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        this.type = "health-bar";
+        this.maxHealth = maxHealth;
+        this.health = maxHealth;
+        let innerBg = factory$8({
+            x: 3,
+            y: 3,
+            width: 54,
+            height: 10,
+            color: "#ab9b8e",
+        });
+        this.inner = factory$8({
+            x: 3,
+            y: 3,
+            width: 54,
+            height: 10,
+            color: camp === "ally" ? "#ae5d40" : "#927441",
+        });
+        this.addChild([innerBg, this.inner]);
+    }
+    updateMaxHealth(maxHealth) {
+        this.maxHealth = maxHealth;
+        this.health = maxHealth;
+        this.updateHealth();
+    }
+    takeDamage(damage) {
+        this.health -= damage;
+        this.updateHealth();
+        return this.health <= 0 ? true : false;
+    }
+    updateHealth() {
+        this.inner.width = (this.health / this.maxHealth) * 54;
+    }
+}
+
+class DetailsBox extends GameObject {
+    constructor() {
+        super();
+        Object.defineProperty(this, "conquered", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: 0
+        });
+        Object.defineProperty(this, "conqueredText", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "score", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: 0
+        });
+        Object.defineProperty(this, "scoreText", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        let castleIcon = new CustomSprite({
+            assetId: ASSET_IDS.ICON_CASTLE,
+            scaleX: GENERAL_SCALE,
+            scaleY: GENERAL_SCALE,
+        });
+        this.conqueredText = factory$7({
+            color: "#4b726e",
+            font: "20px Verdana",
+            text: "0",
+            x: 36,
+            y: 8,
+        });
+        let scoreIcon = new CustomSprite({
+            assetId: ASSET_IDS.ICON_SCORE,
+            scaleX: GENERAL_SCALE,
+            scaleY: GENERAL_SCALE,
+            x: 72,
+        });
+        this.scoreText = factory$7({
+            color: "#4b726e",
+            font: "20px Verdana",
+            text: "0",
+            x: 108,
+            y: 8,
+        });
+        this.addChild([castleIcon, scoreIcon, this.conqueredText, this.scoreText]);
+        this.x = 12;
+        this.y = 12;
+    }
+    static getInstance() {
+        if (!DetailsBox.instance) {
+            DetailsBox.instance = new DetailsBox();
+        }
+        return DetailsBox.instance;
+    }
+    updateScore(score) {
+        this.score += score;
+        this.scoreText.text = this.score.toLocaleString();
+    }
+    updateConquered() {
+        this.conquered++;
+        this.conqueredText.text = this.conquered.toLocaleString();
+    }
+    render() {
+        if (GameManager.getInstance().state === "prologue")
+            return;
+        super.render();
+    }
 }
 
 class BaseAttackUnit extends GameObject {
@@ -3100,14 +3177,26 @@ class BaseAttackUnit extends GameObject {
         this.attackRate = Math.floor(this.baseAttackRate * bonus[this.camp].attackRate);
         this.attackUnit = this.baseAttackUnit + bonus[this.camp].attackUnit;
     }
+    calculateScore() {
+        let { bonus } = GameManager.getInstance();
+        let healthScore = this.baseHealth + bonus[this.camp].health;
+        let attackRangeScore = Math.abs(this.baseAttackRange + bonus[this.camp].attackRange);
+        let attackUnitScore = this.baseAttackUnit + bonus[this.camp].attackUnit;
+        let attackRateScoreRatio = 60 / Math.floor(this.baseAttackRate * bonus[this.camp].attackRate);
+        return Math.round((healthScore + attackRangeScore + attackUnitScore) * attackRateScoreRatio);
+    }
     takeDamage(damage) {
         if (this.healthBar.health <= 0)
             return;
         let isDead = this.healthBar.takeDamage(damage);
-        if (isDead) {
-            this.ttl = 0;
-            if (this.camp === "enemy") {
-                emit(EVENTS.DEFEAT_ENEMY, this.type);
+        if (!isDead)
+            return;
+        this.ttl = 0;
+        if (this.camp === "enemy") {
+            let score = this.calculateScore();
+            DetailsBox.getInstance().updateScore(score);
+            if (this.type === "castle") {
+                DetailsBox.getInstance().updateConquered();
             }
         }
     }
@@ -3165,438 +3254,6 @@ class BaseAttackUnit extends GameObject {
         if (this.camp === "enemy" && this.x <= 0) {
             this.ttl = 0;
         }
-    }
-}
-
-class MongolInfantry extends BaseAttackUnit {
-    constructor() {
-        super({
-            camp: "ally",
-            type: "infantry",
-            moveSpeed: 10,
-            moveRate: 10,
-            health: 10,
-            attackRange: 80,
-            attackRate: 60,
-            attackUnit: 1,
-        });
-        Object.defineProperty(this, "main", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "shield", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "sword", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        this.shield = new CustomSprite({
-            assetId: ASSET_IDS.SHIELD,
-            x: 12,
-            y: -18,
-            anchor: { x: 0.5, y: 0.5 },
-        });
-        this.main = new CustomSprite({
-            assetId: ASSET_IDS.MONGOL,
-            anchor: { x: 0.5, y: 1 },
-        });
-        this.sword = new CustomSprite({
-            assetId: ASSET_IDS.SWORD,
-            x: -10,
-            y: -18,
-            anchor: { x: 0, y: 1 },
-            attack: function () {
-                this.rotation = 0.4;
-                setTimeout(() => (this.rotation = 0.8), 25);
-                setTimeout(() => (this.rotation = 1), 50);
-                setTimeout(() => (this.rotation = 0), 100);
-            },
-        });
-        this.addChild([this.shield, this.main, this.sword, this.healthBar]);
-    }
-    placeHealthBar() {
-        this.healthBar.x = -12;
-    }
-    attackAnim() {
-        this.sword.attack();
-    }
-}
-
-class MongolArcher extends BaseAttackUnit {
-    constructor() {
-        super({
-            camp: "ally",
-            type: "archer",
-            moveSpeed: 10,
-            moveRate: 10,
-            health: 8,
-            attackRange: 200,
-            attackRate: 100,
-            attackUnit: 1.5,
-        });
-        Object.defineProperty(this, "main", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "hand", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "bow", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        this.hand = new CustomSprite({
-            assetId: ASSET_IDS.FIST,
-            x: 10,
-            y: -20,
-        });
-        this.main = new CustomSprite({
-            assetId: ASSET_IDS.MONGOL,
-            anchor: { x: 0.5, y: 1 },
-        });
-        this.bow = new CustomSprite({
-            assetId: ASSET_IDS.BOW,
-            x: -10,
-            y: -18,
-            anchor: { x: 0, y: 0.5 },
-            attack: function () {
-                this.x -= 1;
-                this.rotation -= 0.3;
-                setTimeout(() => {
-                    this.x -= 0.5;
-                    this.rotation += 0.1;
-                }, 25);
-                setTimeout(() => {
-                    this.x += 0.5;
-                    this.rotation += 0.1;
-                }, 50);
-                setTimeout(() => {
-                    this.x += 1;
-                    this.rotation += 0.1;
-                }, 100);
-            },
-        });
-        this.addChild([this.hand, this.main, this.bow, this.healthBar]);
-    }
-    placeHealthBar() {
-        this.healthBar.x = -12;
-    }
-    attackAnim() {
-        this.bow.attack();
-    }
-}
-
-class EuropeInfantry extends BaseAttackUnit {
-    constructor() {
-        super({
-            camp: "enemy",
-            type: "infantry",
-            moveSpeed: -5,
-            moveRate: 10,
-            health: 10,
-            attackRange: -80,
-            attackRate: 60,
-            attackUnit: 1,
-        });
-        Object.defineProperty(this, "main", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "shield", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "sword", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        this.shield = new CustomSprite({
-            assetId: ASSET_IDS.SHIELD,
-            x: -12,
-            y: -18,
-            scaleX: -1,
-            anchor: { x: 0.5, y: 0.5 },
-        });
-        this.main = new CustomSprite({
-            assetId: ASSET_IDS.EUROPE,
-            scaleX: -1,
-            anchor: { x: 0.5, y: 1 },
-        });
-        this.sword = new CustomSprite({
-            assetId: ASSET_IDS.SWORD,
-            x: 10,
-            y: -18,
-            scaleX: -1,
-            anchor: { x: 0, y: 1 },
-            attack: function () {
-                this.rotation = -0.4;
-                setTimeout(() => (this.rotation = -0.8), 25);
-                setTimeout(() => (this.rotation = -1), 50);
-                setTimeout(() => (this.rotation = 0), 100);
-            },
-        });
-        this.addChild([this.shield, this.main, this.sword, this.healthBar]);
-        this.x = this.context.canvas.width;
-    }
-    placeHealthBar() {
-        this.healthBar.x = -18;
-    }
-    attackAnim() {
-        this.sword.attack();
-    }
-}
-
-class EuropeArcher extends BaseAttackUnit {
-    constructor() {
-        super({
-            camp: "enemy",
-            type: "archer",
-            moveSpeed: -5,
-            moveRate: 10,
-            health: 8,
-            attackRange: -200,
-            attackRate: 100,
-            attackUnit: 1,
-        });
-        Object.defineProperty(this, "main", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "hand", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "bow", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        this.hand = new CustomSprite({
-            assetId: ASSET_IDS.FIST,
-            x: -10,
-            y: -20,
-            scaleX: -1,
-        });
-        this.main = new CustomSprite({
-            assetId: ASSET_IDS.EUROPE,
-            scaleX: -1,
-            anchor: { x: 0.5, y: 1 },
-        });
-        this.bow = new CustomSprite({
-            assetId: ASSET_IDS.BOW,
-            x: 10,
-            y: -18,
-            scaleX: -1,
-            anchor: { x: 0, y: 0.5 },
-            attack: function () {
-                this.x += 1;
-                this.rotation += 0.3;
-                setTimeout(() => {
-                    this.x += 0.5;
-                    this.rotation -= 0.1;
-                }, 25);
-                setTimeout(() => {
-                    this.x -= 0.5;
-                    this.rotation -= 0.1;
-                }, 50);
-                setTimeout(() => {
-                    this.x -= 1;
-                    this.rotation -= 0.1;
-                }, 100);
-            },
-        });
-        this.addChild([this.hand, this.main, this.bow, this.healthBar]);
-        this.x = this.context.canvas.width;
-    }
-    placeHealthBar() {
-        this.healthBar.x = -18;
-    }
-    attackAnim() {
-        this.bow.attack();
-    }
-}
-
-class MongolCavalry extends MongolInfantry {
-    constructor() {
-        super();
-        this.type = "cavalry";
-        this.moveSpeed = 12;
-        this.moveRate = 8;
-        this.health = 12;
-        this.attackUnit = 1.5;
-        this.horse = new CustomSprite({
-            assetId: ASSET_IDS.HORSE,
-            x: 9,
-            anchor: { x: 0.5, y: 1 },
-        });
-        this.children.forEach((child) => {
-            if (child.type !== "health-bar")
-                child.y -= 8;
-        });
-        this.addChild(this.horse);
-    }
-}
-
-class EuropeCavalry extends EuropeInfantry {
-    constructor() {
-        super();
-        this.type = "cavalry";
-        this.moveSpeed = -10;
-        this.moveRate = 8;
-        this.health = 12;
-        this.attackUnit = 1.5;
-        this.horse = new CustomSprite({
-            assetId: ASSET_IDS.HORSE,
-            x: -9,
-            scaleX: -1,
-            anchor: { x: 0.5, y: 1 },
-        });
-        this.children.forEach((child) => {
-            if (child.type !== "health-bar")
-                child.y -= 8;
-        });
-        this.addChild(this.horse);
-    }
-}
-
-class MongolGuarder extends BaseAttackUnit {
-    constructor() {
-        super({
-            camp: "ally",
-            type: "guarder",
-            moveSpeed: 6,
-            moveRate: 12,
-            health: 20,
-            attackRange: 60,
-            attackRate: 60,
-            attackUnit: 0.5,
-        });
-        Object.defineProperty(this, "shell", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "main", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        this.shell = new CustomSprite({
-            x: 14,
-            y: -20,
-            assetId: ASSET_IDS.SHELL,
-            anchor: { x: 0.5, y: 0.5 },
-            attack: function () {
-                this.x += 6;
-                setTimeout(() => (this.x -= 3), 25);
-                setTimeout(() => (this.x -= 2), 50);
-                setTimeout(() => (this.x -= 1), 100);
-            },
-        });
-        this.main = new CustomSprite({
-            assetId: ASSET_IDS.MONGOL,
-            anchor: { x: 0.5, y: 1 },
-        });
-        this.fist = new CustomSprite({
-            assetId: ASSET_IDS.FIST,
-            x: -9,
-            y: -21,
-        });
-        this.addChild([this.shell, this.main, this.healthBar, this.fist]);
-    }
-    placeHealthBar() {
-        this.healthBar.x = -12;
-    }
-    attackAnim() {
-        this.shell.attack();
-    }
-}
-
-class EuropeGuarder extends BaseAttackUnit {
-    constructor() {
-        super({
-            camp: "enemy",
-            type: "guarder",
-            moveSpeed: -6,
-            moveRate: 12,
-            health: 20,
-            attackRange: -60,
-            attackRate: 60,
-            attackUnit: 0.5,
-        });
-        Object.defineProperty(this, "shell", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "main", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        this.shell = new CustomSprite({
-            x: -6,
-            y: -18,
-            scaleX: -1,
-            assetId: ASSET_IDS.SHELL,
-            anchor: { x: 0.5, y: 0.5 },
-            attack: function () {
-                this.x -= 2;
-                setTimeout(() => (this.x += 1), 25);
-                setTimeout(() => (this.x += 0.5), 50);
-                setTimeout(() => (this.x += 0.5), 100);
-            },
-        });
-        this.main = new CustomSprite({
-            x: 8,
-            assetId: ASSET_IDS.EUROPE,
-            scaleX: -1,
-            anchor: { x: 0.5, y: 1 },
-        });
-        this.fist = new CustomSprite({
-            assetId: ASSET_IDS.FIST,
-            x: 18,
-            y: -21,
-            scaleX: -1,
-        });
-        this.addChild([this.shell, this.main, this.healthBar, this.fist]);
-        this.x = this.context.canvas.width;
-    }
-    placeHealthBar() {
-        this.healthBar.x = -10;
-    }
-    attackAnim() {
-        this.shell.attack();
     }
 }
 
@@ -3738,6 +3395,254 @@ class EuropeCastle extends BaseAttackUnit {
     }
 }
 
+class Infantry extends BaseAttackUnit {
+    constructor({ camp, moveSpeed = 10, moveRate = 10, health = 10, attackRange = 80, attackRate = 60, attackUnit = 1, }) {
+        let isAlly = camp === "ally";
+        super({
+            camp,
+            type: "infantry",
+            moveSpeed,
+            moveRate,
+            health,
+            attackRange,
+            attackRate,
+            attackUnit,
+        });
+        Object.defineProperty(this, "main", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "shield", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "sword", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        this.shield = new CustomSprite({
+            assetId: ASSET_IDS.SHIELD,
+            x: isAlly ? 12 : -12,
+            y: -18,
+            anchor: { x: 0.5, y: 0.5 },
+            scaleX: isAlly ? 1 : -1,
+        });
+        this.main = new CustomSprite({
+            assetId: isAlly ? ASSET_IDS.MONGOL : ASSET_IDS.EUROPE,
+            anchor: { x: 0.5, y: 1 },
+            scaleX: isAlly ? 1 : -1,
+        });
+        this.sword = new CustomSprite({
+            assetId: ASSET_IDS.SWORD,
+            x: isAlly ? -10 : 10,
+            y: -18,
+            anchor: { x: 0, y: 1 },
+            scaleX: isAlly ? 1 : -1,
+            attack: function () {
+                this.rotation = isAlly ? 0.4 : -0.4;
+                setTimeout(() => (this.rotation = isAlly ? 0.8 : -0.8), 25);
+                setTimeout(() => (this.rotation = isAlly ? 1 : 1), 50);
+                setTimeout(() => (this.rotation = 0), 100);
+            },
+        });
+        this.addChild([this.shield, this.main, this.sword, this.healthBar]);
+        this.x = isAlly ? 0 : this.context.canvas.width;
+    }
+    placeHealthBar() {
+        this.healthBar.x = this.camp === "ally" ? -12 : -18;
+    }
+    attackAnim() {
+        this.sword.attack();
+    }
+}
+
+class Cavalry extends Infantry {
+    constructor({ camp, moveSpeed = 12, moveRate = 8, health = 12, attackRange = 80, attackRate = 60, attackUnit = 1.5, }) {
+        let isAlly = camp === "ally";
+        super({
+            camp,
+            moveSpeed,
+            moveRate,
+            health,
+            attackRange,
+            attackRate,
+            attackUnit,
+        });
+        this.type = "cavalry";
+        this.horse = new CustomSprite({
+            assetId: ASSET_IDS.HORSE,
+            x: isAlly ? 9 : -9,
+            scaleX: isAlly ? 1 : -1,
+            anchor: { x: 0.5, y: 1 },
+        });
+        this.children.forEach((child) => {
+            if (child.type !== "health-bar")
+                child.y -= 8;
+        });
+        this.addChild(this.horse);
+    }
+}
+
+class MongolKhan extends Cavalry {
+    constructor() {
+        super({
+            camp: "ally",
+            health: 50,
+            moveSpeed: 20,
+            attackUnit: 10,
+            attackRange: 120,
+            attackRate: 50,
+        });
+        this.type = "khan";
+        this.setScale(2.5);
+        this.sword.setScale(1, 1.2);
+    }
+}
+
+class Archer extends BaseAttackUnit {
+    constructor({ camp }) {
+        let isAlly = camp === "ally";
+        super({
+            camp,
+            type: "archer",
+            moveSpeed: isAlly ? 10 : -5,
+            moveRate: 10,
+            health: 8,
+            attackRange: isAlly ? 200 : -200,
+            attackRate: 100,
+            attackUnit: isAlly ? 1.5 : 1,
+        });
+        Object.defineProperty(this, "main", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "hand", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "bow", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        this.hand = new CustomSprite({
+            assetId: ASSET_IDS.FIST,
+            x: isAlly ? 10 : -10,
+            y: -20,
+            scaleX: isAlly ? 1 : -1,
+        });
+        this.main = new CustomSprite({
+            assetId: isAlly ? ASSET_IDS.MONGOL : ASSET_IDS.EUROPE,
+            scaleX: isAlly ? 1 : -1,
+            anchor: { x: 0.5, y: 1 },
+        });
+        this.bow = new CustomSprite({
+            assetId: ASSET_IDS.BOW,
+            x: isAlly ? -10 : 10,
+            y: -18,
+            scaleX: isAlly ? 1 : -1,
+            anchor: { x: 0, y: 0.5 },
+            attackAnim: function (x, rotation) {
+                let isAlly = this.camp === "ally";
+                isAlly ? (this.x += x) : (this.x -= x);
+                isAlly ? (this.rotation += rotation) : (this.rotation -= rotation);
+            },
+            attack: function () {
+                this.attackAnim(-1, -0.3);
+                setTimeout(() => {
+                    this.attackAnim(-0.5, 0.1);
+                }, 25);
+                setTimeout(() => {
+                    this.attackAnim(0.5, 0.1);
+                }, 50);
+                setTimeout(() => {
+                    this.attackAnim(1, 0.1);
+                }, 100);
+            },
+        });
+        this.addChild([this.hand, this.main, this.bow, this.healthBar]);
+        this.x = isAlly ? 0 : this.context.canvas.width;
+    }
+    placeHealthBar() {
+        this.healthBar.x = this.camp === "ally" ? -12 : -18;
+    }
+    attackAnim() {
+        this.bow.attack();
+    }
+}
+
+class Guarder extends BaseAttackUnit {
+    constructor({ camp }) {
+        let isAlly = camp === "ally";
+        super({
+            camp,
+            type: "guarder",
+            moveSpeed: isAlly ? 6 : -6,
+            moveRate: 12,
+            health: 20,
+            attackRange: isAlly ? 60 : -60,
+            attackRate: 60,
+            attackUnit: 0.5,
+        });
+        Object.defineProperty(this, "shell", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "main", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        this.shell = new CustomSprite({
+            x: isAlly ? 14 : -6,
+            y: -20,
+            assetId: ASSET_IDS.SHELL,
+            scaleX: isAlly ? 1 : -1,
+            anchor: { x: 0.5, y: 0.5 },
+            attack: function () {
+                this.x += 6;
+                setTimeout(() => (this.x -= 3), 25);
+                setTimeout(() => (this.x -= 2), 50);
+                setTimeout(() => (this.x -= 1), 100);
+            },
+        });
+        this.main = new CustomSprite({
+            x: isAlly ? 0 : 8,
+            assetId: isAlly ? ASSET_IDS.MONGOL : ASSET_IDS.EUROPE,
+            scaleX: isAlly ? 1 : -1,
+            anchor: { x: 0.5, y: 1 },
+        });
+        this.fist = new CustomSprite({
+            assetId: ASSET_IDS.FIST,
+            x: isAlly ? -9 : 18,
+            y: -21,
+            scaleX: isAlly ? 1 : -1,
+        });
+        this.addChild([this.shell, this.main, this.healthBar, this.fist]);
+        this.x = isAlly ? 0 : this.context.canvas.width;
+    }
+    placeHealthBar() {
+        this.healthBar.x = this.camp === "ally" ? -12 : -10;
+    }
+    attackAnim() {
+        this.shell.attack();
+    }
+}
+
 class GameController {
     constructor() {
         Object.defineProperty(this, "allies", {
@@ -3766,6 +3671,10 @@ class GameController {
             this.finalColScanned = true;
         });
         on(EVENTS.STATE_CHANGE, this.onStateChange.bind(this));
+        on(EVENTS.PERFECT_MATCH, this.onPerfectMatch.bind(this));
+    }
+    onPerfectMatch() {
+        this.spawnAttackUnit("ally", "khan");
     }
     onStateChange(state) {
         if (state === "prepare") {
@@ -3782,10 +3691,18 @@ class GameController {
                 castle.respawn();
             }
         }
+        if (state === "victory") {
+            let totalAliveAllyScore = Math.round(this.allies
+                .filter((e) => e.isAlive())
+                .reduce((prev, current) => {
+                let scores = current.calculateScore();
+                return (prev += scores);
+            }, 0) / 2);
+            DetailsBox.getInstance().updateScore(totalAliveAllyScore);
+        }
     }
     onColScanned(col) {
         let types = [
-            "infantry",
             "infantry",
             "infantry",
             "guarder",
@@ -3811,8 +3728,8 @@ class GameController {
             return;
         }
         // Create new instance
-        let unit = getAttackUnitClass(camp, unitType);
-        targetCamp.push(new unit());
+        let unit = getAttackUnit(camp, unitType);
+        targetCamp.push(unit);
     }
     update() {
         this.enemies
@@ -3856,20 +3773,40 @@ class GameController {
         this.allies.filter((e) => e.isAlive()).forEach((ally) => ally.render());
     }
 }
-function getAttackUnitClass(camp, unitType) {
+function getAttackUnit(camp, unitType) {
     switch (unitType) {
         case "archer":
-            return camp === "ally" ? MongolArcher : EuropeArcher;
+            return camp === "ally"
+                ? new Archer({ camp: "ally" })
+                : new Archer({ camp: "enemy" });
         case "infantry":
-            return camp === "ally" ? MongolInfantry : EuropeInfantry;
+            return camp === "ally"
+                ? new Infantry({ camp: "ally" })
+                : new Infantry({
+                    camp: "enemy",
+                    moveSpeed: -5,
+                    attackRange: -80,
+                });
         case "cavalry":
-            return camp === "ally" ? MongolCavalry : EuropeCavalry;
+            return camp === "ally"
+                ? new Cavalry({ camp: "ally" })
+                : new Cavalry({
+                    camp: "enemy",
+                    moveSpeed: -12,
+                    attackRange: -80,
+                });
         case "guarder":
-            return camp === "ally" ? MongolGuarder : EuropeGuarder;
+            return camp === "ally"
+                ? new Guarder({ camp: "ally" })
+                : new Guarder({ camp: "enemy" });
         case "gunner":
             if (camp === "enemy")
                 throw new Error();
-            return MongolGunner;
+            return new MongolGunner();
+        case "khan":
+            if (camp === "enemy")
+                throw new Error();
+            return new MongolKhan();
         case "castle":
             throw new Error();
     }
@@ -4047,9 +3984,9 @@ class DisplayBoard extends Board {
         let targetIndex = this.type === "current" ? 0 : 1;
         let targetBlock = gameManager.blockData[targetIndex];
         if (targetBlock) {
-            let { map, color, type: unitType } = targetBlock;
+            let { type: unitType } = targetBlock;
             this.unitTypeText.text = `Type: ${unitType}`;
-            this.setBlock(map, color);
+            this.setBlock(targetBlock);
         }
         else {
             this.unitTypeText.text = "";
@@ -4057,16 +3994,66 @@ class DisplayBoard extends Board {
         }
     }
     clearBlock() {
-        this.grids.flat().forEach((grid) => (grid.covered.color = "transparent"));
+        this.grids.flat().forEach((grid) => {
+            grid.covered.color = "transparent";
+        });
     }
-    setBlock(map, color) {
+    setBlock(targetBlock) {
         this.clearBlock();
+        let { map, color } = targetBlock;
         for (let i = 0; i < map.length; i++) {
             for (let j = 0; j < map[i].length; j++) {
                 if (map[i][j] === 1)
                     this.grids[i][j].covered.color = color;
             }
         }
+    }
+}
+class CurrentBlockBoard extends DisplayBoard {
+    constructor() {
+        super("current");
+        Object.defineProperty(this, "anchorButton", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        this.anchorButton = new AnchorButton();
+        this.anchorButton.onDown = () => {
+            GameManager.getInstance().rotateCurrentBlock();
+        };
+        this.addChild(this.anchorButton);
+    }
+    clearBlock() {
+        super.clearBlock();
+        this.anchorButton.disabled = true;
+        this.anchorButton.opacity = 0;
+    }
+    setBlock(targetBlock) {
+        super.setBlock(targetBlock);
+        let { anchor } = targetBlock;
+        this.anchorButton.x = anchor[1] * DISPLAY_GRID_SIZE + DISPLAY_GRID_SIZE / 2;
+        this.anchorButton.y = anchor[0] * DISPLAY_GRID_SIZE + DISPLAY_GRID_SIZE / 2;
+        this.anchorButton.disabled = false;
+        this.anchorButton.opacity = 0.6;
+    }
+}
+class AnchorButton extends Button {
+    constructor() {
+        super({
+            width: DISPLAY_GRID_SIZE,
+            height: DISPLAY_GRID_SIZE,
+            disabled: true,
+            opacity: 0,
+            anchor: { x: 0.5, y: 0.5 },
+        });
+    }
+    draw() {
+        this.context.beginPath();
+        this.context.arc(DISPLAY_GRID_SIZE / 2, DISPLAY_GRID_SIZE / 2, 5, 0, Math.PI * 2);
+        this.context.lineWidth = 4;
+        this.context.strokeStyle = "#4b3d44";
+        this.context.stroke();
     }
 }
 class NextBlockBoard extends DisplayBoard {
@@ -4090,7 +4077,7 @@ class NextBlockBoard extends DisplayBoard {
     }
     onUpdateBlock() {
         super.onUpdateBlock();
-        this.remainText.text = `remain: ${Math.max(GameManager.getInstance().blockData.length - 1, 0)}`;
+        this.remainText.text = `remain: ${GameManager.getInstance().blockData.length}`;
     }
 }
 
@@ -4103,6 +4090,12 @@ class Timeline extends Sprite {
             color: "black",
         });
         Object.defineProperty(this, "isActive", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: false
+        });
+        Object.defineProperty(this, "isFinished", {
             enumerable: true,
             configurable: true,
             writable: true,
@@ -4121,13 +4114,17 @@ class Timeline extends Sprite {
     reset() {
         this.isActive = false;
         this.x = 0;
+        this.isFinished = false;
         this.scanned.clear();
     }
     update() {
         if (!this.isActive)
             return;
         if (this.x >= MAX_X) {
-            emit(EVENTS.FINAL_COL_SCANNED);
+            if (!this.isFinished) {
+                this.isFinished = true;
+                emit(EVENTS.FINAL_COL_SCANNED);
+            }
             return;
         }
         this.x += 0.3;
@@ -4161,19 +4158,41 @@ class TimelineBoard extends Board {
             writable: true,
             value: void 0
         });
+        Object.defineProperty(this, "perfectText", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        Object.defineProperty(this, "ifAnyLocked", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: false
+        });
         this.x = 36;
         this.timeline = new Timeline({
             width: 2,
             height: TIMELINE_GRID_SIZE * TIMELINE_ROW,
         });
-        this.addChild(this.timeline);
+        this.perfectText = factory$7({
+            text: "Perfect!",
+            font: "24px Verdana",
+            color: "white",
+            anchor: { x: 0.5, y: 0.5 },
+            x: (TIMELINE_GRID_SIZE * TIMELINE_COL) / 2,
+            y: (TIMELINE_GRID_SIZE * TIMELINE_ROW) / 2,
+            opacity: 0,
+        });
+        this.addChild([this.timeline, this.perfectText]);
         on(EVENTS.ON_GRID_OVER, this.onGridOver.bind(this));
         on(EVENTS.PLACE_BLOCK, this.onPlaceBlock.bind(this));
         on(EVENTS.UPDATE_BLOCK, () => {
             this.onGridOver(this.currentOveredCoord);
         });
         on(EVENTS.STATE_CHANGE, this.onStateChange.bind(this));
-        on(EVENTS.COL_SCANNED, this.scanGridsCol.bind(this));
+        on(EVENTS.COL_SCANNED, this.onColScanned.bind(this));
+        on(EVENTS.FINAL_COL_SCANNED, this.onFinalColScanned.bind(this));
         on(EVENTS.FIX_GRIDS, this.fixGrids.bind(this));
     }
     onStateChange(state) {
@@ -4188,7 +4207,7 @@ class TimelineBoard extends Board {
             this.timeline.start();
         }
     }
-    scanGridsCol(col) {
+    onColScanned(col) {
         let blockIds = new Set();
         for (let i = 0; i < this.grids.length; i++) {
             let grid = this.grids[i][col];
@@ -4196,6 +4215,7 @@ class TimelineBoard extends Board {
                 continue;
             if (!grid.occupiedId && !grid.occupiedUnitType) {
                 grid.setLocked();
+                this.ifAnyLocked = true;
                 continue;
             }
             blockIds.add(grid.occupiedId);
@@ -4216,6 +4236,17 @@ class TimelineBoard extends Board {
                 }
             }
         }
+    }
+    onFinalColScanned() {
+        if (!this.ifAnyLocked) {
+            // Perfect
+            emit(EVENTS.PERFECT_MATCH);
+            this.perfectText.opacity = 1;
+            setTimeout(() => {
+                this.perfectText.opacity = 0;
+            }, 1000);
+        }
+        this.ifAnyLocked = false;
     }
     clearCoveredGrid() {
         this.currentOveredCoord = null;
@@ -4413,7 +4444,7 @@ class StrategyController {
             value: void 0
         });
         this.timelineBoard = new TimelineBoard();
-        this.currentBlockBoard = new DisplayBoard("current");
+        this.currentBlockBoard = new CurrentBlockBoard();
         this.nextBlockBoard = new NextBlockBoard();
         this.button = new BlockActionButton();
         this.group = [
@@ -4431,86 +4462,6 @@ class StrategyController {
     }
 }
 
-class DetailsBox extends GameObject {
-    constructor() {
-        super();
-        Object.defineProperty(this, "conquered", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: 0
-        });
-        Object.defineProperty(this, "conqueredText", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "slayed", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: 0
-        });
-        Object.defineProperty(this, "slayedText", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        let castleIcon = new CustomSprite({
-            assetId: ASSET_IDS.ICON_CASTLE,
-            scaleX: GENERAL_SCALE,
-            scaleY: GENERAL_SCALE,
-        });
-        this.conqueredText = factory$7({
-            color: "#4b726e",
-            font: "20px Verdana",
-            text: "0",
-            x: 36,
-            y: 8,
-        });
-        let skullIcon = new CustomSprite({
-            assetId: ASSET_IDS.ICON_SKULL,
-            scaleX: GENERAL_SCALE,
-            scaleY: GENERAL_SCALE,
-            y: 42,
-        });
-        this.slayedText = factory$7({
-            color: "#4b726e",
-            font: "20px Verdana",
-            text: "0",
-            x: 36,
-            y: 50,
-        });
-        this.addChild([castleIcon, skullIcon, this.conqueredText, this.slayedText]);
-        this.x = 12;
-        this.y = 12;
-        on(EVENTS.DEFEAT_ENEMY, this.onDefeatEnemy.bind(this));
-    }
-    static getInstance() {
-        if (!DetailsBox.instance) {
-            DetailsBox.instance = new DetailsBox();
-        }
-        return DetailsBox.instance;
-    }
-    onDefeatEnemy(type) {
-        if (type === "castle") {
-            this.conquered++;
-            this.conqueredText.text = this.conquered.toString();
-        }
-        else {
-            this.slayed++;
-            this.slayedText.text = this.slayed.toString();
-        }
-    }
-    render() {
-        if (GameManager.getInstance().state === "prologue")
-            return;
-        super.render();
-    }
-}
-
 let TEXT_CONFIG = {
     color: "#4b726e",
     opacity: 0,
@@ -4518,8 +4469,8 @@ let TEXT_CONFIG = {
     anchor: { x: 0.5, y: 0.5 },
 };
 let PROLOGUES = {
-    PART1: "In the 13th century, the Mongol Empire marches to conquer the world.\nAs a Mongol commander,\n your duty is to arrange the blocks, each representing a soldier, a strategist, a commander.",
-    PART2: "The Mongol March begins; your strategy will shape history.\nLead the Empire to victory, or Europe will stand against the tide.",
+    PART1: "In the 13th century, the Mongol Empire marches to conquer the world.\nAs a Mongol commander,\n your duty is to arrange the blocks, each representing a soldier.",
+    PART2: "The Mongol March begins; your strategy will shape history.\nLead the Empire to victory.",
 };
 class MainBanner extends GameObject {
     constructor() {
@@ -4746,7 +4697,7 @@ class ResultBoard extends Sprite {
         this.body = factory$7({
             anchor: { x: 0.5, y: 0 },
             color: "#d2c9a5",
-            font: "14px Verdana",
+            font: "16px Verdana",
             textAlign: "center",
             text: "",
             lineHeight: 1.4,
@@ -4758,9 +4709,9 @@ class ResultBoard extends Sprite {
         this.addChild([
             board,
             this.title,
-            this.body,
             this.gift1,
             this.gift2,
+            this.body,
             this.confirmButton,
         ]);
         on(EVENTS.STATE_CHANGE, this.onStateChange.bind(this));
@@ -4769,7 +4720,7 @@ class ResultBoard extends Sprite {
         let details = DetailsBox.getInstance();
         if (state === "victory") {
             let aliveAllies = this.gameController.allies.filter((e) => e.isAlive());
-            this.body.text = `Conquered territory: ${details.conquered}. Remain ${aliveAllies.length} soldier(s).\nSelect a gift below or skip to conquer next territory.`;
+            this.body.text = `${aliveAllies.length} soldier(s) left.\nSelect a gift below or skip to next round.`;
             // Pick gifts
             let { negative, positive } = giftMetadata;
             let positiveGift1 = positive[Math.floor(Math.random() * positive.length)];
@@ -4780,8 +4731,11 @@ class ResultBoard extends Sprite {
             this.gift2.setGifts(positiveGift2, negativeGift2);
         }
         if (state === "defeat") {
+            let bestScore = Number(localStorage.getItem("_bs") ?? 0);
+            let higherScore = Math.max(details.score, bestScore);
+            localStorage.setItem("_bs", higherScore.toString());
             this.title.text = "Defeat";
-            this.body.text = `You have been conquered ${details.conquered} territory!\n Slayed ${details.slayed} enemies.`;
+            this.body.text = `You have been conquered ${details.conquered} territory!\n\nScore: ${details.score.toLocaleString()}\nBest: ${higherScore.toLocaleString()}`;
             this.gift1.setDisabled();
             this.gift2.setDisabled();
             this.confirmButton.text = "restart";
@@ -4798,7 +4752,7 @@ class ConfirmButton extends CTAButton {
                 disabled: "#ab9b8e",
             },
         });
-        this.text = "next";
+        this.text = "skip";
         this.y = y;
     }
     onDown() {
@@ -4872,23 +4826,23 @@ function resize() {
 }
 (onresize = resize)();
 let SVG_DATA = {
-    ml: '<svg xmlns="http://www.w3.org/2000/svg" width="23.8" height="47.9" viewBox="0 0 23.8 47.9"><path fill="#C77B58" d="m19 33 1-1 3-5-5-9-11-1-7 12 6 3v12h3l1-2 5-3 5 5h4z"/><path fill="#D1B187" d="M22 10V9c0-2-2-4-4-4h-7C9 5 7 7 7 9v3c0 2 5 8 7 8h4c2 0 4 0 4-2v-8z"/><path fill="none" d="m10 42-1 2h11l-4-5z"/><path fill="#79444A" d="M6 48h2l1-4H6zM20 44l1 2v2h3v-4zM6 6h17v4H6zM6 32h14v3H6z"/><path fill="#574852" d="m15 35-8 7-4-2 3-5zM16 35l4 6h4l-4-6z"/><path fill="#847875" d="M7 20h12v12H7z"/><path fill="#574852" d="m16 20 4 6h3l-3-6zM7 17l-7 7 8 4 9-11z"/><path fill="#C77B58" d="m7 6 8-6 7 6zM7 10 4 21h13l1-11z"/></svg>',
-    sh: '<svg xmlns="http://www.w3.org/2000/svg" width="27.6" height="27.6" viewBox="0 0 27.6 27.6"><circle cx="13.8" cy="13.8" r="13.8" fill="#AE5D40"/><path fill="#79444A" d="M12 10h3v8h-3z"/><path fill="#D1B187" d="M12 12h3v3l-2 1h-3z"/></svg>',
-    sw: '<svg xmlns="http://www.w3.org/2000/svg" width="8.7" height="31.6" viewBox="0 0 8.7 31.6"><path fill="#D1B187" d="m1 28-1 3 5 1 2-2-1-3H4z"/><path fill="#D2C9A5" d="M4 26V0s9 7 2 26H4z"/><path fill="#AE5D40" d="M3 26h4v1H3z"/></svg>',
-    bw: '<svg xmlns="http://www.w3.org/2000/svg" width="30.6" height="28.2" viewBox="0 0 30.6 28.2"><path fill="#574852" d="M21.2 27.7 2.9 14.1 21.2.5l.2.3L3.6 14.1l17.8 13.3z"/><path fill="#AE5D40" d="M20.8 0s2.7 4.4 2.7 14.1-2.7 14.1-2.7 14.1 4.7-3 4.7-14.1S20.8 0 20.8 0z"/><path fill="#4D4539" d="M6.8 13.7h22.6v.8H6.8z"/><path fill="#D2C9A5" d="m30.6 14.1-3-1.7.4 1.7-.4 1.7z"/><path fill="#D1B187" d="M.7 12.8 0 15.7l4.8.8 2.3-1.9-1-2.5-2.6-.1z"/></svg>',
-    cs: '<svg xmlns="http://www.w3.org/2000/svg" width="44" height="103.8" viewBox="0 0 44 103.8"><path fill="#BA9158" d="M44 8V0h-8v8h-4V0h-8v8h-4V0h-8v8H8V0H0v104h44z"/><path fill="#927441" d="M0 16h44v4H0zM22 48h-5s0-16 5-16 5 16 5 16h-5z"/></svg>',
-    eu: '<svg xmlns="http://www.w3.org/2000/svg" width="23.8" height="43.8" viewBox="0 0 23.8 43.8"><path fill="#847875" d="m19 29 1-1 3-5-5-10H7L0 25l6 3v12h3l1-2 5-3 5 5h4z"/><path fill="#79444A" d="M6 44h2l1-4H6zM20 40l1 2v2h3v-4zM6 28h14v3H6z"/><path fill="#BA9158" d="M7 13h2v5l9-1-1-4h2l1 4v11H7z"/><path fill="#AB9B8E" d="M7 6c0-1 0-1 0 0V5c0-3 3-5 7-5s7 2 7 5v9c0 2-1 2-4 2h-3c-3 0-7-2-7-4V6z"/><path fill="#574852" d="M13 6h8v2h-1v6h-2V8h-5z"/><path fill="#BA9158" d="m20 31 2 5H5l1-5z"/></svg>',
-    fs: '<svg xmlns="http://www.w3.org/2000/svg" width="5" height="4" viewBox="0 0 5 4"><path fill="#D1B187" d="M2 0h3v3L2 4H0z"/></svg>',
-    cd: '<svg xmlns="http://www.w3.org/2000/svg" width="59.9" height="26.4" viewBox="0 0 59.9 26.4"><path fill="#D2C9A5" d="M60 26s0-14-15-14c1 0 1-12-11-12S22 7 22 7 10 5 10 17c0 0-10 0-10 9h60z"/></svg>',
-    hr: '<svg xmlns="http://www.w3.org/2000/svg" width="54.3" height="44.1" viewBox="0 0 54.3 44.1"><path fill="#4B3D44" d="m34 3-7 20h3l6-17V4zM12 24H5l-5 9h5l3-6h4z"/><path fill="#927441" d="M41 6V0h-5v6l-6 17H12v10h25l5-18h12V6z"/><path fill="#BA9158" d="M37 33H12v5h24l5-5 3-18h-2z"/><path fill="#927441" d="M12 27v17h4v-8l5-5v-4zM38 27v4l-2 5v8h-4V27z"/><path fill="#4B3D44" d="M12 43h4v1h-4zM32 43h4v1h-4zM52 6l2 2V6z"/></svg>',
-    sl: '<svg xmlns="http://www.w3.org/2000/svg" width="21.9" height="37.5" viewBox="0 0 21.9 37.5"><path fill="#574852" d="M0 0h22v38H0z"/><path fill="#847875" d="M1 2h20v34H1z"/><path fill="#79444A" d="M10 16h2v8h-2z"/><path fill="#D1B187" d="M10 18h2v3l-2 1H7z"/></svg>',
-    gn: '<svg xmlns="http://www.w3.org/2000/svg" width="38.1" height="5.7" viewBox="0 0 38.1 5.7"><path fill="#AE5D40" d="M10 0h28v5H10z"/><path fill="#4D4539" d="M3 1h7v3H3z"/><path fill="#79444A" d="M29 0h1v5h-1zM19 0h1v5h-1z"/><path fill="#D1B187" d="M1 1 0 4l5 1 2-2-1-2-2-1zM22 6V4h4v2z"/></svg>',
-    ics: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path fill="#4b726e" d="M11.8 5.5V1.2h-1.4v1.4h-.7V1.2H8.3v1.4h-.7V1.2H6.3v1.4h-.7V1.2H4.2v4.3h1l-.9 9.3h7.4l-.9-9.3z"/></svg>',
-    isk: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" ><g fill="#4b726e"><path d="M8 1.5a5.4 5.4 0 0 0-3.1 9.8l1.2 1.3h3.7l1.2-1.3c1.4-1 2.3-2.6 2.3-4.4.1-3-2.3-5.4-5.3-5.4zM6.1 8.9c-.8 0-1.5-.7-1.5-1.5S5.3 6 6.1 6s1.5.7 1.5 1.5-.7 1.4-1.5 1.4zM8 10.4H6.7L8 9.1l1.3 1.3H8zm1.9-1.5c-.8 0-1.5-.7-1.5-1.5S9.1 6 9.9 6s1.5.7 1.5 1.5-.7 1.4-1.5 1.4z"/><path d="m11 11.9-1.1 1.2H6.1L5 11.9v2.6h6v-1.3z"/></g></svg>',
+    ml: 'width="23.8" height="47.9" viewBox="0 0 23.8 47.9"><path fill="#C77B58" d="m19 33 1-1 3-5-5-9-11-1-7 12 6 3v12h3l1-2 5-3 5 5h4z"/><path fill="#D1B187" d="M22 10V9h-6l-2 11h4c2 0 4 0 4-2v-8z"/><path fill="#79444A" d="M6 48h2l1-4H6zM20 44l1 2v2h3v-4zM6 32h14v3H6z"/><path fill="#574852" d="m15 35-8 7-4-2 3-5zM16 35l4 6h4l-4-6z"/><path fill="#847875" d="M7 20h12v12H7z"/><path fill="#574852" d="m23 26-3-6H4l-4 4 8 4 8-8 4 6z"/><path fill="#C77B58" d="m22 6-7-6-8 6-3 15h13l1-15z"/><path fill="#79444A" d="M6 6h17v4H6z"/></svg>',
+    sh: 'width="27.6" height="27.6" viewBox="0 0 27.6 27.6"><circle cx="13.8" cy="13.8" r="13.8" fill="#AE5D40"/><path fill="#79444A" d="M12 10h3v8h-3z"/><path fill="#D1B187" d="M12 12h3v3l-2 1h-3z"/></svg>',
+    sw: 'width="8.7" height="31.6" viewBox="0 0 8.7 31.6"><path fill="#D1B187" d="m1 28-1 3 5 1 2-2-1-3H4z"/><path fill="#D2C9A5" d="M4 26V0s9 7 2 26H4z"/><path fill="#AE5D40" d="M3 26h4v1H3z"/></svg>',
+    bw: 'width="30.6" height="28.2" viewBox="0 0 30.6 28.2"><path fill="#574852" d="M21.2 27.7 2.9 14.1 21.2.5l.2.3L3.6 14.1l17.8 13.3z"/><path fill="#AE5D40" d="M20.8 0s2.7 4.4 2.7 14.1-2.7 14.1-2.7 14.1 4.7-3 4.7-14.1S20.8 0 20.8 0z"/><path fill="#4D4539" d="M6.8 13.7h22.6v.8H6.8z"/><path fill="#D2C9A5" d="m30.6 14.1-3-1.7.4 1.7-.4 1.7z"/><path fill="#D1B187" d="M.7 12.8 0 15.7l4.8.8 2.3-1.9-1-2.5-2.6-.1z"/></svg>',
+    cs: 'width="44" height="103.8" viewBox="0 0 44 103.8"><path fill="#BA9158" d="M44 8V0h-8v8h-4V0h-8v8h-4V0h-8v8H8V0H0v104h44z"/><path fill="#927441" d="M0 16h44v4H0zM22 48h-5s0-16 5-16 5 16 5 16h-5z"/></svg>',
+    eu: 'width="23.8" height="43.8" viewBox="0 0 23.8 43.8"><path fill="#847875" d="M20 31v-3l3-5-5-10H7L0 25l6 3v12h3l1-2 5-3 5 5h4z"/><path fill="#79444A" d="M6 44h2l1-4H6z"/><path fill="#BA9158" d="M20 31V17l-1-4h-2l1 4-9 1v-5H7L6 31l-1 5h17z"/><path fill="#79444A" d="m20 40 1 2v2h3v-4zM6 28h14v3H6z"/><path fill="#AB9B8E" d="M7 5c0-3 3-5 7-5s7 2 7 5v9c0 2-1 2-4 2h-5l-5-4V5c0 1 0 0 0 0z"/><path fill="#574852" d="M13 6h8v2h-1v6h-2V8h-5z"/></svg>',
+    fs: 'width="5" height="4" viewBox="0 0 5 4"><path fill="#D1B187" d="M2 0h3v3L2 4H0z"/></svg>',
+    cd: 'width="59.9" height="26.4" viewBox="0 0 59.9 26.4"><path fill="#D2C9A5" d="M60 26s0-14-15-14c1 0 1-12-11-12S22 7 22 7 10 5 10 17c0 0-10 0-10 9h60z"/></svg>',
+    hr: 'width="54.3" height="44.1" viewBox="0 0 54.3 44.1"><path fill="#4B3D44" d="m34 3-7 20h3l6-17V4zM12 24H5l-5 9h5l3-6h4z"/><path fill="#BA9158" d="m35 31-23 2v5h24l5-5 3-18h-2z"/><path fill="#927441" d="M41 6V0h-5v6l-6 17H12v21h4v-8l3-3h13v11h4v-8l6-21h12V6z"/><path fill="#4B3D44" d="M12 43h4v1h-4zM32 43h4v1h-4z"/></svg>',
+    sl: 'width="21.9" height="37.5" viewBox="0 0 21.9 37.5"><path fill="#574852" d="M0 0h22v38H0z"/><path fill="#847875" d="M1 2h20v34H1z"/><path fill="#79444A" d="M10 16h2v8h-2z"/><path fill="#D1B187" d="M10 18h2v3l-2 1H7z"/></svg>',
+    gn: 'width="38.1" height="5.7" viewBox="0 0 38.1 5.7"><path fill="#AE5D40" d="M10 0h28v5H10z"/><path fill="#4D4539" d="M3 1h7v3H3z"/><path fill="#79444A" d="M29 0h1v5h-1zM19 0h1v5h-1z"/><path fill="#D1B187" d="M1 1 0 4l5 1 2-2-1-2-2-1zM22 6V4h4v2z"/></svg>',
+    ics: 'width="16" height="16" viewBox="0 0 16 16"><path fill="#4B726E" d="M10 1v2-2h2v5h-1l1 9H4l1-9H4V1h2v2-2z"/></svg>',
+    isc: 'width="16" height="16" viewBox="0 0 16 16"><path fill="#4B726E" d="M4 2v10l4 3 4-3V2H4zm6 6H6l1-1-2-2h2l1-1 1 1h2L9 7l1 1z"/></svg>',
 };
 let imgContainer = document.getElementById("imgs");
 Object.entries(SVG_DATA).forEach(([id, data]) => {
-    let encoded = encodeURIComponent(data);
+    let encoded = encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" ${data}`);
     imgContainer?.insertAdjacentHTML("beforeend", `
     <img id="${id}" src="data:image/svg+xml;utf8, ${encoded}" />
   `);
