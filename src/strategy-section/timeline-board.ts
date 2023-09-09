@@ -1,6 +1,6 @@
 import { Board } from "./board";
 import { EVENTS } from "../constants/events";
-import { Sprite, emit, on } from "kontra";
+import { Sprite, Text, emit, on } from "kontra";
 import { GameManager } from "./game-manager";
 import { BlockMetadata } from "../types/block-metadata";
 import { Timeline } from "./timeline";
@@ -13,6 +13,7 @@ import {
 export class TimelineBoard extends Board {
   protected currentOveredCoord: [number, number] | null = null;
   protected timeline: Sprite;
+  protected perfectText: Text;
 
   protected ifAnyLocked: boolean = false;
 
@@ -30,7 +31,16 @@ export class TimelineBoard extends Board {
       width: 2,
       height: TIMELINE_GRID_SIZE * TIMELINE_ROW,
     });
-    this.addChild(this.timeline);
+    this.perfectText = Text({
+      text: "Perfect!",
+      font: "24px Verdana",
+      color: "white",
+      anchor: { x: 0.5, y: 0.5 },
+      x: (TIMELINE_GRID_SIZE * TIMELINE_COL) / 2,
+      y: (TIMELINE_GRID_SIZE * TIMELINE_ROW) / 2,
+      opacity: 0,
+    });
+    this.addChild([this.timeline, this.perfectText]);
 
     on(EVENTS.ON_GRID_OVER, this.onGridOver.bind(this));
     on(EVENTS.PLACE_BLOCK, this.onPlaceBlock.bind(this));
@@ -89,6 +99,10 @@ export class TimelineBoard extends Board {
     if (!this.ifAnyLocked) {
       // Perfect
       emit(EVENTS.PERFECT_MATCH);
+      this.perfectText.opacity = 1;
+      setTimeout(() => {
+        this.perfectText.opacity = 0;
+      }, 1000);
     }
     this.ifAnyLocked = false;
   }
