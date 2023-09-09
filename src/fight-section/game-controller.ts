@@ -12,6 +12,7 @@ import { MongolGuarder } from "./attack-units/mongol-guarder";
 import { EuropeGuarder } from "./attack-units/europe-guarder";
 import { MongolGunner } from "./attack-units/mongol-gunner";
 import { EuropeCastle } from "./attack-units/europe-castle";
+import { DetailsBox } from "../ui/details-box";
 
 export class GameController {
   public allies: BaseAttackUnit[] = [];
@@ -43,6 +44,17 @@ export class GameController {
       } else {
         castle.respawn();
       }
+    }
+    if (state === "victory") {
+      const totalAliveAllyScore = Math.round(
+        this.allies
+          .filter((e) => e.isAlive())
+          .reduce((prev, current) => {
+            const scores = current.calculateScore();
+            return (prev += scores);
+          }, 0) / 2
+      );
+      DetailsBox.getInstance().updateScore(totalAliveAllyScore);
     }
   }
 

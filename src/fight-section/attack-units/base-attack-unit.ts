@@ -85,7 +85,7 @@ export abstract class BaseAttackUnit
     this.attackUnit = this.baseAttackUnit + bonus[this.camp].attackUnit;
   }
 
-  private calculateScore() {
+  public calculateScore() {
     const { bonus } = GameManager.getInstance();
     const healthScore = this.baseHealth + bonus[this.camp].health;
     const attackRangeScore = Math.abs(

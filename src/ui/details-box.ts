@@ -55,11 +55,11 @@ export class DetailsBox extends GameObjectClass {
 
   public updateScore(score: number) {
     this.score += score;
-    this.scoreText.text = this.score.toString();
+    this.scoreText.text = this.score.toLocaleString();
   }
   public updateConquered() {
     this.conquered++;
-    this.conqueredText.text = this.conquered.toString();
+    this.conqueredText.text = this.conquered.toLocaleString();
   }
 
   public render() {
