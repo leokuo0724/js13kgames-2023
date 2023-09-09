@@ -73,7 +73,7 @@ export abstract class BaseAttackUnit
   protected abstract placeHealthBar(): void;
   protected abstract attackAnim(): void;
 
-  private updateAbilities() {
+  protected updateAbilities() {
     const { bonus } = GameManager.getInstance();
     this.health = this.baseHealth + bonus[this.camp].health;
     this.healthBar.updateMaxHealth(this.health);

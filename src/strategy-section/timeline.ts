@@ -5,6 +5,7 @@ import { EVENTS } from "../constants/events";
 const MAX_X = TIMELINE_GRID_SIZE * TIMELINE_COL;
 export class Timeline extends SpriteClass {
   protected isActive: boolean = false;
+  protected isFinished: boolean = false;
   public scanned: Set<number> = new Set();
 
   constructor({ width, height }: { width: number; height: number }) {
@@ -22,13 +23,17 @@ export class Timeline extends SpriteClass {
   public reset() {
     this.isActive = false;
     this.x = 0;
+    this.isFinished = false;
     this.scanned.clear();
   }
 
   public update() {
     if (!this.isActive) return;
     if (this.x >= MAX_X) {
-      emit(EVENTS.FINAL_COL_SCANNED);
+      if (!this.isFinished) {
+        this.isFinished = true;
+        emit(EVENTS.FINAL_COL_SCANNED);
+      }
       return;
     }
     this.x += 0.3;

@@ -5,4 +5,5 @@ type UnitType =
   | "archer"
   | "cavalry"
   | "guarder"
-  | "gunner";
+  | "gunner"
+  | "khan";

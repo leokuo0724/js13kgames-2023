@@ -13,6 +13,7 @@ import { EuropeGuarder } from "./attack-units/europe-guarder";
 import { MongolGunner } from "./attack-units/mongol-gunner";
 import { EuropeCastle } from "./attack-units/europe-castle";
 import { DetailsBox } from "../ui/details-box";
+import { MongolKhan } from "./attack-units/mongol-khan";
 
 export class GameController {
   public allies: BaseAttackUnit[] = [];
@@ -29,6 +30,11 @@ export class GameController {
       this.finalColScanned = true;
     });
     on(EVENTS.STATE_CHANGE, this.onStateChange.bind(this));
+    on(EVENTS.PERFECT_MATCH, this.onPerfectMatch.bind(this));
+  }
+
+  protected onPerfectMatch() {
+    this.spawnAttackUnit("ally", "khan");
   }
 
   protected onStateChange(state: GameState) {
@@ -90,8 +96,8 @@ export class GameController {
     }
 
     // Create new instance
-    const unit = getAttackUnitClass(camp, unitType);
-    targetCamp.push(new unit());
+    const unit = getAttackUnit(camp, unitType);
+    targetCamp.push(unit);
   }
 
   public update() {
@@ -141,19 +147,22 @@ export class GameController {
   }
 }
 
-function getAttackUnitClass(camp: UnitCamp, unitType: UnitType) {
+function getAttackUnit(camp: UnitCamp, unitType: UnitType) {
   switch (unitType) {
     case "archer":
-      return camp === "ally" ? MongolArcher : EuropeArcher;
+      return camp === "ally" ? new MongolArcher() : new EuropeArcher();
     case "infantry":
-      return camp === "ally" ? MongolInfantry : EuropeInfantry;
+      return camp === "ally" ? new MongolInfantry({}) : new EuropeInfantry({});
     case "cavalry":
-      return camp === "ally" ? MongolCavalry : EuropeCavalry;
+      return camp === "ally" ? new MongolCavalry({}) : new EuropeCavalry();
     case "guarder":
-      return camp === "ally" ? MongolGuarder : EuropeGuarder;
+      return camp === "ally" ? new MongolGuarder() : new EuropeGuarder();
     case "gunner":
       if (camp === "enemy") throw new Error();
-      return MongolGunner;
+      return new MongolGunner();
+    case "khan":
+      if (camp === "enemy") throw new Error();
+      return new MongolKhan();
     case "castle":
       throw new Error();
   }

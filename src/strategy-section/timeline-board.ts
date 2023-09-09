@@ -14,6 +14,8 @@ export class TimelineBoard extends Board {
   protected currentOveredCoord: [number, number] | null = null;
   protected timeline: Sprite;
 
+  protected ifAnyLocked: boolean = false;
+
   constructor() {
     super(
       TIMELINE_COL,
@@ -36,7 +38,8 @@ export class TimelineBoard extends Board {
       this.onGridOver(this.currentOveredCoord);
     });
     on(EVENTS.STATE_CHANGE, this.onStateChange.bind(this));
-    on(EVENTS.COL_SCANNED, this.scanGridsCol.bind(this));
+    on(EVENTS.COL_SCANNED, this.onColScanned.bind(this));
+    on(EVENTS.FINAL_COL_SCANNED, this.onFinalColScanned.bind(this));
     on(EVENTS.FIX_GRIDS, this.fixGrids.bind(this));
   }
 
@@ -53,13 +56,14 @@ export class TimelineBoard extends Board {
     }
   }
 
-  protected scanGridsCol(col: number) {
+  protected onColScanned(col: number) {
     const blockIds = new Set();
     for (let i = 0; i < this.grids.length; i++) {
       const grid = this.grids[i][col];
       if (grid.isScanned || blockIds.has(grid.occupiedId)) continue;
       if (!grid.occupiedId && !grid.occupiedUnitType) {
         grid.setLocked();
+        this.ifAnyLocked = true;
         continue;
       }
       blockIds.add(grid.occupiedId);
@@ -79,6 +83,14 @@ export class TimelineBoard extends Board {
         }
       }
     }
+  }
+
+  protected onFinalColScanned() {
+    if (!this.ifAnyLocked) {
+      // Perfect
+      emit(EVENTS.PERFECT_MATCH);
+    }
+    this.ifAnyLocked = false;
   }
 
   protected clearCoveredGrid() {

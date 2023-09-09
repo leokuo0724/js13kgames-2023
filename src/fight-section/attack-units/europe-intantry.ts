@@ -8,16 +8,30 @@ export class EuropeInfantry extends BaseAttackUnit {
   protected shield: Sprite;
   protected sword: Sprite;
 
-  constructor() {
+  constructor({
+    moveSpeed = -5,
+    moveRate = 10,
+    health = 10,
+    attackRange = -80,
+    attackRate = 60,
+    attackUnit = 1,
+  }: {
+    moveSpeed?: number;
+    moveRate?: number;
+    health?: number;
+    attackRange?: number;
+    attackRate?: number;
+    attackUnit?: number;
+  }) {
     super({
       camp: "enemy",
       type: "infantry",
-      moveSpeed: -5,
-      moveRate: 10,
-      health: 10,
-      attackRange: -80,
-      attackRate: 60,
-      attackUnit: 1,
+      moveSpeed,
+      moveRate,
+      health,
+      attackRange,
+      attackRate,
+      attackUnit,
     });
     this.shield = new CustomSprite({
       assetId: ASSET_IDS.SHIELD,

@@ -4,12 +4,13 @@ import { EuropeInfantry } from "./europe-intantry";
 
 export class EuropeCavalry extends EuropeInfantry {
   constructor() {
-    super();
+    super({
+      moveRate: 8,
+      moveSpeed: -10,
+      health: 12,
+      attackUnit: 1.5,
+    });
     this.type = "cavalry";
-    this.moveSpeed = -10;
-    this.moveRate = 8;
-    this.health = 12;
-    this.attackUnit = 1.5;
 
     this.horse = new CustomSprite({
       assetId: ASSET_IDS.HORSE,
