@@ -1,15 +1,17 @@
 import { on } from "kontra";
 import { EVENTS } from "../constants/events";
-import { MongolInfantry } from "./attack-units/mongol-infantry";
-import { MongolArcher } from "./attack-units/mongol-archer";
+
 import { BaseAttackUnit } from "./attack-units/base-attack-unit";
 import { GameManager } from "../strategy-section/game-manager";
-import { MongolCavalry } from "./attack-units/mongol-cavalry";
-import { MongolGuarder } from "./attack-units/mongol-guarder";
+
 import { MongolGunner } from "./attack-units/mongol-gunner";
 import { EuropeCastle } from "./attack-units/europe-castle";
 import { DetailsBox } from "../ui/details-box";
 import { MongolKhan } from "./attack-units/mongol-khan";
+import { Infantry } from "./attack-units/infantry";
+import { Archer } from "./attack-units/archer";
+import { Cavalry } from "./attack-units/cavalry";
+import { Guarder } from "./attack-units/guarder";
 
 export class GameController {
   public allies: BaseAttackUnit[] = [];
@@ -147,28 +149,28 @@ function getAttackUnit(camp: UnitCamp, unitType: UnitType) {
   switch (unitType) {
     case "archer":
       return camp === "ally"
-        ? new MongolArcher({ camp: "ally" })
-        : new MongolArcher({ camp: "enemy" });
+        ? new Archer({ camp: "ally" })
+        : new Archer({ camp: "enemy" });
     case "infantry":
       return camp === "ally"
-        ? new MongolInfantry({ camp: "ally" })
-        : new MongolInfantry({
+        ? new Infantry({ camp: "ally" })
+        : new Infantry({
             camp: "enemy",
             moveSpeed: -5,
             attackRange: -80,
           });
     case "cavalry":
       return camp === "ally"
-        ? new MongolCavalry({ camp: "ally" })
-        : new MongolCavalry({
+        ? new Cavalry({ camp: "ally" })
+        : new Cavalry({
             camp: "enemy",
             moveSpeed: -12,
             attackRange: -80,
           });
     case "guarder":
       return camp === "ally"
-        ? new MongolGuarder({ camp: "ally" })
-        : new MongolGuarder({ camp: "enemy" });
+        ? new Guarder({ camp: "ally" })
+        : new Guarder({ camp: "enemy" });
     case "gunner":
       if (camp === "enemy") throw new Error();
       return new MongolGunner();

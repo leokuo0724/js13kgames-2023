@@ -1,6 +1,6 @@
-import { MongolCavalry } from "./mongol-cavalry";
+import { Cavalry } from "./cavalry";
 
-export class MongolKhan extends MongolCavalry {
+export class MongolKhan extends Cavalry {
   constructor() {
     super({
       camp: "ally",

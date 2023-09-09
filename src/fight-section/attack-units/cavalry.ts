@@ -1,8 +1,8 @@
 import { ASSET_IDS } from "../../constants/assets";
 import { CustomSprite } from "../custom-sprite";
-import { MongolInfantry } from "./mongol-infantry";
+import { Infantry } from "./infantry";
 
-export class MongolCavalry extends MongolInfantry {
+export class Cavalry extends Infantry {
   constructor({
     camp,
     moveSpeed = 12,

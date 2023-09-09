@@ -3,7 +3,7 @@ import { ASSET_IDS } from "../../constants/assets";
 import { CustomSprite } from "../custom-sprite";
 import { BaseAttackUnit } from "./base-attack-unit";
 
-export class MongolGuarder extends BaseAttackUnit {
+export class Guarder extends BaseAttackUnit {
   protected shell: Sprite;
   protected main: Sprite;
 
