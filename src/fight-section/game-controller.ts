@@ -20,6 +20,7 @@ export class GameController {
   protected finalColScanned = false;
 
   constructor() {
+    this.allies.push(new MongolKhan());
     on(EVENTS.COL_SCANNED, this.onColScanned.bind(this));
     on(EVENTS.SPAWN_ALLY, (unitType: UnitType) => {
       this.spawnAttackUnit("ally", unitType);
