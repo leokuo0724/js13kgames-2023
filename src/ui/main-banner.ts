@@ -12,9 +12,9 @@ const TEXT_CONFIG = {
 
 const PROLOGUES = {
   PART1:
-    "In the 13th century, the Mongol Empire marches to conquer the world.\nAs a Mongol commander,\n your duty is to arrange the blocks, each representing a soldier.",
+    "In the 13th century, the Mongol empire marches to conquer the world.\nAs a Mongol commander,\n your duty is to arrange tactics.",
   PART2:
-    "The Mongol March begins; your strategy will shape history.\nLead the Empire to victory.",
+    "The Mongol March begins; your strategy will shape history.\nLead the empire to victory.",
 };
 
 export class MainBanner extends GameObjectClass {

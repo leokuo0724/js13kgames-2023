@@ -190,7 +190,7 @@ async function embedJs(html: string, chunk: OutputChunk): Promise<string> {
   const packer = new Packer(inputs, options);
   await Promise.all([
     fs.writeFile(`${path.join(__dirname, "dist")}/output.js`, htmlInJs),
-    packer.optimize(6), // Regular builds use level 2
+    packer.optimize(10), // Regular builds use level 2
   ]);
   const { firstLine, secondLine } = packer.makeDecoder();
   return `<script>\n${firstLine}\n${secondLine}\n</script>`;

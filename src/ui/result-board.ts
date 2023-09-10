@@ -71,7 +71,7 @@ export class ResultBoard extends SpriteClass {
     const details = DetailsBox.getInstance();
     if (state === "victory") {
       const aliveAllies = this.gameController.allies.filter((e) => e.isAlive());
-      this.body.text = `${aliveAllies.length} soldier(s) left.\nSelect a gift below or skip to next round.`;
+      this.body.text = `${aliveAllies.length} soldiers left.\nTake a gift below or skip to next wave.`;
       // Pick gifts
       const { negative, positive } = giftMetadata;
       const positiveGift1 =
@@ -91,12 +91,12 @@ export class ResultBoard extends SpriteClass {
       localStorage.setItem("_bs", higherScore.toString());
 
       this.title.text = "Defeat";
-      this.body.text = `You have been conquered ${
+      this.body.text = `You have conquered ${
         details.conquered
-      } territory!\n\nScore: ${details.score.toLocaleString()}\nBest: ${higherScore.toLocaleString()}`;
+      } castles!\n\nScore: ${details.score.toLocaleString()}\nBest: ${higherScore.toLocaleString()}`;
       this.gift1.setDisabled();
       this.gift2.setDisabled();
-      this.confirmButton.text = "restart";
+      this.confirmButton.text = "retry";
     }
   }
 }
