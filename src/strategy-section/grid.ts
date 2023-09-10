@@ -47,7 +47,7 @@ export class Grid extends SpriteClass {
   onOut() {
     this.isPointerOver = false;
   }
-  onDown() {
+  onUp() {
     if (this.covered.color === "transparent") return;
     emit(EVENTS.PLACE_BLOCK, this.coord);
   }

@@ -70,7 +70,8 @@ export class TimelineBoard extends Board {
     const blockIds = new Set();
     for (let i = 0; i < this.grids.length; i++) {
       const grid = this.grids[i][col];
-      if (grid.isScanned || blockIds.has(grid.occupiedId)) continue;
+      if (grid.isScanned || grid.locked || blockIds.has(grid.occupiedId))
+        continue;
       if (!grid.occupiedId && !grid.occupiedUnitType) {
         grid.setLocked();
         this.ifAnyLocked = true;
