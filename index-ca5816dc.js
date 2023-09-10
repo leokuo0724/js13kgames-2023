@@ -3882,7 +3882,7 @@ class Grid extends Sprite {
     onOut() {
         this.isPointerOver = false;
     }
-    onDown() {
+    onUp() {
         if (this.covered.color === "transparent")
             return;
         emit(EVENTS.PLACE_BLOCK, this.coord);
@@ -4211,7 +4211,7 @@ class TimelineBoard extends Board {
         let blockIds = new Set();
         for (let i = 0; i < this.grids.length; i++) {
             let grid = this.grids[i][col];
-            if (grid.isScanned || blockIds.has(grid.occupiedId))
+            if (grid.isScanned || grid.locked || blockIds.has(grid.occupiedId))
                 continue;
             if (!grid.occupiedId && !grid.occupiedUnitType) {
                 grid.setLocked();
@@ -4469,8 +4469,8 @@ let TEXT_CONFIG = {
     anchor: { x: 0.5, y: 0.5 },
 };
 let PROLOGUES = {
-    PART1: "In the 13th century, the Mongol Empire marches to conquer the world.\nAs a Mongol commander,\n your duty is to arrange the blocks, each representing a soldier.",
-    PART2: "The Mongol March begins; your strategy will shape history.\nLead the Empire to victory.",
+    PART1: "In the 13th century, the Mongol empire marches to conquer the world.\nAs a Mongol commander,\n your duty is to arrange tactics.",
+    PART2: "The Mongol March begins; your strategy will shape history.\nLead the empire to victory.",
 };
 class MainBanner extends GameObject {
     constructor() {
@@ -4720,7 +4720,7 @@ class ResultBoard extends Sprite {
         let details = DetailsBox.getInstance();
         if (state === "victory") {
             let aliveAllies = this.gameController.allies.filter((e) => e.isAlive());
-            this.body.text = `${aliveAllies.length} soldier(s) left.\nSelect a gift below or skip to next round.`;
+            this.body.text = `${aliveAllies.length} soldiers left.\nTake a gift below or skip to next wave.`;
             // Pick gifts
             let { negative, positive } = giftMetadata;
             let positiveGift1 = positive[Math.floor(Math.random() * positive.length)];
@@ -4735,10 +4735,10 @@ class ResultBoard extends Sprite {
             let higherScore = Math.max(details.score, bestScore);
             localStorage.setItem("_bs", higherScore.toString());
             this.title.text = "Defeat";
-            this.body.text = `You have been conquered ${details.conquered} territory!\n\nScore: ${details.score.toLocaleString()}\nBest: ${higherScore.toLocaleString()}`;
+            this.body.text = `You have conquered ${details.conquered} castles!\n\nScore: ${details.score.toLocaleString()}\nBest: ${higherScore.toLocaleString()}`;
             this.gift1.setDisabled();
             this.gift2.setDisabled();
-            this.confirmButton.text = "restart";
+            this.confirmButton.text = "retry";
         }
     }
 }
