@@ -3553,21 +3553,16 @@ class Archer extends BaseAttackUnit {
             y: -18,
             scaleX: isAlly ? 1 : -1,
             anchor: { x: 0, y: 0.5 },
-            attackAnim: function (x, rotation) {
-                let isAlly = this.camp === "ally";
-                isAlly ? (this.x += x) : (this.x -= x);
-                isAlly ? (this.rotation += rotation) : (this.rotation -= rotation);
-            },
             attack: function () {
-                this.attackAnim(-1, -0.3);
+                isAlly ? (this.rotation -= 0.3) : (this.rotation += 0.3);
                 setTimeout(() => {
-                    this.attackAnim(-0.5, 0.1);
+                    isAlly ? (this.rotation += 0.1) : (this.rotation -= 0.1);
                 }, 25);
                 setTimeout(() => {
-                    this.attackAnim(0.5, 0.1);
+                    isAlly ? (this.rotation += 0.1) : (this.rotation -= 0.1);
                 }, 50);
                 setTimeout(() => {
-                    this.attackAnim(1, 0.1);
+                    isAlly ? (this.rotation += 0.1) : (this.rotation -= 0.1);
                 }, 100);
             },
         });
